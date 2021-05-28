@@ -4,9 +4,17 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
 const requireAuth = require("./middlewares/requireAuth");
+const cors = require('cors');
 
 const app = express();
 
+const corsOptions = {
+  origin: '*',
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+  allowedHeaders: 'Content-Type,x-access-token,Origin,Accept,Authorization,X-Requested-With'
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(authRoutes);
 
