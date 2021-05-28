@@ -5,7 +5,7 @@ import {Context as AuthContext} from '../context/AuthContext';
 import AuthForm from '../components/AuthForm';
 
 const SigninScreen = ({navigation}) => {
-    const {state, signin} = useContext(AuthContext);
+    const {state, signin, clearErrorMessage} = useContext(AuthContext);
     return (
         <View style = {styles.container}>
             <AuthForm 
@@ -15,7 +15,10 @@ const SigninScreen = ({navigation}) => {
                 onSubmit = {signin}
             />
             <TouchableOpacity 
-                onPress = {() => navigation.navigate('Signup')}
+                onPress = {() => {
+                    clearErrorMessage();
+                    navigation.navigate('Signup');
+                }}
             >
                 <Text style = {{fontSize: 18, marginTop: 30, alignSelf: 'center'}}>Don't have an account?</Text>
                 <Text style = {{fontSize: 18, alignSelf: 'center'}}>Create an account here</Text>
