@@ -18,6 +18,6 @@ npm install @react-native-async-storage/async-storage
 
 Please install the following in shiok-server directory:
 
-npm install bcrypt express jsonwebtoken mongoose nodemon
+npm install bcrypt express jsonwebtoken mongoose nodemon cors
 
 
