@@ -14,6 +14,8 @@ npm install axios
 
 npm install -g ngrok
 
+npm install @react-native-async-storage/async-storage
+
 Please install the following in shiok-server directory:
 
 npm install bcrypt express jsonwebtoken mongoose nodemon
