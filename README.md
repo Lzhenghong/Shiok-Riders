@@ -23,6 +23,7 @@ The files and directories are:
 
 /shiok-server/middlewares  - requireAuth.js
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 We have created our custom express API in the shiok-server directory to connect with the MongoDB cloud server via Mongoose. This connection is verified by manually transacting API requests via the Postman App to localhost:3000.
 
