@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     button: {
-        backgroundColor: '#FF8400'
+        backgroundColor: '#FF8400',
+        borderRadius: 20
     },
     errorMessage: {
         fontSize: 16,
