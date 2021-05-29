@@ -8,7 +8,7 @@ Please install the following in shiok directory:
 
 npm install
 
-npm expo-cli install react-native-gesture-handler react-native-reanimated react-navigation react-navigation-stack react-navigation-tabs
+npx expo-cli install react-native-gesture-handler react-native-reanimated react-navigation react-navigation-stack react-navigation-tabs
 
 npm install axios
 
