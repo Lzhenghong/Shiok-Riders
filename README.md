@@ -22,4 +22,5 @@ Please install the following in shiok-server directory:
 
 npm install bcrypt express jsonwebtoken mongoose nodemon cors
 
+hello world
 
