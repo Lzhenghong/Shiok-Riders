@@ -1,4 +1,5 @@
 require("./models/Hitcher");
+require('./models/Driver');
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -25,6 +26,7 @@ mongoose.connect(mongoUri, {
   useCreateIndex: true,
   useUnifiedTopology: true,
 });
+
 mongoose.connection.on("connected", () => {
   console.log("Connected to mongo instance");
 });

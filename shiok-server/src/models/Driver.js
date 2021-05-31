@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const hitcherSchema = new mongoose.Schema({
+const driverSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -13,7 +13,7 @@ const hitcherSchema = new mongoose.Schema({
   },
   type: {
       type: String,
-      default: 'Hitcher'
+      default: 'Driver'
   },
   username: {
     type: String,
@@ -25,7 +25,7 @@ const hitcherSchema = new mongoose.Schema({
   }
 });
 
-hitcherSchema.pre('save', function(next) {
+driverSchema.pre('save', function(next) {
   const user = this;
   if (!user.isModified('password')) {
     return next();
@@ -46,7 +46,7 @@ hitcherSchema.pre('save', function(next) {
   });
 });
 
-hitcherSchema.methods.comparePassword = function(candidatePassword) {
+driverSchema.methods.comparePassword = function(candidatePassword) {
   const user = this;
 
   return new Promise((resolve, reject) => {
@@ -64,4 +64,4 @@ hitcherSchema.methods.comparePassword = function(candidatePassword) {
   });
 };
 
-mongoose.model('Hitcher', hitcherSchema);
+mongoose.model('Driver', driverSchema);
