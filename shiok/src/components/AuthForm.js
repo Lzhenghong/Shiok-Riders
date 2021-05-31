@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text, Input, Button, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import Logo from '../components/Logo';
 
-const AuthForm = ({title, errorMessage, buttonTitle, onSubmit}) => {
+const AuthForm = ({title, errorMessage, buttonTitleLeft, buttonTitleRight, onSubmit}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     return (
@@ -40,11 +40,18 @@ const AuthForm = ({title, errorMessage, buttonTitle, onSubmit}) => {
             <Text style={styles.errorMessage}>{errorMessage}</Text>
             ) : null}
             <Spacer>
-                <Button 
-                    title = {buttonTitle}
-                    onPress = {() => onSubmit({email, password})} 
-                    buttonStyle = {styles.button}
-                />
+                <View style = {styles.buttonGroup}>
+                    <Button 
+                        title = {buttonTitleLeft}
+                        onPress = {() => onSubmit({email, password, type: 'Hitcher'})} 
+                        buttonStyle = {styles.button}
+                    />
+                    <Button 
+                        title = {buttonTitleRight}
+                        onPress = {() => onSubmit({email, password, type: 'Driver'})} 
+                        buttonStyle = {styles.button}
+                    />
+                </View>
             </Spacer>
         </>
     );
@@ -64,6 +71,10 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#FF8400',
         borderRadius: 20
+    },
+    buttonGroup: {
+        flexDirection: 'row',
+        justifyContent: 'space-around'
     },
     errorMessage: {
         fontSize: 16,

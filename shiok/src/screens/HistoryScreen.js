@@ -1,15 +1,32 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import { Text, Input, Button } from 'react-native-elements';
+import { Text, Header } from 'react-native-elements';
+import {Feather} from '@expo/vector-icons';
 
 const HistoryScreen = () => {
     return (
         <View>
-            <Text>HistoryScreen</Text>
+            <Header 
+                backgroundColor = '#3EB489'
+                containerStyle = {styles.header}
+                centerComponent = {{text: 'History', style: {color: '#fff', fontSize: 20, fontWeight: 'bold'}}}
+            />
         </View>
     );
 };
 
-const styles = StyleSheet.create({});
+HistoryScreen.navigationOptions = () => {
+    return {
+      header: false,
+      tabBarIcon: <Feather name = 'clock' size = {24} color = '#3EB489'/>,
+      tabBarOptions: {activeTintColor: '#3EB489'}
+    };
+  };
+
+const styles = StyleSheet.create({
+    header: {
+        marginBottom: 15
+    }
+});
 
 export default HistoryScreen;

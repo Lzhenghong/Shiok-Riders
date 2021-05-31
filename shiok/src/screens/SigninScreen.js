@@ -11,7 +11,8 @@ const SigninScreen = ({navigation}) => {
             <AuthForm 
                 title = 'Sign In'
                 errorMessage = {state.errorMessage}
-                buttonTitle = 'Sign In'
+                buttonTitleLeft = 'Sign In As Hitcher'
+                buttonTitleRight = 'Sign In As Driver'
                 onSubmit = {signin}
             />
             <TouchableOpacity 

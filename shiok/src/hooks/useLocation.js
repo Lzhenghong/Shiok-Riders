@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {requestForegroundPermissionsAsync, watchPositionAsync, Accuracy} from 'expo-location';
+//import '../components/FakeLocations';
 
 export default (callback) => {
     const [err, setErr] = useState(null);
@@ -12,7 +13,7 @@ export default (callback) => {
                 distanceInterval: 10
             },
             location => {
-                console.log(location);
+                //console.log(location);
                 callback(location);
             });
             if (!granted) {

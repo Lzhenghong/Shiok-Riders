@@ -6,12 +6,14 @@ import AuthForm from '../components/AuthForm';
 
 const SignupScreen = ({navigation}) => {
     const {state, signup, clearErrorMessage} = useContext(AuthContext);
+
     return (
         <View style = {styles.container}>
             <AuthForm 
                 title = 'Create Account'
                 errorMessage = {state.errorMessage}
-                buttonTitle = 'Sign Up'
+                buttonTitleLeft = 'Sign Up As Hitcher'
+                buttonTitleRight = 'Sign Up As Driver'
                 onSubmit = {signup}
             />
             <TouchableOpacity 

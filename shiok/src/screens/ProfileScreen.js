@@ -3,8 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text, Button, Icon, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
-
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
     const {state, signout} = useContext(AuthContext);
 
     return (
@@ -12,10 +11,8 @@ const ProfileScreen = () => {
             <Header 
                 backgroundColor = '#3EB489'
                 containerStyle = {styles.header}
+                centerComponent = {{text: 'Profile', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
             />
-            <Spacer>
-                <Text h1 style = {styles.title}>Profile</Text>
-            </Spacer>
             <Spacer />
                 <Icon
                     name = 'user'
@@ -23,10 +20,11 @@ const ProfileScreen = () => {
                     color = '#CCCCCC'
                     size = {150}
                     containerStyle = {styles.icon}
+                    reverse = {true}
                 />
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Username: </Text>
-                <Text h4 style = {styles.profileRight}>{state.email}</Text>
+                <Text h4 style = {styles.profileRight}>{state.username}</Text>
             </View>
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Email: </Text>
@@ -44,6 +42,7 @@ const ProfileScreen = () => {
                 <Button 
                     title = 'Edit Profile'
                     buttonStyle = {styles.button}
+                    onPress = {() => navigation.navigate('EditProfile')}
                 />
             </Spacer>
             <Spacer>
@@ -71,12 +70,8 @@ ProfileScreen.navigationOptions = () => {
 
 const styles = StyleSheet.create({
     header: {
-        marginBottom: 40
-    },  
-    title: {
-        color: '#3EB489',
-        fontWeight: 'bold',
-        alignSelf: 'center'
+        marginBottom: -1,
+        height: 78.5
     },
     icon: {
         alignSelf: 'center',
