@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text, Button, Icon, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
+
 const ProfileScreen = ({navigation}) => {
     const {state, signout} = useContext(AuthContext);
 
@@ -24,7 +25,9 @@ const ProfileScreen = ({navigation}) => {
                 />
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Username: </Text>
-                <Text h4 style = {styles.profileRight}>{state.username}</Text>
+                {state.username 
+                    ? (<Text h4 style = {styles.profileRight}>{state.username}</Text>)
+                    : (<Text h4 style = {styles.profileRight}>-</Text>)}
             </View>
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Email: </Text>
@@ -47,8 +50,9 @@ const ProfileScreen = ({navigation}) => {
             </Spacer>
             <Spacer>
                 <Button 
-                    title = "Friend's List"
+                    title = "Friends List"
                     buttonStyle = {styles.button}
+                    onPress = {() => navigation.navigate('FriendList')}
                 />
             </Spacer>
             <Spacer>

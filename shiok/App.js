@@ -10,6 +10,9 @@ import HomeScreen from './src/screens/HomeScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
+import AddListingScreen from './src/screens/AddListingScreen';
+import ChatScreen from './src/screens/ChatScreen';
+import FriendListScreen from './src/screens/FriendListScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -22,7 +25,8 @@ const bookingFlow = createStackNavigator({
 
 const profileFlow = createStackNavigator({
   Profile: ProfileScreen,
-  EditProfile: EditProfileScreen
+  EditProfile: EditProfileScreen,
+  FriendList: FriendListScreen
 });
 
 bookingFlow.navigationOptions = () => {
@@ -50,6 +54,8 @@ const switchNavigator = createSwitchNavigator({
   mainFlow: createBottomTabNavigator({
     bookingFlow,
     History: HistoryScreen,
+    AddListing: AddListingScreen,
+    Chat: ChatScreen,
     profileFlow
   })
 });
