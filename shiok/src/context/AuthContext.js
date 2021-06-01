@@ -73,7 +73,6 @@ const signin = (dispatch) => async ({email, password, type}) => {
     });
     navigate('Home');
   } catch (err) {
-    console.log('Error');
     dispatch({
       type: 'add_error',
       payload: 'Something went wrong with sign in'
@@ -89,15 +88,19 @@ const signout = (dispatch) => async () => {
   navigate('Signup');
 };
 
-const fetchProfile = (dispatch) => async ({type}) => {
+const fetchProfile = (dispatch) => async () => {
   try {
-    const response = await API.get('/profile', {type});
+    const token = await AsyncStorage.getItem('token');
+    const type = await AsyncStorage('type');
+    const config = {headers: {Authorization: `Bearer ${token}`, Type: type}};
+    const response = await API.get('/profile', config);
     console.log(response.data);
     dispatch({
       type: 'fetch',
       payload: response.data
     });
   } catch (err) {
+    console.log('cannot profile');
     dispatch({
       type: 'add_error',
       payload: 'Unable to load data'

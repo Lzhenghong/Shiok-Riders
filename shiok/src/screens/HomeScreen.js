@@ -19,10 +19,7 @@ const HomeScreen = () => {
     //console.log(state);
     return (
         <View>
-            <NavigationEvents onDidFocus = {() => {
-                fetchProfile({type: state.type});
-            }} 
-            />
+            <NavigationEvents onDidFocus = {fetchProfile}/>
             <Header 
                 backgroundColor = '#3EB489'
                 containerStyle = {styles.header}
