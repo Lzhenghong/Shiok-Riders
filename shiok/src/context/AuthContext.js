@@ -89,11 +89,11 @@ const signout = (dispatch) => async () => {
 };
 
 const fetchProfile = (dispatch) => async () => {
-  try {
     const token = await AsyncStorage.getItem('token');
-    const type = await AsyncStorage('type');
-    const config = {headers: {Authorization: `Bearer ${token}`, Type: type}};
-    const response = await API.get('/profile', config);
+    const type = await AsyncStorage.getItem('type');
+  try {
+    //const config = {headers: {Authorization: `Bearer ${token}`, Type: type}};
+    const response = await API.get('/profile', {authorization: `Bearer ${token}`, type: type});
     console.log(response.data);
     dispatch({
       type: 'fetch',

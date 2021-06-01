@@ -4,7 +4,8 @@ const Hitcher = mongoose.model('Hitcher');
 const Driver = mongoose.model('Driver');
 
 module.exports = (req, res, next) => {
-  const { authorization, type } = req.headers;
+  //const { authorization, type } = req.headers;
+  const {authorization, type} = req.body;
   // authorization === 'Bearer laksjdflaksdjasdfklj'
 
   if (!authorization || !type) {
