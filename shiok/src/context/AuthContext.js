@@ -15,7 +15,7 @@ const authReducer = (state, action) => {
     case 'signout':
       return {token: null, errorMessage: ''};
     case 'fetch':
-      return {...state, email: action.payload.email, type: action.payload.type, username: action.payload.name, hp: action.payload.phoneNumber};
+      return {...state, email: action.payload.email, type: action.payload.type, username: action.payload.username, hp: action.payload.phoneNumber};
     default:
       return state;
   }
