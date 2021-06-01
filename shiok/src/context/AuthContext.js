@@ -8,14 +8,11 @@ const authReducer = (state, action) => {
     case "add_error":
       return { ...state, errorMessage: action.payload };
     case "signin":
-      return {errorMessage: '', token: action.payload.token, email: action.payload.email, type: action.payload.type}
-      //return { errorMessage: "", token: action.payload.token, user: action.payload.user };
+      return {...state, errorMessage: '', token: action.payload};
     case 'clear_error_message':
       return {...state, errorMessage: ''};
     case 'signout':
       return {token: null, errorMessage: ''};
-    case 'fetch':
-      return {...state, email: action.payload.email, type: action.payload.type, username: action.payload.username, hp: action.payload.phoneNumber};
     default:
       return state;
   }
@@ -23,12 +20,10 @@ const authReducer = (state, action) => {
 
 const tryLocalSignin = (dispatch) => async () => {
   const token = await AsyncStorage.getItem('token');
-  const email = await AsyncStorage.getItem('email');
-  const type = await AsyncStorage.getItem('type');
   if (token) {
     dispatch({
       type: 'signin', 
-      payload: {token, email, type}
+      payload: token
     });
     navigate('Home');
   } else {
@@ -44,12 +39,10 @@ const signup = (dispatch) => async ({ email, password, type }) => {
   try {
     const response = await API.post("/signup", { email, password, type });
     await AsyncStorage.setItem("token", response.data.token);
-    await AsyncStorage.setItem('email', email);
     await AsyncStorage.setItem('type', type);
     dispatch({
       type: "signin",
-      payload: {token: response.data.token, email, type}
-      //payload: {token: response.data.token, user: {email, type}}
+      payload: response.data.token
     });
     navigate("Home");
   } catch (err) {
@@ -64,12 +57,10 @@ const signin = (dispatch) => async ({email, password, type}) => {
   try {
     const response = await API.post('/signin', {email, password, type});
     await AsyncStorage.setItem('token', response.data.token);
-    await AsyncStorage.setItem('email', email);
     await AsyncStorage.setItem('type', type);
     dispatch({
       type: 'signin', 
-      payload: {token: response.data.token, email, type}
-      //payload: {token: response.data.token, user: {email, type}}
+      payload: response.data.token
     });
     navigate('Home');
   } catch (err) {
@@ -82,34 +73,13 @@ const signin = (dispatch) => async ({email, password, type}) => {
 
 const signout = (dispatch) => async () => {
   await AsyncStorage.removeItem('token');
-  await AsyncStorage.removeItem('email');
   await AsyncStorage.removeItem('type');
   dispatch({type: 'signout'});
   navigate('Signup');
 };
 
-const fetchProfile = (dispatch) => async () => {
-    const token = await AsyncStorage.getItem('token');
-    const type = await AsyncStorage.getItem('type');
-  try {
-    //const config = {headers: {Authorization: `Bearer ${token}`, Type: type}};
-    const response = await API.get('/profile', {authorization: `Bearer ${token}`, type: type});
-    console.log(response.data);
-    dispatch({
-      type: 'fetch',
-      payload: response.data
-    });
-  } catch (err) {
-    console.log('cannot profile');
-    dispatch({
-      type: 'add_error',
-      payload: 'Unable to load data'
-    });
-  }
-};
-
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signout, signup, clearErrorMessage, tryLocalSignin, fetchProfile },
+  { signin, signout, signup, clearErrorMessage, tryLocalSignin },
   { token: null, errorMessage: "" }
 );

@@ -3,10 +3,11 @@ import {View, StyleSheet} from 'react-native';
 import {Text, Button, Icon, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
+import {Context as ProfContext} from '../context/ProfileContext';
 
 const ProfileScreen = ({navigation}) => {
-    const {state, signout} = useContext(AuthContext);
-
+    const {signout} = useContext(AuthContext);
+    const {state} = useContext(ProfContext);
     return (
         <View>
             <Header 
@@ -25,18 +26,18 @@ const ProfileScreen = ({navigation}) => {
                 />
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Username: </Text>
-                {state.username 
-                    ? (<Text h4 style = {styles.profileRight}>{state.username}</Text>)
+                {state.user.username 
+                    ? (<Text h4 style = {styles.profileRight}>{state.user.username}</Text>)
                     : (<Text h4 style = {styles.profileRight}>-</Text>)}
             </View>
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Email: </Text>
-                <Text h4 style = {styles.profileRight}>{state.email}</Text>
+                <Text h4 style = {styles.profileRight}>{state.user.email}</Text>
             </View>
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Phone Number: </Text>
-                {state.hp 
-                    ? (<Text h4 style = {styles.profileRight}>{state.hp}</Text>)
+                {state.user.phoneNumber 
+                    ? (<Text h4 style = {styles.profileRight}>{state.user.phoneNumber}</Text>)
                     : (<Text h4 style = {styles.profileRight}>-</Text>)}
             </View>
             <Spacer />

@@ -17,6 +17,7 @@ import FriendListScreen from './src/screens/FriendListScreen';
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import {Provider as LocationProvider} from './src/context/LocationContext';
+import {Provider as ProfProvider} from './src/context/ProfileContext';
 import {Feather} from '@expo/vector-icons';
 
 const bookingFlow = createStackNavigator({
@@ -66,14 +67,16 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
+    <ProfProvider>
     <LocationProvider>
-      <AuthProvider>
-        <App
-          ref={(navigator) => {
-            setNavigator(navigator);
-          }}
-        />
-      </AuthProvider>
-    </LocationProvider>
+        <AuthProvider>
+          <App
+            ref={(navigator) => {
+              setNavigator(navigator);
+            }}
+          />
+        </AuthProvider>
+      </LocationProvider>
+    </ProfProvider>
   );
 };

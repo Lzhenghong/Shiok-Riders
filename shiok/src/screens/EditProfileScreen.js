@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button, Input, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
-import {Context as AuthContext} from '../context/AuthContext';
+import {Context as ProfContext} from '../context/ProfileContext';
 
 const EditProfileScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [hp, setHp] = useState('');
+    const {state, editProfile} = useContext(ProfContext);
     return (
         <View>
             <Header 
@@ -18,6 +19,7 @@ const EditProfileScreen = ({navigation}) => {
                 label = 'Edit username'
                 labelStyle = {{color:'#555353'}}
                 value = {username}
+                placeholder = {state.user.username}
                 onChangeText = {setUsername}
                 autoCapitalize = 'none'
                 autoCorrect = {false}
@@ -26,6 +28,7 @@ const EditProfileScreen = ({navigation}) => {
                 label = 'Edit phone number'
                 labelStyle = {{color:'#555353'}}
                 value = {hp}
+                placeholder = {state.user.phoneNumber}
                 onChangeText = {setHp}
                 autoCapitalize = 'none'
                 autoCorrect = {false}
@@ -34,7 +37,12 @@ const EditProfileScreen = ({navigation}) => {
                 <Button
                     title = 'Save Changes'
                     buttonStyle = {styles.button}
-                    onPress = {() => navigation.navigate('Profile')}
+                    onPress = {() => {
+                        const newUsername = (username == '' ? state.user.username : username);
+                        const newHp = (hp == '' ? state.user.phoneNumber : hp);
+                        editProfile(newUsername, newHp);
+                        navigation.navigate('Profile');
+                    }}
                 />
             </Spacer>
             <Spacer>

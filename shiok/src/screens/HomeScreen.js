@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text, Header} from 'react-native-elements';
 import MapView from '../components/Map';
 import Spacer from '../components/Spacer';
-import {Context as AuthContext} from '../context/AuthContext';
+import {Context as ProfContext} from '../context/ProfileContext';
 import {Context as LocationContext} from '../context/LocationContext';
 import useLocation from '../hooks/useLocation';
 import PriceSearch from '../components/PriceSearchBar';
@@ -14,9 +14,9 @@ const HomeScreen = () => {
     const [price, setPrice] = useState('');
     const [dest, setDest] = useState('');
     const {setLocation} = useContext(LocationContext);
-    const {state, fetchProfile} = useContext(AuthContext);
+    const {fetchProfile} = useContext(ProfContext);
     const err = useLocation(setLocation);
-    //console.log(state);
+
     return (
         <View>
             <NavigationEvents onDidFocus = {fetchProfile}/>

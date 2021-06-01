@@ -4,9 +4,7 @@ const Hitcher = mongoose.model('Hitcher');
 const Driver = mongoose.model('Driver');
 
 module.exports = (req, res, next) => {
-  //const { authorization, type } = req.headers;
-  const {authorization, type} = req.body;
-  // authorization === 'Bearer laksjdflaksdjasdfklj'
+  const { authorization, type } = req.headers;
 
   if (!authorization || !type) {
     return res.status(401).send({ error: 'You must be logged in.' });
