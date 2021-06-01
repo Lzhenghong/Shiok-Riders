@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Hitcher = mongoose.model('Hitcher');
 const Driver = mongoose.model('Driver');
+const requireAuth = require("../middlewares/requireAuth");
 
 const router = express.Router();
 
@@ -41,10 +42,8 @@ router.post('/signin', async (req, res) => {
   }
 });
 
-router.get('/profile', async (req, res) => {
-  const {type} = req.body;
-  const user = (type == 'Hitcher') ? await Hitcher.find({ userId: req.user._id }) : await Driver.find({ userId: req.user._id });
-  res.send(user);
+router.get('/profile', requireAuth, async (req, res) => {
+  res.send(req.user);
 });
 
 module.exports = router;
