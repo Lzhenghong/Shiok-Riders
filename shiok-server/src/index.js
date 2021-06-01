@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 const requireAuth = require("./middlewares/requireAuth");
 const cors = require('cors');
 
@@ -18,6 +19,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(authRoutes);
+app.use(profileRoutes);
 
 const mongoUri = "mongodb+srv://zhenghong:6892380@cluster0.d9fa1.mongodb.net/db?retryWrites=true&w=majority";
 
@@ -25,6 +27,7 @@ mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
+  useFindAndModify: false
 });
 
 mongoose.connection.on("connected", () => {

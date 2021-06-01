@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Hitcher = mongoose.model('Hitcher');
 const Driver = mongoose.model('Driver');
-const requireAuth = require("../middlewares/requireAuth");
 
 const router = express.Router();
 
@@ -36,14 +35,10 @@ router.post('/signin', async (req, res) => {
   try {
     await user.comparePassword(password);
     const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY');
-    res.send({ token });
+    res.send({token});
   } catch (err) {
     return res.status(422).send({ error: 'Invalid password or email' });
   }
-});
-
-router.get('/profile', requireAuth, async (req, res) => {
-  res.send(req.user);
 });
 
 module.exports = router;
