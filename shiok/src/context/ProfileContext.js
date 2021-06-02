@@ -29,11 +29,16 @@ const fetchProfile = (dispatch) => async () => {
     }
   };
   
-  const editProfile = (dispatch) => (username, hp) => {
-    dispatch({
-      type: 'edit_profile', 
-      payload: {username, phoneNumber: hp}
-    });
+  const editProfile = (dispatch) => async (username, phoneNumber) => {
+    try {
+        await AuthAPI.put('/editprofile', {username, phoneNumber});
+        dispatch({type: 'add_error', payload: 'no error'});
+    } catch (err) {
+        dispatch({
+            type: 'add_error',
+            payload: 'Update failed'
+        });
+    }
   };
 
   export const { Provider, Context } = createDataContext(

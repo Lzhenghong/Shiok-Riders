@@ -4,12 +4,15 @@ import {Text, Button, Icon, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
 import {Context as ProfContext} from '../context/ProfileContext';
+import { NavigationEvents } from 'react-navigation';
 
 const ProfileScreen = ({navigation}) => {
     const {signout} = useContext(AuthContext);
-    const {state} = useContext(ProfContext);
+    const {state, fetchProfile} = useContext(ProfContext);
+    
     return (
         <View>
+            <NavigationEvents onDidFocus = {fetchProfile}/>
             <Header 
                 backgroundColor = '#3EB489'
                 containerStyle = {styles.header}

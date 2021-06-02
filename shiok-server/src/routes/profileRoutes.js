@@ -12,15 +12,15 @@ router.get('/profile', async (req, res) => {
     res.send(req.user);
   });
 
-router.post('/editprofile', async (req, res) => {
+router.put('/editprofile', async (req, res) => {
     const {username, phoneNumber} = req.body;
     try {
         (req.user.type == 'Hitcher') 
         ? await Hitcher.updateOne({_id: req.user._id}, {username, phoneNumber}) 
         : await Driver.updateOne({_id: req.user._id}, {username, phoneNumber});
-        res.send(req.user);
+        res.send('Successfully updated');
     } catch (err) {
-        res.send('cannot update');
+        res.send('Update failed');
     }
   });
   
