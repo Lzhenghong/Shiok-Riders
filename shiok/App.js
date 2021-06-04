@@ -10,7 +10,8 @@ import HomeScreen from './src/screens/HomeScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
-import AddListingScreen from './src/screens/AddListingScreen';
+import AddOriginScreen from './src/screens/AddOriginScreen';
+import AddDestScreen from './src/screens/AddDestScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import FriendListScreen from './src/screens/FriendListScreen';
 
@@ -18,7 +19,9 @@ import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
 import {Provider as LocationProvider} from './src/context/LocationContext';
 import {Provider as ProfProvider} from './src/context/ProfileContext';
+import {Provider as ListingProvider} from './src/context/ListingContext';
 import {Feather} from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 
 const bookingFlow = createStackNavigator({
   Home: HomeScreen
@@ -28,6 +31,11 @@ const profileFlow = createStackNavigator({
   Profile: ProfileScreen,
   EditProfile: EditProfileScreen,
   FriendList: FriendListScreen
+});
+
+const listingFlow = createStackNavigator({
+  AddOrigin: AddOriginScreen,
+  AddDest: AddDestScreen
 });
 
 bookingFlow.navigationOptions = () => {
@@ -46,6 +54,15 @@ profileFlow.navigationOptions = () => {
     };
 };
 
+listingFlow.navigationOptions = () => {
+  return {
+      title: 'Add',
+      header: false,
+      tabBarIcon: <AntDesign name = 'plussquareo' size = {24} color = '#3EB489'/>,
+      tabBarOptions: {activeTintColor: '#3EB489'}
+  };
+};
+
 const switchNavigator = createSwitchNavigator({
   Loading: LoadingScreen,
   loginFlow: createStackNavigator({
@@ -55,7 +72,7 @@ const switchNavigator = createSwitchNavigator({
   mainFlow: createBottomTabNavigator({
     bookingFlow,
     History: HistoryScreen,
-    AddListing: AddListingScreen,
+    listingFlow,
     Chat: ChatScreen,
     profileFlow
   })
@@ -65,16 +82,18 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <ProfProvider>
-      <LocationProvider>
-          <AuthProvider>
-            <App
-              ref={(navigator) => {
-                setNavigator(navigator);
-              }}
-            />
-          </AuthProvider>
-        </LocationProvider>
-    </ProfProvider>
+    <ListingProvider>
+      <ProfProvider>
+        <LocationProvider>
+            <AuthProvider>
+              <App
+                ref={(navigator) => {
+                  setNavigator(navigator);
+                }}
+              />
+            </AuthProvider>
+          </LocationProvider>
+      </ProfProvider>
+    </ListingProvider>
   );
 };

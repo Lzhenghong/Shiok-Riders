@@ -1,19 +1,23 @@
 import React from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {ListItem} from 'react-native-elements';
 
-const GeoResults = ({results}) => {
+const GeoResults = ({results, callbackText, callbackObj}) => {
     if (results.length == 0) {
         return null;
     }
     return (
         <View>
             {
-                results.map((item) => (
+                results.map((item, i) => (
                     <ListItem 
+                        key = {i}
                         bottomDivider 
                         topDivider
-                        onPress = {() => console.log('yee')}
+                        onPress = {() => {
+                            callbackText(item.name);
+                            callbackObj(item);
+                        }}
                     >
                         <ListItem.Content>
                             <ListItem.Title style = {{fontWeight: 'bold'}}>

@@ -1,32 +1,33 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import { Input, Header, Button } from 'react-native-elements';
-import {AntDesign} from '@expo/vector-icons';
 import {Context as LocationContext} from '../context/LocationContext';
 import Spacer from '../components/Spacer';
 import GeoAPI from '../api/GeoAPI';
 import geoSearch from '../hooks/geoSearch';
 import GeoResults from '../components/GeoResults';
+import {Context as ListingContext} from '../context/ListingContext';
 
 const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 
-const AddListingScreen = () => {
-    const [origin, setOrigin] = useState(null);
-    //const [dest, setDest] = useState(null);
+const AddOriginScreen = ({navigation}) => {
+    const [origin, setOrigin] = useState('');
+    const [originObj, setOriginObj] = useState('');
     const {state} = useContext(LocationContext);
+    const {addOrigin} = useContext(ListingContext);
     const [searchAPI, results, errorMsg] = geoSearch();
     return (
         <View style = {{flex: 1}}>
             <Header 
                 backgroundColor = '#3EB489'
                 containerStyle = {styles.header}
-                centerComponent = {{text: 'Add Listing', style: {color: '#fff', fontSize: 20, fontWeight: 'bold'}}}
+                centerComponent = {{text: 'Add Pick Up Point', style: {color: '#fff', fontSize: 20, fontWeight: 'bold'}}}
             />
             <Input 
                 label = 'Pick Up Point'
                 labelStyle = {{color:'#555353'}}
                 value = {origin}
-                placeholder = 'From ...'
+                placeholder = 'Enter a location or address'
                 onChangeText = {setOrigin}
                 autoCapitalize = 'none'
                 autoCorrect = {false}
@@ -40,8 +41,9 @@ const AddListingScreen = () => {
                     try {
                         const response = await GeoAPI.get(`/reverse?access_key=${access_key}&query=${lat},${long}&limit=1&country=SG`);
                         setOrigin(response.data.data[0].name);
+                        setOriginObj(response.data.data[0]);
                     } catch (err) {
-                        console.log(err);
+                        console.log('Cannot get current location');
                     }
                 }}
             />
@@ -58,21 +60,33 @@ const AddListingScreen = () => {
                 <ScrollView>
                     <GeoResults 
                         results = {results}
+                        callbackText = {setOrigin}
+                        callbackObj = {setOriginObj}
                     />
                 </ScrollView>
             </View>
+            <Spacer />
+            {origin ? 
+            <Button 
+                title = 'Confirm Pick Up Point'
+                buttonStyle = {styles.button}
+                onPress = {() => {
+                    addOrigin(originObj);
+                    navigation.navigate('AddDest');
+                }}
+            />
+            : null
+            }
         </View>
     );
 };
 
-AddListingScreen.navigationOptions = () => {
+AddOriginScreen.navigationOptions = () => {
     return {
-        title: 'Add',
-        header: false,
-        tabBarIcon: <AntDesign name = 'plussquareo' size = {24} color = '#3EB489'/>,
-        tabBarOptions: {activeTintColor: '#3EB489'}
+      header: () => false,
     };
-  };
+};
+
 
 const styles = StyleSheet.create({
     header: {
@@ -86,4 +100,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AddListingScreen;
+export default AddOriginScreen;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Header } from 'react-native-elements';
+import {Header} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 
 const FriendListScreen = ({navigation}) => {
