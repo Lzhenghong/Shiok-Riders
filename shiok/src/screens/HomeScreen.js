@@ -16,7 +16,6 @@ const HomeScreen = () => {
     const {setLocation} = useContext(LocationContext);
     const {fetchProfile} = useContext(ProfContext);
     const err = useLocation(setLocation);
-
     return (
         <View>
             <NavigationEvents onDidFocus = {fetchProfile}/>

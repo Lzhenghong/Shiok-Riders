@@ -61,22 +61,20 @@ const switchNavigator = createSwitchNavigator({
   })
 });
 
-//export default createAppContainer(switchNavigator);
-
 const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
     <ProfProvider>
-    <LocationProvider>
-        <AuthProvider>
-          <App
-            ref={(navigator) => {
-              setNavigator(navigator);
-            }}
-          />
-        </AuthProvider>
-      </LocationProvider>
+      <LocationProvider>
+          <AuthProvider>
+            <App
+              ref={(navigator) => {
+                setNavigator(navigator);
+              }}
+            />
+          </AuthProvider>
+        </LocationProvider>
     </ProfProvider>
   );
 };
