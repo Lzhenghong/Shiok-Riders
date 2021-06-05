@@ -1,11 +1,16 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import { Header, Button, PricingCard } from 'react-native-elements';
+import { Header, Button, PricingCard, Text, Overlay } from 'react-native-elements';
 import {Context as ListingContext} from '../context/ListingContext';
 import {AntDesign} from '@expo/vector-icons';
 
 ConfirmListingScreen = ({navigation}) => {
-    const {state} = useContext(ListingContext);
+    const {state, addListing} = useContext(ListingContext);
+    const [visible, setVisible] = useState(false);
+
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
 
     return (
         <View>
@@ -20,8 +25,36 @@ ConfirmListingScreen = ({navigation}) => {
                 title = 'Your Listing'
                 price = {'$'.concat(state.price)}
                 info = {[`From: ${state.origin.name}`, `To: ${state.dest.name}`]}
-                button = {<Button title = 'Confirm' buttonStyle = {styles.button} onPress = {() => console.log('hehe')}/>}
+                button = {
+                    <Button 
+                        title = 'Confirm' 
+                        buttonStyle = {styles.button} 
+                        onPress = {() => {
+                            addListing({originObj: state.origin, destObj: state.dest, priceString: state.price});
+                            toggleOverlay();
+                        }}
+                    />}
             />
+            {state.errorMessage ? 
+            <Text style = {styles.errorMessage}>{state.errorMessage}</Text> :
+            <Overlay 
+                isVisible = {visible} 
+                onBackdropPress = {() => {
+                    toggleOverlay();
+                    navigation.navigate('Home');
+                }}
+            >
+                <Text h3 style = {styles.text}>Your listing is submitted!</Text>
+                <Button 
+                    title = 'Back To Home' 
+                    buttonStyle = {styles.button} 
+                    onPress = {() => {
+                        toggleOverlay();
+                        navigation.navigate('Home');
+                    }}
+                />
+            </Overlay>
+            }
         </View>
     );
 };
@@ -43,6 +76,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: 395,
         marginVertical: 5
+    },
+    errorMessage: {
+        fontSize: 16,
+        color: 'red',
+        marginLeft: 15,
+        marginTop: -5
+    },
+    text: {
+        fontSize: 20,
+        alignSelf: 'center',
+        marginBottom: 10
     }
 });
 
