@@ -10,8 +10,14 @@ import {AntDesign} from '@expo/vector-icons';
 const AddDestScreen = ({navigation}) => {
     const [dest, setDest] = useState('');
     const [destObj, setDestObj] = useState('');
+    const [price, setPrice] = useState('');
     const {addDest} = useContext(ListingContext);
     const [searchAPI, results, errorMsg] = geoSearch();
+
+    const checkNum = (input) => {
+        return !isNaN(input);
+    };
+
     return (
         <View>
             <Header 
@@ -29,16 +35,21 @@ const AddDestScreen = ({navigation}) => {
                 autoCapitalize = 'none'
                 autoCorrect = {false}
             />
-            <Spacer>
-                <Button 
-                    title = 'Search'
-                    buttonStyle = {styles.button}
-                    onPress = {() => searchAPI(dest)}
-                />
-            </Spacer>
-            {errorMsg == '' ? null : <Text>{errorMsg}</Text>}
+            <Input 
+               value = {price}
+               placeholder = 'Enter a price'
+               onChangeText = {(newTerm) => {
+                   checkNum(newTerm) ? setPrice(newTerm) : setPrice('');
+               }} 
+            />
+            <Button 
+                title = 'Search'
+                buttonStyle = {styles.button}
+                onPress = {() => searchAPI(dest)}
+            />
             <Spacer />
-            <View style = {{height: 400}}>
+            {errorMsg == '' ? null : <Text>{errorMsg}</Text>}
+            <View style = {{height: 400, marginBottom: 12}}>
                 <ScrollView>
                     <GeoResults 
                         results = {results}
@@ -48,7 +59,7 @@ const AddDestScreen = ({navigation}) => {
                 </ScrollView>
             </View>
             <Spacer />
-            {dest ? 
+            {dest && price ? 
             <Button 
                 title = 'Confirm Drop Off Point'
                 buttonStyle = {styles.button}

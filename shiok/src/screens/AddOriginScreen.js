@@ -16,6 +16,7 @@ const AddOriginScreen = ({navigation}) => {
     const {state} = useContext(LocationContext);
     const {addOrigin} = useContext(ListingContext);
     const [searchAPI, results, errorMsg] = geoSearch();
+
     return (
         <View style = {{flex: 1}}>
             <Header 
