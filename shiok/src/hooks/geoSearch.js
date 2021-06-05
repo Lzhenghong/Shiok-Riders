@@ -9,7 +9,6 @@ export default () => {
     const searchAPI = async (searchTerm) => {
         try {
             const response = await GeoAPI.get(`/forward?access_key=${access_key}&query=${searchTerm}&limit=10&country=SG`); 
-            console.log(response.data.data);
             setResults(response.data.data);
         } catch (err) {
             setErrorMsg('Could not load data');

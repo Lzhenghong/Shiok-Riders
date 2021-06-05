@@ -1,23 +1,64 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import { Input, Header, Button } from 'react-native-elements';
-import {Context as LocationContext} from '../context/LocationContext';
 import Spacer from '../components/Spacer';
-import GeoAPI from '../api/GeoAPI';
 import geoSearch from '../hooks/geoSearch';
 import GeoResults from '../components/GeoResults';
 import {Context as ListingContext} from '../context/ListingContext';
 import {AntDesign} from '@expo/vector-icons';
 
-const AddDestScreen = () => {
+const AddDestScreen = ({navigation}) => {
+    const [dest, setDest] = useState('');
+    const [destObj, setDestObj] = useState('');
+    const {addDest} = useContext(ListingContext);
+    const [searchAPI, results, errorMsg] = geoSearch();
     return (
         <View>
             <Header 
-                leftComponent = {<AntDesign name = 'arrowleft' color = 'white' size = {30} onPress = {() => navigation.navigate('Profile')} />}
+                leftComponent = {<AntDesign name = 'arrowleft' color = 'white' size = {30} onPress = {() => navigation.navigate('AddOrigin')} />}
                 backgroundColor = '#3EB489'
                 containerStyle = {styles.header}
                 centerComponent = {{text: 'Add Drop Off Point', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
             />
+            <Input 
+                label = 'Drop Off Point'
+                labelStyle = {{color:'#555353'}}
+                value = {dest}
+                placeholder = 'Enter a location or address'
+                onChangeText = {setDest}
+                autoCapitalize = 'none'
+                autoCorrect = {false}
+            />
+            <Spacer>
+                <Button 
+                    title = 'Search'
+                    buttonStyle = {styles.button}
+                    onPress = {() => searchAPI(dest)}
+                />
+            </Spacer>
+            {errorMsg == '' ? null : <Text>{errorMsg}</Text>}
+            <Spacer />
+            <View style = {{height: 400}}>
+                <ScrollView>
+                    <GeoResults 
+                        results = {results}
+                        callbackText = {setDest}
+                        callbackObj = {setDestObj}
+                    />
+                </ScrollView>
+            </View>
+            <Spacer />
+            {dest ? 
+            <Button 
+                title = 'Confirm Drop Off Point'
+                buttonStyle = {styles.button}
+                onPress = {() => {
+                    addDest(destObj);
+                    console.log('submit');
+                }}
+            />
+            : null
+            }
         </View>
     );
 };
@@ -32,6 +73,12 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 15,
         height: 78.5
+    },
+    button: {
+        backgroundColor: '#FF8400',
+        borderRadius: 20,
+        alignSelf: 'center',
+        width: 395
     }
 });
 
