@@ -11,7 +11,7 @@ const AddDestScreen = ({navigation}) => {
     const [dest, setDest] = useState('');
     const [destObj, setDestObj] = useState('');
     const [price, setPrice] = useState('');
-    const {addDest} = useContext(ListingContext);
+    const {addDest, addPrice} = useContext(ListingContext);
     const [searchAPI, results, errorMsg] = geoSearch();
 
     const checkNum = (input) => {
@@ -65,7 +65,8 @@ const AddDestScreen = ({navigation}) => {
                 buttonStyle = {styles.button}
                 onPress = {() => {
                     addDest(destObj);
-                    console.log('submit');
+                    addPrice(price);
+                    navigation.navigate('ConfirmListing');
                 }}
             />
             : null

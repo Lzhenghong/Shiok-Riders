@@ -12,6 +12,7 @@ import LoadingScreen from './src/screens/LoadingScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import AddOriginScreen from './src/screens/AddOriginScreen';
 import AddDestScreen from './src/screens/AddDestScreen';
+import ConfirmListingScreen from './src/screens/ConfirmListingScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import FriendListScreen from './src/screens/FriendListScreen';
 
@@ -35,7 +36,8 @@ const profileFlow = createStackNavigator({
 
 const listingFlow = createStackNavigator({
   AddOrigin: AddOriginScreen,
-  AddDest: AddDestScreen
+  AddDest: AddDestScreen,
+  ConfirmListing: ConfirmListingScreen
 });
 
 bookingFlow.navigationOptions = () => {
