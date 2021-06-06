@@ -16,6 +16,11 @@ const Map = () => {
                 latitudeDelta: 0.005,
                 longitudeDelta: 0.005
             }}
+            region = {{
+                ...state.currentLocation.coords,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
+            }}
         >
             <Circle 
                 center = {state.currentLocation.coords}
@@ -29,7 +34,7 @@ const Map = () => {
 
 const styles = StyleSheet.create({
     map: {
-        height: 605
+        height: 540
     }
 });
 

@@ -38,8 +38,16 @@ const addPrice = (dispatch) => (price) => {
 };
 
 const addListing = (dispatch) => async ({originObj, destObj, priceString}) => {
-    const origin = {name: originObj.name, latitude: originObj.latitude, longitude: originObj.longitude};
-    const dest = {name: destObj.name, latitude: destObj.latitude, longitude: destObj.longitude};
+    const origin = {
+        name: originObj.name, 
+        type: 'Point',
+        coordinates: [originObj.longitude, originObj.latitude]
+    };
+    const dest = {
+        name: destObj.name, 
+        type: 'Point',
+        coordinates: [destObj.longitude, destObj.latitude]
+        };
     const price = Number(priceString);
     try {
         await AuthAPI.post('/listing', {origin, dest, price});
