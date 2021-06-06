@@ -22,8 +22,8 @@ const driverListingSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
         index: {
-            // auto expire after 6 hours
-            expires: 21600 
+            // auto expire after 30 min
+            expires: 1800
         }
     }
 });

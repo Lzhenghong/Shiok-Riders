@@ -43,6 +43,7 @@ ConfirmListingScreen = ({navigation}) => {
                     toggleOverlay();
                     navigation.navigate('Home');
                 }}
+                overlayStyle = {styles.overlay}
             >
                 <Text h3 style = {styles.text}>Your listing is submitted!</Text>
                 <Button 
@@ -87,6 +88,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         marginBottom: 10
+    },
+    overlay: {
+        height: 200,
+        alignSelf: 'center',
+        justifyContent: 'center'
     }
 });
 
