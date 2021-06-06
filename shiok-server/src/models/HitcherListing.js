@@ -1,33 +1,5 @@
 const mongoose = require('mongoose');
 
-/*const hitcherListingSchema = new mongoose.Schema({
-    lister: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Hitcher'
-    },
-    origin: {
-        name: String,
-        latitude: Number,
-        longitude: Number
-    },
-    dest: {
-        name: String,
-        latitude: Number,
-        longitude: Number
-    },
-    price: {
-        type: Number
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        index: {
-            // auto expire after 30 min
-            expires: 1800 
-        }
-    }
-});*/
-
 const hitcherListingSchema = new mongoose.Schema({
     lister: {
         type: mongoose.Schema.Types.ObjectId,
@@ -38,14 +10,18 @@ const hitcherListingSchema = new mongoose.Schema({
         type: {
             type: String
         },
-        coordinates: []
+        coordinates: {
+            type: [Number]
+        }
     },
     dest: {
         name: String,
         type: {
             type: String
         },
-        coordinates: []
+        coordinates: {
+            type: [Number]
+        }
     },
     price: {
         type: Number
@@ -60,6 +36,7 @@ const hitcherListingSchema = new mongoose.Schema({
     }
 });
 
-hitcherListingSchema.index({origin: '2dsphere', dest: '2dsphere'});
+hitcherListingSchema.index({origin: '2dsphere'});
+hitcherListingSchema.index({dest: '2dsphere'});
 
 mongoose.model('HitcherListing', hitcherListingSchema);
