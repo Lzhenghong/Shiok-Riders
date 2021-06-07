@@ -20,36 +20,14 @@ router.post('/listing', async (req, res) => {
     }
 });
 
-/*router.get('/listing', async (req, res) => {
-    const {price} = req.body;
-    const lister = req.user;
-    try {
-        if (lister.type == 'Driver') {
-            const result = await HitcherListing.find({
-                price: {
-                    $gte: price
-                }
-            });
-            res.send(result);
-        } else {
-            const result = await DriverListing.find({
-                price: {
-                    $lte: price
-                }
-            });
-            res.send(result);
-        }
-    } catch (err) {
-        res.send(lister);
-    }
-});*/
-
 router.get('/listing', async (req, res) => {
     const {origin, price, dest} = req.body;
     const lister = req.user;
+    const hashMap = new Map();
+    const result = [];
     try {
         if (lister.type == 'Driver') {
-            const result = await HitcherListing.find({
+            const firstResult = await HitcherListing.find({
                 origin: {
                     $near: {
                         $maxDistance: 5000,
@@ -63,9 +41,29 @@ router.get('/listing', async (req, res) => {
                     $gte: price
                 }
             });
+            firstResult.map(doc => hashMap.set(doc._id.toString(), doc));
+            const secondResult = await HitcherListing.find({
+                dest: {
+                    $near: {
+                        $maxDistance: 5000,
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [dest.longitude, dest.latitude]
+                        }
+                    }
+                },
+                price: {
+                    $gte: price
+                }
+            });
+            secondResult.map(doc => {
+                if (hashMap.has(doc._id.toString())) {
+                    result.push(doc);
+                }
+            });
             res.send(result);
         } else {
-            const result = await DriverListing.find({
+            const firstResult = await DriverListing.find({
                 origin: {
                     $near: {
                         $maxDistance: 5000,
@@ -77,7 +75,10 @@ router.get('/listing', async (req, res) => {
                 },
                 price: {
                     $lte: price
-                },
+                }
+            });
+            firstResult.map(doc => hashMap.set(doc._id.toString(), doc));
+            const secondResult = await DriverListing.find({
                 dest: {
                     $near: {
                         $maxDistance: 5000,
@@ -86,69 +87,22 @@ router.get('/listing', async (req, res) => {
                             coordinates: [dest.longitude, dest.latitude]
                         }
                     }
+                },
+                price: {
+                    $lte: price
+                }
+            });
+            secondResult.map(doc => {
+                if (hashMap.has(doc._id.toString())) {
+                    result.push(doc);
                 }
             });
             res.send(result);
         }
     } catch (err) {
-        res.send(lister);
+        res.send('Unable to fetch listing');
     }
 });
-
-/*router.get('/listing', async (req, res) => {
-    const {origin, dest} = req.body;
-    const lister = req.user;
-    try {
-        if (lister.type == 'Driver') { 
-            const result = await HitcherListing.find({
-                origin: {
-                    $near: {
-                        $maxDistance: 5000,
-                        $geometry: {
-                            type: 'Point',
-                            coordinates: [origin.longitude, origin.latitude]
-                        }
-                    }
-                },
-                dest: {
-                    $near: {
-                        $maxDistance: 5000,
-                        $geometry: {
-                            type: 'Point',
-                            coordinates: [dest.longitude, dest.latitude]
-                        }
-                    }
-                }
-            });
-            res.send(result);
-        } else {
-            const result = await DriverListing.find({
-                origin: {
-                    $near: {
-                        $maxDistance: 5000,
-                        $geometry: {
-                            type: 'Point',
-                            coordinates: [origin.longitude, origin.latitude]
-                        }
-                    }
-                },
-                dest: {
-                    $near: {
-                        $maxDistance: 5000,
-                        $geometry: {
-                            type: 'Point',
-                            coordinates: [dest.longitude, dest.latitude]
-                        }
-                    }
-                }
-            });
-            res.send(result);
-        }
-    } catch (err) {
-        const body = req.body;
-        res.send(body);
-    }
-});*/
 
 module.exports = router;
 
