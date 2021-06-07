@@ -20,7 +20,82 @@ router.post('/listing', async (req, res) => {
     }
 });
 
+/*router.get('/listing', async (req, res) => {
+    const {price} = req.body;
+    const lister = req.user;
+    try {
+        if (lister.type == 'Driver') {
+            const result = await HitcherListing.find({
+                price: {
+                    $gte: price
+                }
+            });
+            res.send(result);
+        } else {
+            const result = await DriverListing.find({
+                price: {
+                    $lte: price
+                }
+            });
+            res.send(result);
+        }
+    } catch (err) {
+        res.send(lister);
+    }
+});*/
+
 router.get('/listing', async (req, res) => {
+    const {origin, price, dest} = req.body;
+    const lister = req.user;
+    try {
+        if (lister.type == 'Driver') {
+            const result = await HitcherListing.find({
+                origin: {
+                    $near: {
+                        $maxDistance: 5000,
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [origin.longitude, origin.latitude]
+                        }
+                    }
+                },
+                price: {
+                    $gte: price
+                }
+            });
+            res.send(result);
+        } else {
+            const result = await DriverListing.find({
+                origin: {
+                    $near: {
+                        $maxDistance: 5000,
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [origin.longitude, origin.latitude]
+                        }
+                    }
+                },
+                price: {
+                    $lte: price
+                },
+                dest: {
+                    $near: {
+                        $maxDistance: 5000,
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [dest.longitude, dest.latitude]
+                        }
+                    }
+                }
+            });
+            res.send(result);
+        }
+    } catch (err) {
+        res.send(lister);
+    }
+});
+
+/*router.get('/listing', async (req, res) => {
     const {origin, dest} = req.body;
     const lister = req.user;
     try {
@@ -73,39 +148,8 @@ router.get('/listing', async (req, res) => {
         const body = req.body;
         res.send(body);
     }
-});
+});*/
 
 module.exports = router;
 
 
-/*const {dest} = req.body;
-const lister = req.user;
-try {
-    if (lister.type == 'Driver') {
-        const result = await HitcherListing.find({
-            dest: {
-                $near: {
-                    $maxDistance: 5000,
-                    $geometry: {
-                        type: 'Point',
-                        coordinates: [dest.longitude, dest.latitude]
-                    }
-                }
-            }
-        });
-        res.send(result);
-    } else {
-        const result = await DriverListing.find({
-            dest: {
-                $near: {
-                    $maxDistance: 5000,
-                    $geometry: {
-                        type: 'Point',
-                        coordinates: [dest.longitude, dest.latitude]
-                    }
-                }
-            }
-        });
-        res.send(result);
-    }
-}*/
