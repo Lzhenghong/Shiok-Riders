@@ -3,14 +3,13 @@ import {View, StyleSheet} from 'react-native';
 import {SearchBar} from 'react-native-elements';
 import {Entypo} from '@expo/vector-icons';
 
-const DestSearchBar = ({term, onTermChange, onTermSubmit}) => {
+const DestSearchBar = ({term, onTermChange}) => {
     return (
         <View>
             <SearchBar 
                 placeholder = 'Enter your destination'
                 value = {term}
                 onChangeText = {onTermChange}
-                onEndEditing = {onTermSubmit}
                 searchIcon = {<Entypo name = 'location-pin' size = {20} color = '#3EB489'/>}
             />
         </View>

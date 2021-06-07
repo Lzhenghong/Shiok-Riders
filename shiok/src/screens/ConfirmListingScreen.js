@@ -41,17 +41,17 @@ ConfirmListingScreen = ({navigation}) => {
                 isVisible = {visible} 
                 onBackdropPress = {() => {
                     toggleOverlay();
-                    navigation.navigate('Home');
+                    navigation.navigate('AddOrigin');
                 }}
                 overlayStyle = {styles.overlay}
             >
                 <Text h3 style = {styles.text}>Your listing is submitted!</Text>
                 <Button 
-                    title = 'Back To Home' 
+                    title = 'Done' 
                     buttonStyle = {styles.button} 
                     onPress = {() => {
                         toggleOverlay();
-                        navigation.navigate('Home');
+                        navigation.navigate('AddOrigin');
                     }}
                 />
             </Overlay>

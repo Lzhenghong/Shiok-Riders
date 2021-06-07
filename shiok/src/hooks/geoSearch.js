@@ -8,7 +8,7 @@ export default () => {
     const [errorMsg, setErrorMsg] = useState('');
     const searchAPI = async (searchTerm) => {
         try {
-            const response = await GeoAPI.get(`/forward?access_key=${access_key}&query=${searchTerm}&limit=10&country=SG`); 
+            const response = await GeoAPI.get(`/forward?access_key=${access_key}&query=${searchTerm}&limit=12&country=SG`); 
             setResults(response.data.data);
         } catch (err) {
             setErrorMsg('Could not load data');

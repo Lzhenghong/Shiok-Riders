@@ -3,15 +3,14 @@ import {View, StyleSheet} from 'react-native';
 import {SearchBar} from 'react-native-elements';
 import {Feather} from '@expo/vector-icons';
 
-const OriginSearchBar = ({term, onTermChange, onTermSubmit}) => {
+const OriginSearchBar = ({term, onTermChange, onIconTap}) => {
     return (
         <View>
             <SearchBar 
-                placeholder = 'Enter your current location'
+                placeholder = 'Tap icon to use current location'
                 value = {term}
                 onChangeText = {onTermChange}
-                onEndEditing = {onTermSubmit}
-                searchIcon = {<Feather name = 'crosshair' size = {20} color = '#3EB489'/>}
+                searchIcon = {<Feather name = 'crosshair' size = {20} color = '#3EB489' onPress = {onIconTap}/>}
             />
         </View>
     );
