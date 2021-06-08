@@ -11,6 +11,8 @@ const listingReducer = (state, action) => {
             return {...state, price: action.payload};
         case 'add_error':
             return {...state, errorMessage: action.payload};
+        case 'fetch_listing':
+            return {result: action.payload};
         default:
             return state;
     }
@@ -61,8 +63,33 @@ const addListing = (dispatch) => async ({originObj, destObj, priceString}) => {
     }
 };
 
+const fetchListing = (dispatch) => async ({originObj, destObj, priceString}) => {
+    const origin = {
+        latitude: originObj.latitude,
+        longitude: originObj.longitude
+    };
+    const dest = {
+        latitude: destObj.latitude,
+        longitude: destObj.longitude
+    };
+    const price = Number(priceString);
+    try {
+        const response = await AuthAPI.post('/fetchlisting', {origin, dest, price});
+        dispatch({
+            type: 'fetch_listing',
+            payload: response.data
+        });
+    } catch (err) {
+        dispatch({
+            type: 'add_error',
+            payload: 'Unable to fetch listing'
+        });
+        console.log('Unable to fetch listing');
+    }
+};
+
 export const {Context, Provider} = createDataContext(
     listingReducer,
-    {addOrigin, addDest, addPrice, addListing},
+    {addOrigin, addDest, addPrice, addListing, fetchListing},
     {origin: null}
 );

@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {Text, Header, Button} from 'react-native-elements';
 import MapView from '../components/Map';
 import {Context as ProfContext} from '../context/ProfileContext';
@@ -10,10 +10,9 @@ import OriginSearch from '../components/OriginSearchBar';
 import DestSearch from '../components/DestSearchBar';
 import { NavigationEvents } from 'react-navigation';
 import GeoAPI from '../api/GeoAPI';
-import geoSearch from '../hooks/geoSearch';
-import GeoResults from '../components/GeoResults';
 import {Context as ListingContext} from '../context/ListingContext';
 import { Dimensions } from 'react-native';
+import ListingResults from '../components/ListingResults';
 
 const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 const window = Dimensions.get('window');
@@ -26,6 +25,7 @@ const HomeScreen = () => {
 
     const {state, setLocation} = useContext(LocationContext);
     const {fetchProfile} = useContext(ProfContext);
+    const {state: listingState, fetchListing} = useContext(ListingContext);
     const err = useLocation(setLocation);
 
     const checkNum = (input) => {
@@ -73,7 +73,30 @@ const HomeScreen = () => {
                     <Button 
                         title = 'Search'
                         buttonStyle = {styles.button}
+                        onPress = {async () => {
+                            try {
+                                const destResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${dest}&limit=1&country=SG`);
+                                const destObj = destResponse.data.data[0];
+                                if (!originObj) {
+                                    const originResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${origin}&limit=1&country=SG`);
+                                    fetchListing({originObj: originResponse.data.data[0], destObj, priceString: price});
+                                } else {
+                                    fetchListing({originObj, destObj, priceString: price});
+                                }
+                            } catch (err) {
+                                console.log('Cannot query listing');
+                            }
+                        }}
                     />
+                </View>) : null}
+                {listingState.result ?
+                (<View style = {{width: window.width, height: 200, position: 'absolute', top: 39, left: 0}}>
+                    <ScrollView>
+                        <ListingResults 
+                            results = {listingState.result}
+                            callback = {() => console.log('pressed')}
+                        />
+                    </ScrollView>
                 </View>) : null}
             </View>
         </View>

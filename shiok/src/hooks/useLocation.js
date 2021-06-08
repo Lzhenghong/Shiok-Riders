@@ -13,7 +13,7 @@ export default (callback) => {
                 distanceInterval: 10
             },
             location => {
-                console.log(location);
+                //console.log(location);
                 callback(location);
             });
             if (!granted) {

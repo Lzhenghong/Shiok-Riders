@@ -20,8 +20,8 @@ router.post('/listing', async (req, res) => {
     }
 });
 
-router.get('/listing', async (req, res) => {
-    const {origin, price, dest} = req.body;
+router.post('/fetchlisting', async (req, res) => {
+    const {origin, dest, price} = req.body;
     const lister = req.user;
     const hashMap = new Map();
     const result = [];
@@ -100,7 +100,7 @@ router.get('/listing', async (req, res) => {
             res.send(result);
         }
     } catch (err) {
-        res.send('Unable to fetch listing');
+        return res.status(422).send({ error: 'Failed to fetch listing' });
     }
 });
 
