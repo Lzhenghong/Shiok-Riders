@@ -89,7 +89,7 @@ const HomeScreen = () => {
                         }}
                     />
                 </View>) : null}
-                {listingState.result ?
+                {listingState.result && price && origin && dest ?
                 (<View style = {{width: window.width, height: 200, position: 'absolute', top: 39, left: 0}}>
                     <ScrollView>
                         <ListingResults 
