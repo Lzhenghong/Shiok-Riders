@@ -7,7 +7,13 @@ import {Context as ProfContext} from '../context/ProfileContext';
 const EditProfileScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [hp, setHp] = useState('');
+    const [lic, setLic] = useState('');
     const {state, editProfile} = useContext(ProfContext);
+
+    const checkNum = (input) => {
+        return !isNaN(input);
+    };
+
     return (
         <View>
             <Header 
@@ -29,10 +35,22 @@ const EditProfileScreen = ({navigation}) => {
                 labelStyle = {{color:'#555353'}}
                 value = {hp}
                 placeholder = {state.user.phoneNumber}
-                onChangeText = {setHp}
+                onChangeText = {(newTerm) => {
+                    checkNum(newTerm) ? setHp(newTerm) : setHp('');
+                }}
                 autoCapitalize = 'none'
                 autoCorrect = {false}
             />
+            {state.user.type == 'Driver' ?
+            (<Input 
+            label = 'Edit license number'
+            labelStyle = {{color:'#555353'}}
+            value = {lic}
+            placeholder = {state.user.licenseNumber}
+            onChangeText = {setLic}
+            autoCapitalize = 'none'
+            autoCorrect = {false}
+            />) : null}
             <Spacer>
                 <Button
                     title = 'Save Changes'
@@ -40,7 +58,8 @@ const EditProfileScreen = ({navigation}) => {
                     onPress = {() => {
                         const newUsername = (username == '' ? state.user.username : username);
                         const newHp = (hp == '' ? state.user.phoneNumber : hp);
-                        editProfile(newUsername, newHp);
+                        const newLic = (lic == '' ? state.user.licenseNumber : lic);
+                        editProfile({username: newUsername, phoneNumber: newHp, licenseNumber: newLic});
                         navigation.navigate('Profile');
                     }}
                 />

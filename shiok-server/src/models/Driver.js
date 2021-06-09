@@ -22,6 +22,11 @@ const driverSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     default: ''
+  },
+  licenseNumber: {
+    type: String,
+    default: '',
+    unique: true
   }
 });
 

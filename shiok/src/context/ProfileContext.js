@@ -29,9 +29,9 @@ const fetchProfile = (dispatch) => async () => {
     }
   };
   
-  const editProfile = (dispatch) => async (username, phoneNumber) => {
+  const editProfile = (dispatch) => async ({username, phoneNumber, licenseNumber}) => {
     try {
-        await AuthAPI.put('/editprofile', {username, phoneNumber});
+        await AuthAPI.put('/editprofile', {username, phoneNumber, licenseNumber});
         dispatch({type: 'add_error', payload: 'no error'});
     } catch (err) {
         dispatch({

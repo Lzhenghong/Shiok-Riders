@@ -13,11 +13,11 @@ router.get('/profile', async (req, res) => {
   });
 
 router.put('/editprofile', async (req, res) => {
-    const {username, phoneNumber} = req.body;
+    const {username, phoneNumber, licenseNumber} = req.body;
     try {
         (req.user.type == 'Hitcher') 
         ? await Hitcher.updateOne({_id: req.user._id}, {username, phoneNumber}) 
-        : await Driver.updateOne({_id: req.user._id}, {username, phoneNumber});
+        : await Driver.updateOne({_id: req.user._id}, {username, phoneNumber, licenseNumber});
         res.send('Successfully updated');
     } catch (err) {
         res.send('Update failed');

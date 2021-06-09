@@ -47,7 +47,13 @@ const ProfileScreen = ({navigation}) => {
                         ? (<Text h4 style = {styles.profileRight}>{state.user.phoneNumber}</Text>)
                         : (<Text h4 style = {styles.profileRight}>-</Text>)}
                 </View>
-                <Spacer />
+                {state.user.type == 'Driver' ? 
+                (<View style = {{flexDirection: 'row'}}>
+                    <Text h4 style = {styles.profileLeft}>License Number: </Text>
+                    {state.user.licenseNumber 
+                        ? (<Text h4 style = {styles.profileRight}>{state.user.licenseNumber}</Text>)
+                        : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                </View>) : <Spacer />}             
                 <Spacer />
                 <Spacer>
                     <Button 
