@@ -18,8 +18,11 @@ const ListingResults = ({results, callback}) => {
                     >
                         <ListItem.Content>
                             <ListItem.Title >
-                                {`${item.origin.name} to ${item.dest.name}`}
+                                {`${item.origin.name} to ${item.dest.name} - $${item.price}`}
                             </ListItem.Title>
+                            <ListItem.Subtitle style = {{color: '#696e6b'}}>
+                                {item.lister.username ? item.lister.username : item.lister.email}
+                            </ListItem.Subtitle>
                         </ListItem.Content>
                         <ListItem.Chevron 
                             name = 'message-circle'

@@ -53,7 +53,6 @@ const addListing = (dispatch) => async ({originObj, destObj, priceString}) => {
     const price = Number(priceString);
     try {
         await AuthAPI.post('/listing', {origin, dest, price});
-        console.log('success');
     } catch (err) {
         dispatch({
             type: 'add_error',
