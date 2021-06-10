@@ -1,8 +1,9 @@
 Hello :) Welcome to Shiok Rider's orbital journey!
-
 The files in shiok directory are React Native components (front-end)
 
 The files in shiok-server directory contain our custom express API to connect to MongoDB Atlas via mongoose (middle-end)
+
+
 
 Please install the following in shiok directory:
 
@@ -18,8 +19,18 @@ npm install @react-native-async-storage/async-storage
 
 npx expo-cli install react-native-maps expo-location
 
+npm install react-native-communications
+
+
+
 Please install the following in shiok-server directory:
 
 npm install bcrypt express jsonwebtoken mongoose nodemon cors
+
+Starting the expo-cli app:
+
+
+
+
 
 
