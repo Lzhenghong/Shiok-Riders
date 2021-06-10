@@ -36,7 +36,7 @@ const SubmitOfferScreen = ({navigation}) => {
                 labelStyle = {{color:'#555353'}}
                 value = {dest}
                 placeholder = {item.dest.name}
-                onChangeText = {setOrigin}
+                onChangeText = {setDest}
                 autoCapitalize = 'none'
                 autoCorrect = {false}
             />
