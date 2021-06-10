@@ -94,7 +94,6 @@ const HomeScreen = () => {
                     <ScrollView>
                         <ListingResults 
                             results = {listingState.result}
-                            callback = {() => console.log('pressed')}
                         />
                     </ScrollView>
                 </View>) : null}

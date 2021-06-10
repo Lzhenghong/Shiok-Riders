@@ -15,6 +15,7 @@ import AddDestScreen from './src/screens/AddDestScreen';
 import ConfirmListingScreen from './src/screens/ConfirmListingScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import FriendListScreen from './src/screens/FriendListScreen';
+import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -25,7 +26,8 @@ import {Feather} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
 
 const bookingFlow = createStackNavigator({
-  Home: HomeScreen
+  Home: HomeScreen,
+  ListingDetails: ListingDetailsScreen
 });
 
 const profileFlow = createStackNavigator({

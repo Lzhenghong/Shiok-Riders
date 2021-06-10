@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {ListItem} from 'react-native-elements';
+import { navigate } from "../navigationRef";
 
-const ListingResults = ({results, callback}) => {
+const ListingResults = ({results}) => {
     if (results.length == 0) {
         return null;
     }
@@ -14,7 +15,7 @@ const ListingResults = ({results, callback}) => {
                         key = {item._id}
                         bottomDivider 
                         topDivider
-                        onPress = {callback}
+                        onPress = {() => navigate('ListingDetails', {item})}
                     >
                         <ListItem.Content>
                             <ListItem.Title >
@@ -25,7 +26,7 @@ const ListingResults = ({results, callback}) => {
                             </ListItem.Subtitle>
                         </ListItem.Content>
                         <ListItem.Chevron 
-                            name = 'message-circle'
+                            name = 'chevron-right'
                             type = 'feather'
                             color = '#3EB489'
                             size = {24}
