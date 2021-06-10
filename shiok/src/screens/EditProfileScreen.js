@@ -7,6 +7,7 @@ import {Context as ProfContext} from '../context/ProfileContext';
 const EditProfileScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [hp, setHp] = useState('');
+    const [tele, setTele] = useState('');
     const [lic, setLic] = useState('');
     const {state, editProfile} = useContext(ProfContext);
 
@@ -41,6 +42,15 @@ const EditProfileScreen = ({navigation}) => {
                 autoCapitalize = 'none'
                 autoCorrect = {false}
             />
+            <Input 
+                label = 'Edit telegram handle'
+                labelStyle = {{color:'#555353'}}
+                value = {tele}
+                placeholder = {state.user.teleHandle}
+                onChangeText = {setTele}
+                autoCapitalize = 'none'
+                autoCorrect = {false}
+            />
             {state.user.type == 'Driver' ?
             (<Input 
             label = 'Edit license number'
@@ -58,8 +68,9 @@ const EditProfileScreen = ({navigation}) => {
                     onPress = {() => {
                         const newUsername = (username == '' ? state.user.username : username);
                         const newHp = (hp == '' ? state.user.phoneNumber : hp);
+                        const newTele = (tele == '' ? state.user.teleHandle : tele);
                         const newLic = (lic == '' ? state.user.licenseNumber : lic);
-                        editProfile({username: newUsername, phoneNumber: newHp, licenseNumber: newLic});
+                        editProfile({username: newUsername, phoneNumber: newHp, teleHandle: newTele, licenseNumber: newLic});
                         navigation.navigate('Profile');
                     }}
                 />
@@ -88,7 +99,9 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#FF8400',
-        borderRadius: 20
+        borderRadius: 20,
+        alignSelf: 'center',
+        width: 387.5
     }
 });
 

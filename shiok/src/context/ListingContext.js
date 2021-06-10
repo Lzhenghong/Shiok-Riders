@@ -74,10 +74,17 @@ const fetchListing = (dispatch) => async ({originObj, destObj, priceString}) => 
     const price = Number(priceString);
     try {
         const response = await AuthAPI.post('/fetchlisting', {origin, dest, price});
-        dispatch({
-            type: 'fetch_listing',
-            payload: response.data
-        });
+        if (response.data.length == 0) {
+            dispatch({
+                type: 'add_error',
+                payload: 'No search results'
+            });
+        } else {
+            dispatch({
+                type: 'fetch_listing',
+                payload: response.data
+            });
+        }
     } catch (err) {
         dispatch({
             type: 'add_error',

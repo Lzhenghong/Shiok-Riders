@@ -18,11 +18,11 @@ const AddOriginScreen = ({navigation}) => {
     const [searchAPI, results, errorMsg] = geoSearch();
 
     return (
-        <View style = {{flex: 1}}>
+        <View>
             <Header 
                 backgroundColor = '#3EB489'
                 containerStyle = {styles.header}
-                centerComponent = {{text: 'Add Pick Up Point', style: {color: '#fff', fontSize: 20, fontWeight: 'bold'}}}
+                centerComponent = {{text: 'Add Pick Up Point', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
             />
             <Input 
                 label = 'Pick Up Point'
@@ -91,13 +91,14 @@ AddOriginScreen.navigationOptions = () => {
 
 const styles = StyleSheet.create({
     header: {
-        marginBottom: 30
+        marginBottom: 30,
+        height: 78.5
     },
     button: {
         backgroundColor: '#FF8400',
         borderRadius: 20,
         alignSelf: 'center',
-        width: 395
+        width: 387.5
     }
 });
 

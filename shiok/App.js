@@ -16,6 +16,7 @@ import ConfirmListingScreen from './src/screens/ConfirmListingScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import FriendListScreen from './src/screens/FriendListScreen';
 import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
+import SubmitOfferScreen from './src/screens/SubmitOfferScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -27,7 +28,8 @@ import {AntDesign} from '@expo/vector-icons';
 
 const bookingFlow = createStackNavigator({
   Home: HomeScreen,
-  ListingDetails: ListingDetailsScreen
+  ListingDetails: ListingDetailsScreen,
+  SubmitOffer: SubmitOfferScreen
 });
 
 const profileFlow = createStackNavigator({

@@ -22,6 +22,10 @@ const hitcherSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     default: ''
+  },
+  teleHandle: {
+    type: String,
+    default: ''
   }
 });
 

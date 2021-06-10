@@ -89,6 +89,11 @@ const HomeScreen = () => {
                         }}
                     />
                 </View>) : null}
+                {listingState.errorMessage == 'No search results' && price && origin && dest ?
+                (<View style = {{width: window.width, height: 250, position: 'absolute', top: 39, left: 0}}>
+                    <Text style = {styles.errorMessage}>No matching results found</Text>
+                </View>)
+                : null}
                 {listingState.result && price && origin && dest ?
                 (<View style = {{width: window.width, height: 250, position: 'absolute', top: 39, left: 0}}>
                     <ScrollView>
@@ -116,6 +121,11 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#FF8400',
         width: window.width
+    },
+    errorMessage: {
+        color: 'red',
+        alignSelf: 'center',
+        fontSize: 20
     }
 });
 

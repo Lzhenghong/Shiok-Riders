@@ -27,6 +27,10 @@ const driverSchema = new mongoose.Schema({
     type: String,
     default: '',
     unique: true
+  },
+  teleHandle: {
+    type: String,
+    default: ''
   }
 });
 
