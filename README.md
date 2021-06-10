@@ -32,7 +32,9 @@ npm install bcrypt express jsonwebtoken mongoose nodemon cors
 
 Starting the expo-cli app:
 
-Open 3 ternminals, cd into /Shiok-Riders/shiok-server in the first terminal, then enter >npm run dev
+Open 3 terminals
+
+cd into /Shiok-Riders/shiok-server in the first terminal, then enter >npm run dev
 
 In the second terminal, cd into /Shiok-Riders/shiok-server, then enter >ngrok http 3000
 
