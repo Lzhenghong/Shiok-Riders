@@ -26,6 +26,8 @@ npm install react-native-communications
 
 Please install the following in shiok-server directory:
 
+-----------------------------------------------------------
+
 npm install bcrypt express jsonwebtoken mongoose nodemon cors
 
 Starting the expo-cli app:
