@@ -1,10 +1,14 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Linking} from 'react-native';
 import {Text, Header, Button, Icon} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Communciations from 'react-native-communications';
 import Spacer from '../components/Spacer';
-import { InteractionManager } from 'react-native';
+import {FontAwesome} from '@expo/vector-icons';
+import {EvilIcons} from '@expo/vector-icons';
+
+const whatsappUrl = 'whatsapp://send?text=';
+const telegramUrl = 'http://t.me/';
 
 const ListingDetailsScreen = ({navigation}) => {
     const item = navigation.getParam('item');
@@ -44,11 +48,12 @@ const ListingDetailsScreen = ({navigation}) => {
                         ? (<Text h4 style = {styles.profileRight}>{item.lister.licenseNumber}</Text>)
                         : (<Text h4 style = {styles.profileRight}>-</Text>)}
                 </View>) : <Spacer />}             
-                <Spacer>
+                <Spacer />
+                <View style = {{flexDirection: 'row', justifyContent: 'space-around'}}>
                     <Button 
                         title = 'Text'
                         buttonStyle = {styles.button}
-                        titleStyle = {{marginLeft: 5}}
+                        titleStyle = {styles.title}
                         icon = {
                             <Icon 
                                 name = 'message-circle'
@@ -58,7 +63,49 @@ const ListingDetailsScreen = ({navigation}) => {
                         }
                         onPress = {() => Communciations.text(item.lister.phoneNumber, '')}
                     />
-                </Spacer>
+                    <Button 
+                        title = 'Call'
+                        buttonStyle = {styles.button}
+                        titleStyle = {styles.title}
+                        icon = {
+                            <Icon 
+                                name = 'phone'
+                                type = 'feather'
+                                color = 'white'
+                            />
+                        }
+                        onPress = {() => Communciations.phonecall(item.lister.phoneNumber, true)}
+                    />
+                </View>
+                <Spacer />
+                <View style = {{flexDirection: 'row', justifyContent: 'space-around'}}>
+                    <Button 
+                        title = 'Whatsapp'
+                        buttonStyle = {styles.button}
+                        titleStyle = {styles.title}
+                        icon = {
+                            <FontAwesome 
+                                name = 'whatsapp'
+                                size = {26}
+                                color = 'white'
+                            />
+                        }
+                        onPress = {() => Linking.openURL(`${whatsappUrl}${''}&phone=65${'90038803'}`)}
+                    />
+                    <Button 
+                        title = 'Telegram'
+                        buttonStyle = {styles.button}
+                        titleStyle = {styles.title}
+                        icon = {
+                            <EvilIcons 
+                                name = 'sc-telegram'
+                                size = {26}
+                                color = 'white'
+                            />
+                        }
+                        onPress = {() => Linking.openURL(`${telegramUrl}${'JMSIM123'}`)}
+                    />
+                </View>
         </View>
     );
 };
@@ -91,7 +138,12 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#FF8400',
-        borderRadius: 20
+        borderRadius: 20,
+        width: 180,
+        height: 40
+    },
+    title: {
+        marginLeft: 5
     }
 });
 
