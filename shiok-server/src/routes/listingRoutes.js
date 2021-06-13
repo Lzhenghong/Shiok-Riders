@@ -76,7 +76,7 @@ router.post('/fetchlisting', async (req, res) => {
                 price: {
                     $lte: price
                 }
-            });
+            }).populate('lister');
             firstResult.map(doc => hashMap.set(doc._id.toString(), doc));
             const secondResult = await DriverListing.find({
                 dest: {
@@ -91,7 +91,7 @@ router.post('/fetchlisting', async (req, res) => {
                 price: {
                     $lte: price
                 }
-            });
+            }).populate('lister');
             secondResult.map(doc => {
                 if (hashMap.has(doc._id.toString())) {
                     result.push(doc);

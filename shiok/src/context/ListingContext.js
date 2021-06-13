@@ -10,7 +10,7 @@ const listingReducer = (state, action) => {
         case 'add_price':
             return {...state, price: action.payload};
         case 'add_error':
-            return {...state, errorMessage: action.payload};
+            return {errorMessage: action.payload};
         case 'fetch_listing':
             return {result: action.payload};
         default:

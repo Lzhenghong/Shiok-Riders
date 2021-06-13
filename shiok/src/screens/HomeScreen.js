@@ -80,8 +80,10 @@ const HomeScreen = () => {
                                 if (!originObj) {
                                     const originResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${origin}&limit=1&country=SG`);
                                     fetchListing({originObj: originResponse.data.data[0], destObj, priceString: price});
+                                    setOriginObj('');
                                 } else {
                                     fetchListing({originObj, destObj, priceString: price});
+                                    setOriginObj('');
                                 }
                             } catch (err) {
                                 console.log('Cannot query listing');

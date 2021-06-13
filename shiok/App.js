@@ -13,10 +13,10 @@ import EditProfileScreen from './src/screens/EditProfileScreen';
 import AddOriginScreen from './src/screens/AddOriginScreen';
 import AddDestScreen from './src/screens/AddDestScreen';
 import ConfirmListingScreen from './src/screens/ConfirmListingScreen';
-import ChatScreen from './src/screens/ChatScreen';
 import FriendListScreen from './src/screens/FriendListScreen';
 import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 import SubmitOfferScreen from './src/screens/SubmitOfferScreen';
+import NotificationScreen from './src/screens/NotificationScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -79,7 +79,7 @@ const switchNavigator = createSwitchNavigator({
     bookingFlow,
     History: HistoryScreen,
     listingFlow,
-    Chat: ChatScreen,
+    Notification: NotificationScreen,
     profileFlow
   })
 });
