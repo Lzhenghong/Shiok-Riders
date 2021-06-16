@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text, Header, Button, Input} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
+import Communciations from 'react-native-communications';
 
 const SubmitOfferScreen = ({navigation}) => {
     const item = navigation.getParam('item');
@@ -55,6 +56,10 @@ const SubmitOfferScreen = ({navigation}) => {
                 <Button 
                     title = 'Submit Offer'
                     buttonStyle = {styles.button}
+                    onPress = {() => {
+                        Communciations.text(item.lister.phoneNumber,
+                            `I have sent you an offer on Shiok-Riders: from ${origin} to ${dest} for ${price}.`);
+                    }}
                 />
             </Spacer>
         </View>

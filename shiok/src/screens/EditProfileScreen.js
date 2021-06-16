@@ -1,8 +1,9 @@
 import React, {useContext, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, Input, Header} from 'react-native-elements';
+import {Input, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as ProfContext} from '../context/ProfileContext';
+import Button from '../components/ShiokButton';
 
 const EditProfileScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
@@ -64,8 +65,7 @@ const EditProfileScreen = ({navigation}) => {
             <Spacer>
                 <Button
                     title = 'Save Changes'
-                    buttonStyle = {styles.button}
-                    onPress = {() => {
+                    callback = {() => {
                         const newUsername = (username == '' ? state.user.username : username);
                         const newHp = (hp == '' ? state.user.phoneNumber : hp);
                         const newTele = (tele == '' ? state.user.teleHandle : tele);
@@ -78,8 +78,7 @@ const EditProfileScreen = ({navigation}) => {
             <Spacer>
                 <Button
                     title = 'Cancel Changes'
-                    buttonStyle = {styles.button}
-                    onPress = {() => navigation.navigate('Profile')}
+                    callback = {() => navigation.navigate('Profile')}
                 />
             </Spacer>
         </View>
@@ -96,12 +95,6 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 30,
         height: 78.5
-    },
-    button: {
-        backgroundColor: '#FF8400',
-        borderRadius: 20,
-        alignSelf: 'center',
-        width: 387.5
     }
 });
 

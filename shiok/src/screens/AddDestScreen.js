@@ -1,11 +1,13 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import { Input, Header, Button } from 'react-native-elements';
+import { Input, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import geoSearch from '../hooks/geoSearch';
 import GeoResults from '../components/GeoResults';
 import {Context as ListingContext} from '../context/ListingContext';
 import {AntDesign} from '@expo/vector-icons';
+import Button from '../components/ShiokButton';
+
 
 const AddDestScreen = ({navigation}) => {
     const [dest, setDest] = useState('');
@@ -44,12 +46,11 @@ const AddDestScreen = ({navigation}) => {
             />
             <Button 
                 title = 'Search'
-                buttonStyle = {styles.button}
-                onPress = {() => searchAPI(dest)}
+                callback = {() => searchAPI(dest)}
             />
             <Spacer />
             {errorMsg == '' ? null : <Text>{errorMsg}</Text>}
-            <View style = {{height: 400, marginBottom: 12}}>
+            <View style = {{height: '51%', marginBottom: 12}}>
                 <ScrollView>
                     <GeoResults 
                         results = {results}
@@ -62,8 +63,7 @@ const AddDestScreen = ({navigation}) => {
             {dest && price ? 
             <Button 
                 title = 'Confirm Drop Off Point'
-                buttonStyle = {styles.button}
-                onPress = {() => {
+                callback = {() => {
                     addDest(destObj);
                     addPrice(price);
                     navigation.navigate('ConfirmListing');
@@ -85,12 +85,6 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 15,
         height: 78.5
-    },
-    button: {
-        backgroundColor: '#FF8400',
-        borderRadius: 20,
-        alignSelf: 'center',
-        width: 387.5
     }
 });
 

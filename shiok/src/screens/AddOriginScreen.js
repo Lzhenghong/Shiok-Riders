@@ -1,12 +1,13 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import { Input, Header, Button } from 'react-native-elements';
+import { Input, Header} from 'react-native-elements';
 import {Context as LocationContext} from '../context/LocationContext';
 import Spacer from '../components/Spacer';
 import GeoAPI from '../api/GeoAPI';
 import geoSearch from '../hooks/geoSearch';
 import GeoResults from '../components/GeoResults';
 import {Context as ListingContext} from '../context/ListingContext';
+import Button from '../components/ShiokButton';
 
 const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 
@@ -35,8 +36,7 @@ const AddOriginScreen = ({navigation}) => {
             />
             <Button
                 title = 'Use Current Location'
-                buttonStyle = {styles.button}
-                onPress = {async () => {
+                callback = {async () => {
                     const lat = state.currentLocation.coords.latitude.toString();
                     const long = state.currentLocation.coords.longitude.toString();
                     try {
@@ -51,13 +51,12 @@ const AddOriginScreen = ({navigation}) => {
             <Spacer>
                 <Button 
                     title = 'Search'
-                    buttonStyle = {styles.button}
-                    onPress = {() => searchAPI(origin)}
+                    callback = {() => searchAPI(origin)}
                 />
             </Spacer>
             {errorMsg == '' ? null : <Text>{errorMsg}</Text>}
             <Spacer />
-            <View style = {{height: 400}}>
+            <View style = {{height: '51%'}}>
                 <ScrollView>
                     <GeoResults 
                         results = {results}
@@ -70,8 +69,8 @@ const AddOriginScreen = ({navigation}) => {
             {origin ? 
             <Button 
                 title = 'Confirm Pick Up Point'
-                buttonStyle = {styles.button}
-                onPress = {() => {
+                containerStyle = {{marginHorizontal: 10}}
+                callback = {() => {
                     addOrigin(originObj);
                     navigation.navigate('AddDest');
                 }}
@@ -93,12 +92,6 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 30,
         height: 78.5
-    },
-    button: {
-        backgroundColor: '#FF8400',
-        borderRadius: 20,
-        alignSelf: 'center',
-        width: 387.5
     }
 });
 

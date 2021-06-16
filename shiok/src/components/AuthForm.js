@@ -74,13 +74,17 @@ const styles = StyleSheet.create({
     },
     buttonGroup: {
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-evenly'
     },
     errorMessage: {
         fontSize: 16,
         color: 'red',
         marginLeft: 15,
         marginTop: -5
+    },
+    button: {
+        backgroundColor: '#FF8400',
+        borderRadius: 20
     }
 });
 

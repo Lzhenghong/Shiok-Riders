@@ -1,10 +1,11 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Text, Button, Icon, Header} from 'react-native-elements';
+import {Text, Icon, Header} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
 import {Context as ProfContext} from '../context/ProfileContext';
 import { NavigationEvents } from 'react-navigation';
+import Button from '../components/ShiokButton';
 
 const ProfileScreen = ({navigation}) => {
     const {signout} = useContext(AuthContext);
@@ -64,22 +65,19 @@ const ProfileScreen = ({navigation}) => {
                 <Spacer>
                     <Button 
                         title = 'Edit Profile'
-                        buttonStyle = {styles.button}
-                        onPress = {() => navigation.navigate('EditProfile')}
+                        callback = {() => navigation.navigate('EditProfile')}
                     />
                 </Spacer>
                 <Spacer>
                     <Button 
                         title = "Friends List"
-                        buttonStyle = {styles.button}
-                        onPress = {() => navigation.navigate('FriendList')}
+                        callback = {() => navigation.navigate('FriendList')}
                     />
                 </Spacer>
                 <Spacer>
                     <Button 
                         title = 'Sign Out'
-                        buttonStyle = {styles.button}
-                        onPress = {signout}
+                        callback = {signout}
                     />
                 </Spacer>
             </View>
@@ -112,12 +110,6 @@ const styles = StyleSheet.create({
         color: '#555353',
         alignSelf: 'flex-start',
         fontWeight: 'bold'
-    },
-    button: {
-        backgroundColor: '#FF8400',
-        borderRadius: 20,
-        width: 387.5,
-        alignSelf: 'center'
     }
 });
 
