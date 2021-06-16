@@ -21,7 +21,7 @@ const SubmitOfferScreen = ({navigation}) => {
                 leftComponent = {<AntDesign name = 'arrowleft' color = 'white' size = {30} onPress = {() => navigation.navigate('ListingDetails')} />}
                 backgroundColor = '#3EB489'
                 containerStyle = {styles.header}
-                centerComponent = {{text: 'Submit Offer', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
+                centerComponent = {{text: 'Confirm Offer', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
             />
             <Input 
                 label = 'Pick Up Point'
@@ -57,8 +57,11 @@ const SubmitOfferScreen = ({navigation}) => {
                     title = 'Submit Offer'
                     buttonStyle = {styles.button}
                     onPress = {() => {
+                        const finalOrigin = origin ? origin : item.origin.name;
+                        const finalDest = dest ? dest : item.dest.name;
+                        const finalPrice = price ? price : item.price.toString();
                         Communciations.text(item.lister.phoneNumber,
-                            `I have sent you an offer on Shiok-Riders: from ${origin} to ${dest} for ${price}.`);
+                            `I would like to send you an offer on Shiok-Riders: from ${finalOrigin} to ${finalDest} for $${finalPrice}`);
                     }}
                 />
             </Spacer>

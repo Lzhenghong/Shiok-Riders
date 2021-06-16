@@ -51,8 +51,8 @@ const ProfileScreen = ({navigation}) => {
                 <View style = {{flexDirection: 'row'}}>
                     <Text h4 style = {styles.profileLeft}>Telegram Handle: </Text>
                     {state.user.teleHandle 
-                        ? (<Text h4 style = {styles.profileRight}>{state.user.teleHandle}</Text>)
-                        : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                        ? (<Text h4 style = {styles.profileRight}>@{state.user.teleHandle}</Text>)
+                        : (<Text h4 style = {styles.profileRight}>@-</Text>)}
                 </View>
                 {state.user.type == 'Driver' ? 
                 (<View style = {{flexDirection: 'row'}}>
