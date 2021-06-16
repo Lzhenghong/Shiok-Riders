@@ -27,7 +27,7 @@ const tryLocalSignin = (dispatch) => async () => {
     });
     navigate('Home');
   } else {
-    navigate('Signup');
+    navigate('Signin');
   }
 };
 
@@ -75,7 +75,7 @@ const signout = (dispatch) => async () => {
   await AsyncStorage.removeItem('token');
   await AsyncStorage.removeItem('type');
   dispatch({type: 'signout'});
-  navigate('Signup');
+  navigate('Signin');
 };
 
 export const { Provider, Context } = createDataContext(
