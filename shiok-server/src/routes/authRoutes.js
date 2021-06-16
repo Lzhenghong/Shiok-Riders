@@ -7,10 +7,10 @@ const Driver = mongoose.model('Driver');
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
-  const { email, password, type } = req.body;
+  const { email, password, type, phoneNumber } = req.body;
 
   try {
-    const user = (type == 'Hitcher') ? new Hitcher({ email, password }) : new Driver({email, password});
+    const user = (type == 'Hitcher') ? new Hitcher({ email, password, phoneNumber }) : new Driver({email, password, phoneNumber});
     await user.save();
 
     const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY');

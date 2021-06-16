@@ -2,18 +2,16 @@ import React, {useContext} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-elements';
 import {Context as AuthContext} from '../context/AuthContext';
-import AuthForm from '../components/AuthForm';
+import SignUpForm from '../components/SignUpForm';
 
 const SignupScreen = ({navigation}) => {
     const {state, signup, clearErrorMessage} = useContext(AuthContext);
 
     return (
         <View style = {styles.container}>
-            <AuthForm 
+            <SignUpForm
                 title = 'Create Account'
                 errorMessage = {state.errorMessage}
-                buttonTitleLeft = 'Sign Up As Hitcher'
-                buttonTitleRight = 'Sign Up As Driver'
                 onSubmit = {signup}
             />
             <TouchableOpacity 
@@ -38,7 +36,6 @@ SignupScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        marginBottom: 200
     }
 });
 
