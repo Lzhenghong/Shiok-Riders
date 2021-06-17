@@ -1,9 +1,10 @@
 import React, {useContext, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Input, Header} from 'react-native-elements';
+import {Input} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as ProfContext} from '../context/ProfileContext';
 import Button from '../components/ShiokButton';
+import Header from '../components/Header';
 
 const EditProfileScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
@@ -19,9 +20,10 @@ const EditProfileScreen = ({navigation}) => {
     return (
         <View>
             <Header 
-                backgroundColor = '#3EB489'
-                containerStyle = {styles.header}
-                centerComponent = {{text: 'Edit Profile', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
+                title = 'Edit Profile'
+                backNav = {true}
+                marginBottom = {30}
+                callback = {() => navigation.navigate('Profile')}
             />
             <Input 
                 label = 'Edit username'
@@ -91,11 +93,6 @@ EditProfileScreen.navigationOptions = () => {
     };
   };
 
-const styles = StyleSheet.create({
-    header: {
-        marginBottom: 30,
-        height: 78.5
-    }
-});
+const styles = StyleSheet.create({});
 
 export default EditProfileScreen;

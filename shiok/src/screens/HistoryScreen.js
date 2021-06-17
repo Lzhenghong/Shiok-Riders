@@ -1,32 +1,27 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import { Text, Header } from 'react-native-elements';
-import {Feather} from '@expo/vector-icons';
+import NoHistory from '../components/NoHistory';
+import Header from '../components/Header';
 
 const HistoryScreen = () => {
     return (
         <View>
             <Header 
-                backgroundColor = '#3EB489'
-                containerStyle = {styles.header}
-                centerComponent = {{text: 'History', style: {color: '#fff', fontSize: 20, fontWeight: 'bold'}}}
+                title = 'History'
+                backNav = {false}
+                marginBottom = {-1}
             />
+            <NoHistory/>
         </View>
     );
 };
 
 HistoryScreen.navigationOptions = () => {
     return {
-      header: false,
-      tabBarIcon: <Feather name = 'clock' size = {24} color = '#3EB489'/>,
-      tabBarOptions: {activeTintColor: '#3EB489'}
+      header: () => false,
     };
   };
 
-const styles = StyleSheet.create({
-    header: {
-        marginBottom: 15
-    }
-});
+const styles = StyleSheet.create({});
 
 export default HistoryScreen;

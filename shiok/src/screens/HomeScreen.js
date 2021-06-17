@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Text, Header, Button} from 'react-native-elements';
+import {Text, Button} from 'react-native-elements';
 import MapView from '../components/Map';
 import {Context as ProfContext} from '../context/ProfileContext';
 import {Context as LocationContext} from '../context/LocationContext';
@@ -13,6 +13,7 @@ import GeoAPI from '../api/GeoAPI';
 import {Context as ListingContext} from '../context/ListingContext';
 import { Dimensions } from 'react-native';
 import ListingResults from '../components/ListingResults';
+import Header from '../components/Header';
 
 const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 const window = Dimensions.get('window');
@@ -24,7 +25,7 @@ const HomeScreen = () => {
     const [dest, setDest] = useState('');
 
     const {state, setLocation} = useContext(LocationContext);
-    const {fetchProfile} = useContext(ProfContext);
+    const {state: profileState, fetchProfile} = useContext(ProfContext);
     const {state: listingState, fetchListing} = useContext(ListingContext);
     const err = useLocation(setLocation);
 
@@ -36,9 +37,9 @@ const HomeScreen = () => {
         <View>
             <NavigationEvents onDidFocus = {fetchProfile}/>
             <Header 
-                backgroundColor = '#3EB489'
-                containerStyle = {styles.header}
-                centerComponent = {{text: 'Home', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
+                title = 'Home'
+                backNav = {false}
+                marginBottom = {-1}
             />
             <PriceSearch 
                 term = {price}
@@ -79,10 +80,10 @@ const HomeScreen = () => {
                                 const destObj = destResponse.data.data[0];
                                 if (!originObj) {
                                     const originResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${origin}&limit=1&country=SG`);
-                                    fetchListing({originObj: originResponse.data.data[0], destObj, priceString: price});
+                                    fetchListing({originObj: originResponse.data.data[0], destObj, priceString: price, type: profileState.user.type});
                                     setOriginObj('');
                                 } else {
-                                    fetchListing({originObj, destObj, priceString: price});
+                                    fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
                                     setOriginObj('');
                                 }
                             } catch (err) {
@@ -116,10 +117,6 @@ HomeScreen.navigationOptions = () => {
   };
 
 const styles = StyleSheet.create({
-    header: {
-        marginBottom: -1,
-        height: 78.5
-    },
     button: {
         backgroundColor: '#FF8400',
         width: window.width

@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import { Input, Header} from 'react-native-elements';
+import { Input} from 'react-native-elements';
 import {Context as LocationContext} from '../context/LocationContext';
 import Spacer from '../components/Spacer';
 import GeoAPI from '../api/GeoAPI';
@@ -8,6 +8,7 @@ import geoSearch from '../hooks/geoSearch';
 import GeoResults from '../components/GeoResults';
 import {Context as ListingContext} from '../context/ListingContext';
 import Button from '../components/ShiokButton';
+import Header from '../components/Header';
 
 const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 
@@ -21,9 +22,9 @@ const AddOriginScreen = ({navigation}) => {
     return (
         <View>
             <Header 
-                backgroundColor = '#3EB489'
-                containerStyle = {styles.header}
-                centerComponent = {{text: 'Add Pick Up Point', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
+                title = 'Add Pick Up Point'
+                backNav = {false}
+                marginBottom = {30}
             />
             <Input 
                 label = 'Pick Up Point'
@@ -88,11 +89,6 @@ AddOriginScreen.navigationOptions = () => {
 };
 
 
-const styles = StyleSheet.create({
-    header: {
-        marginBottom: 30,
-        height: 78.5
-    }
-});
+const styles = StyleSheet.create({});
 
 export default AddOriginScreen;

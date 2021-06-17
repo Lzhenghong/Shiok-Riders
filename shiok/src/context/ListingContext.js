@@ -62,7 +62,7 @@ const addListing = (dispatch) => async ({originObj, destObj, priceString}) => {
     }
 };
 
-const fetchListing = (dispatch) => async ({originObj, destObj, priceString}) => {
+const fetchListing = (dispatch) => async ({originObj, destObj, priceString, type}) => {
     const origin = {
         latitude: originObj.latitude,
         longitude: originObj.longitude
@@ -73,7 +73,7 @@ const fetchListing = (dispatch) => async ({originObj, destObj, priceString}) => 
     };
     const price = Number(priceString);
     try {
-        const response = await AuthAPI.post('/fetchlisting', {origin, dest, price});
+        const response = type == 'Driver' ? await AuthAPI.post('/hitcherlisting', {origin, dest, price}) : await AuthAPI.post('/driverlisting', {origin, dest, price});
         if (response.data.length == 0) {
             dispatch({
                 type: 'add_error',

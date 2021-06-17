@@ -1,11 +1,13 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Text, Icon, Header} from 'react-native-elements';
+import {Text, Icon} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
 import {Context as ProfContext} from '../context/ProfileContext';
 import { NavigationEvents } from 'react-navigation';
 import Button from '../components/ShiokButton';
+import Header from '../components/Header';
+
 
 const ProfileScreen = ({navigation}) => {
     const {signout} = useContext(AuthContext);
@@ -19,9 +21,9 @@ const ProfileScreen = ({navigation}) => {
             <View>
                 <NavigationEvents onDidFocus = {fetchProfile}/>
                 <Header 
-                    backgroundColor = '#3EB489'
-                    containerStyle = {styles.header}
-                    centerComponent = {{text: 'Profile', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
+                    title = 'Profile'
+                    backNav = {false}
+                    marginBottom = {-1}
                 />
                 <Spacer />
                     <Icon
@@ -92,10 +94,6 @@ ProfileScreen.navigationOptions = () => {
   };
 
 const styles = StyleSheet.create({
-    header: {
-        marginBottom: -1,
-        height: 78.5
-    },
     icon: {
         alignSelf: 'center',
         marginBottom: 30

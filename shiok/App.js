@@ -25,81 +25,118 @@ import {Provider as ProfProvider} from './src/context/ProfileContext';
 import {Provider as ListingProvider} from './src/context/ListingContext';
 import {Feather} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons';
 
 const bookingFlow = createStackNavigator({
-  Home: HomeScreen,
-  ListingDetails: ListingDetailsScreen,
-  SubmitOffer: SubmitOfferScreen
-});
-
-const profileFlow = createStackNavigator({
-  Profile: ProfileScreen,
-  EditProfile: EditProfileScreen,
-  FriendList: FriendListScreen
-});
-
-const listingFlow = createStackNavigator({
-  AddOrigin: AddOriginScreen,
-  AddDest: AddDestScreen,
-  ConfirmListing: ConfirmListingScreen
+	Home: HomeScreen,
+	ListingDetails: ListingDetailsScreen,
+	SubmitOffer: SubmitOfferScreen
 });
 
 bookingFlow.navigationOptions = () => {
-  return {
-    title: 'Home',
-    tabBarIcon: <Feather name = 'home' size = {24} color = '#3EB489'/>,
-    tabBarOptions: {activeTintColor: '#3EB489'}
-  };
+	return {
+		title: 'Home',
+		tabBarIcon: ({tintColor}) => (
+			<Feather name = 'home' size = {24} color = {tintColor}/>
+		)
+	};
 };
 
-profileFlow.navigationOptions = () => {
-  return {
-    title: 'Profile',
-    tabBarIcon: <Feather name = 'user' size = {24} color = '#3EB489'/>,
-    tabBarOptions: {activeTintColor: '#3EB489'}
-    };
-};
+const historyFlow = createStackNavigator({
+	History: HistoryScreen
+});
+
+historyFlow.navigationOptions = () => {
+	return {
+		title: 'History',
+		tabBarIcon: ({tintColor}) => (
+			<Feather name = 'clock' size = {24} color = {tintColor}/>
+		)
+	}
+}
+
+const listingFlow = createStackNavigator({
+	AddOrigin: AddOriginScreen,
+	AddDest: AddDestScreen,
+	ConfirmListing: ConfirmListingScreen
+});
 
 listingFlow.navigationOptions = () => {
-  return {
-      title: 'Add',
-      header: false,
-      tabBarIcon: <AntDesign name = 'plussquareo' size = {24} color = '#3EB489'/>,
-      tabBarOptions: {activeTintColor: '#3EB489'}
-  };
+	return {
+	  title: 'Add',
+	  tabBarIcon: ({tintColor}) => (
+		  <AntDesign name = 'plussquareo' size = {24} color = {tintColor}/>
+	  )
+	};
+};
+
+const notificationFlow = createStackNavigator({
+  	Notification: NotificationScreen
+});
+
+notificationFlow.navigationOptions = () => {
+	return {
+		title: 'Notification',
+		tabBarIcon: ({tintColor}) => (
+			<Ionicons name = 'notifications-outline' size = {24} color = {tintColor}/>
+		)
+	}
+}
+
+const profileFlow = createStackNavigator({
+	Profile: ProfileScreen,
+	EditProfile: EditProfileScreen,
+	FriendList: FriendListScreen
+});
+
+profileFlow.navigationOptions = () => {
+	return {
+		title: 'Profile',
+		tabBarIcon: ({tintColor}) => (
+			<Feather name = 'user' size = {24} color = {tintColor}/>
+		)
+	};
 };
 
 const switchNavigator = createSwitchNavigator({
-  Loading: LoadingScreen,
-  loginFlow: createStackNavigator({
-    Signup: SignupScreen,
-    Signin: SigninScreen
-  }),
-  mainFlow: createBottomTabNavigator({
-    bookingFlow,
-    History: HistoryScreen,
-    listingFlow,
-    Notification: NotificationScreen,
-    profileFlow
-  })
+	Loading: LoadingScreen,
+	loginFlow: createStackNavigator({
+		Signup: SignupScreen,
+		Signin: SigninScreen
+	}),
+	mainFlow: createBottomTabNavigator(
+		{
+			bookingFlow,
+			historyFlow,
+			listingFlow,
+			notificationFlow,
+			profileFlow
+		},
+		{
+			tabBarOptions: {
+				inactiveTintColor: '#3EB489',
+				activeTintColor: '#FF8400'
+			}
+		}
+	)
 });
 
 const App = createAppContainer(switchNavigator);
 
 export default () => {
-  return (
-    <ListingProvider>
-      <ProfProvider>
-        <LocationProvider>
-            <AuthProvider>
-              <App
-                ref={(navigator) => {
-                  setNavigator(navigator);
-                }}
-              />
-            </AuthProvider>
-          </LocationProvider>
-      </ProfProvider>
-    </ListingProvider>
-  );
+	return (
+		<ListingProvider>
+		<ProfProvider>
+			<LocationProvider>
+				<AuthProvider>
+				<App
+					ref={(navigator) => {
+					setNavigator(navigator);
+					}}
+				/>
+				</AuthProvider>
+			</LocationProvider>
+		</ProfProvider>
+		</ListingProvider>
+	);
 };

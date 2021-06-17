@@ -1,8 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import { Header, Button, PricingCard, Text, Overlay } from 'react-native-elements';
+import {Button, PricingCard, Text, Overlay } from 'react-native-elements';
 import {Context as ListingContext} from '../context/ListingContext';
-import {AntDesign} from '@expo/vector-icons';
 
 ConfirmListingScreen = ({navigation}) => {
     const {state, addListing} = useContext(ListingContext);
@@ -15,10 +14,10 @@ ConfirmListingScreen = ({navigation}) => {
     return (
         <View>
             <Header 
-                leftComponent = {<AntDesign name = 'arrowleft' color = 'white' size = {30} onPress = {() => navigation.navigate('AddDest')} />}
-                backgroundColor = '#3EB489'
-                containerStyle = {styles.header}
-                centerComponent = {{text: 'Confirm', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
+                title = 'Confirm Listing'
+                backNav = {true}
+                marginBottom = {15}
+                callback = {() => navigation.navigate('AddDest')}
             />
             <PricingCard 
                 color = '#FF8400'
@@ -67,10 +66,6 @@ ConfirmListingScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
-    header: {
-        marginBottom: 15,
-        height: 78.5
-    },
     button: {
         backgroundColor: '#FF8400',
         borderRadius: 20,
