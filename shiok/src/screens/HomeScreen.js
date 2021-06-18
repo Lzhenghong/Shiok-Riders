@@ -9,13 +9,14 @@ import PriceSearch from '../components/PriceSearchBar';
 import OriginSearch from '../components/OriginSearchBar';
 import DestSearch from '../components/DestSearchBar';
 import { NavigationEvents } from 'react-navigation';
-import GeoAPI from '../api/GeoAPI';
 import {Context as ListingContext} from '../context/ListingContext';
 import { Dimensions } from 'react-native';
 import ListingResults from '../components/ListingResults';
 import Header from '../components/Header';
+import geoSearch from '../hooks/geoSearch';
+import reverseGeoSearch from '../hooks/reverseGeoSearch';
+import Overlay from '../components/Overlay';
 
-const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 const window = Dimensions.get('window');
 
 const HomeScreen = () => {
@@ -23,14 +24,27 @@ const HomeScreen = () => {
     const [origin, setOrigin] = useState('');
     const [originObj, setOriginObj] = useState('');
     const [dest, setDest] = useState('');
+    const [errVisible, setErrVisible] = useState(false);
+    const [revVisible, setRevVisible] = useState(false);
 
     const {state, setLocation} = useContext(LocationContext);
     const {state: profileState, fetchProfile} = useContext(ProfContext);
     const {state: listingState, fetchListing} = useContext(ListingContext);
     const err = useLocation(setLocation);
 
+    const {searchAPI, results, errorMsg} = geoSearch();
+    const {searchAPI: revSearch, results: revResults, errorMsg: revErrorMsg} = reverseGeoSearch();
+
     const checkNum = (input) => {
         return !isNaN(input);
+    };
+
+    const toggleErr = () => {
+        setErrVisible(!errVisible);
+    };
+
+    const toggleRev = () => {
+        setRevVisible(!revVisible);
     };
 
     return (
@@ -50,16 +64,13 @@ const HomeScreen = () => {
             <OriginSearch 
                 term = {origin}
                 onTermChange = {setOrigin}
-                onIconTap = {async () => {
+                onIconTap = {() => {
+                    toggleRev();
                     const lat = state.currentLocation.coords.latitude.toString();
                     const long = state.currentLocation.coords.longitude.toString();
-                    try {
-                        const response = await GeoAPI.get(`/reverse?access_key=${access_key}&query=${lat},${long}&limit=1&country=SG`);
-                        setOrigin(response.data.data[0].name);
-                        setOriginObj(response.data.data[0]);
-                    } catch (err) {
-                        console.log('Cannot get current location');
-                    }
+                    revSearch(lat, long);
+                    setOrigin(revResults.name);
+                    setOriginObj(revResults);
                 }}
             />
             <DestSearch 
@@ -75,23 +86,38 @@ const HomeScreen = () => {
                         title = 'Search'
                         buttonStyle = {styles.button}
                         onPress = {async () => {
-                            try {
-                                const destResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${dest}&limit=1&country=SG`);
-                                const destObj = destResponse.data.data[0];
-                                if (!originObj) {
-                                    const originResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${origin}&limit=1&country=SG`);
-                                    fetchListing({originObj: originResponse.data.data[0], destObj, priceString: price, type: profileState.user.type});
-                                    setOriginObj('');
-                                } else {
-                                    fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
-                                    setOriginObj('');
-                                }
-                            } catch (err) {
-                                console.log('Cannot query listing');
+                            searchAPI(dest, 1);
+                            const destObj = results ? results[0] : null;
+                            if (!destObj) {
+                                toggleErr();
+                            } else if (!originObj) {
+                                searchAPI(origin, 1);
+                                fetchListing({originObj: results[0], destObj, priceString: price, type: profileState.user.type});
+                            } else {
+                                fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
+                                setOriginObj('');
                             }
                         }}
                     />
                 </View>) : null}
+                {revErrorMsg == '' ? null :
+                (<Overlay 
+                    visible = {revVisible}
+                    onBackdrop = {() => toggleRev()}
+                    body = {revErrorMsg}
+                    subbody = 'Please check your connection'
+                    onPress = {() => toggleRev()}
+                />)
+                }
+                {errorMsg == '' ? null :
+                (<Overlay 
+                    visible = {errVisible}
+                    onBackdrop = {() => toggleErr()}
+                    body = {errorMsg}
+                    subbody = 'Please check your connection'
+                    onPress = {() => toggleErr()}
+                />)
+                }
                 {listingState.errorMessage == 'No search results' && price && origin && dest ?
                 (<View style = {{width: window.width, height: 250, position: 'absolute', top: 39, left: 0}}>
                     <Text style = {styles.errorMessage}>No matching results found</Text>

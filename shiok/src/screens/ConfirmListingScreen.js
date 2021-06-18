@@ -1,14 +1,20 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, PricingCard, Text, Overlay } from 'react-native-elements';
+import {Button, PricingCard } from 'react-native-elements';
 import {Context as ListingContext} from '../context/ListingContext';
+import Overlay from '../components/Overlay';
 
 ConfirmListingScreen = ({navigation}) => {
     const {state, addListing} = useContext(ListingContext);
     const [visible, setVisible] = useState(false);
+    const [errVisible, setErrVisible] = useState(false);
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+
+    const toggleError = () => {
+        setErrVisible(!errVisible);
     };
 
     return (
@@ -35,25 +41,29 @@ ConfirmListingScreen = ({navigation}) => {
                     />}
             />
             {state.errorMessage ? 
-            <Text style = {styles.errorMessage}>{state.errorMessage}</Text> :
             <Overlay 
-                isVisible = {visible} 
-                onBackdropPress = {() => {
+            visible = {errVisible}
+            onBackdrop = {() => {
+                toggleError();
+            }}
+            body = {errorMessage}
+            onPress = {() => {
+                toggleError();
+            }}
+            subbody = 'Please check your connection'
+            /> :
+            <Overlay 
+                visible = {visible}
+                onBackdrop = {() => {
                     toggleOverlay();
                     navigation.navigate('AddOrigin');
                 }}
-                overlayStyle = {styles.overlay}
-            >
-                <Text h3 style = {styles.text}>Your listing is submitted!</Text>
-                <Button 
-                    title = 'Done' 
-                    buttonStyle = {styles.button} 
-                    onPress = {() => {
-                        toggleOverlay();
-                        navigation.navigate('AddOrigin');
-                    }}
-                />
-            </Overlay>
+                body = 'Your listing is submitted!'
+                onPress = {() => {
+                    toggleOverlay();
+                    navigation.navigate('AddOrigin');
+                }}
+            />
             }
         </View>
     );

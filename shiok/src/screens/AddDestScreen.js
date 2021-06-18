@@ -8,12 +8,20 @@ import {Context as ListingContext} from '../context/ListingContext';
 import Button from '../components/ShiokButton';
 import Header from '../components/Header';
 
+const limit = 12;
+
 const AddDestScreen = ({navigation}) => {
     const [dest, setDest] = useState('');
     const [destObj, setDestObj] = useState('');
     const [price, setPrice] = useState('');
     const {addDest, addPrice} = useContext(ListingContext);
-    const [searchAPI, results, errorMsg] = geoSearch();
+    const {searchAPI, results, errorMsg} = geoSearch();
+
+    const [errVisible, setErrVisible] = useState(false);
+
+    const toggleErr = () => {
+        setErrVisible(!errVisible);
+    };
 
     const checkNum = (input) => {
         return !isNaN(input);
@@ -45,10 +53,21 @@ const AddDestScreen = ({navigation}) => {
             />
             <Button 
                 title = 'Search'
-                callback = {() => searchAPI(dest)}
+                callback = {() => {
+                    toggleErr();
+                    searchAPI(dest, limit);
+                }}
             />
             <Spacer />
-            {errorMsg == '' ? null : <Text>{errorMsg}</Text>}
+            {errorMsg == '' ? null :
+            (<Overlay 
+                visible = {errVisible}
+                onBackdrop = {() => toggleErr()}
+                body = {errorMsg}
+                subbody = 'Please check your connection'
+                onPress = {() => toggleErr()}
+            />)
+            }
             <View style = {{height: '51%', marginBottom: 12}}>
                 <ScrollView>
                     <GeoResults 
@@ -59,7 +78,7 @@ const AddDestScreen = ({navigation}) => {
                 </ScrollView>
             </View>
             <Spacer />
-            {dest && price ? 
+            {destObj && price ? 
             <Button 
                 title = 'Confirm Drop Off Point'
                 callback = {() => {
