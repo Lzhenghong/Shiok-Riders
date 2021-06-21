@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {Text, Button} from 'react-native-elements';
 import MapView from '../components/Map';
 import {Context as ProfContext} from '../context/ProfileContext';
@@ -10,7 +10,6 @@ import OriginSearch from '../components/OriginSearchBar';
 import DestSearch from '../components/DestSearchBar';
 import { NavigationEvents } from 'react-navigation';
 import {Context as ListingContext} from '../context/ListingContext';
-import { Dimensions } from 'react-native';
 import ListingResults from '../components/ListingResults';
 import Header from '../components/Header';
 import geoSearch from '../hooks/geoSearch';
@@ -23,9 +22,11 @@ const HomeScreen = () => {
     const [price, setPrice] = useState('');
     const [origin, setOrigin] = useState('');
     const [originObj, setOriginObj] = useState('');
+    const [destObj, setDestObj] = useState('');
     const [dest, setDest] = useState('');
     const [errVisible, setErrVisible] = useState(false);
     const [revVisible, setRevVisible] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
     const {state, setLocation} = useContext(LocationContext);
     const {state: profileState, fetchProfile} = useContext(ProfContext);
@@ -76,6 +77,16 @@ const HomeScreen = () => {
             <DestSearch 
                 term = {dest}
                 onTermChange = {setDest}
+                onTermSubmit = {() => {
+                    setConfirm(true);
+                    searchAPI(dest, 1);
+                    if (results) {
+                        setDestObj(results[0]);
+                        console.log(destObj);
+                    } else {
+                        toggleErr();
+                    }
+                }}
             />
             {err ? <Text>Please enable location services</Text> : null}
             <View>
@@ -86,16 +97,22 @@ const HomeScreen = () => {
                         title = 'Search'
                         buttonStyle = {styles.button}
                         onPress = {async () => {
-                            searchAPI(dest, 1);
-                            const destObj = results ? results[0] : null;
-                            if (!destObj) {
-                                toggleErr();
-                            } else if (!originObj) {
-                                searchAPI(origin, 1);
-                                fetchListing({originObj: results[0], destObj, priceString: price, type: profileState.user.type});
+                            if (confirm) {
+                                if (!originObj) {
+                                    console.log('1');
+                                    searchAPI(origin, 1);
+                                    console.log(origin);
+                                    console.log(results[0]);
+                                    console.log(destObj);
+                                    fetchListing({originObj: Object.assign({}, results[0]), destObj, priceString: price, type: profileState.user.type});
+                                    setOriginObj('');
+                                } else {    
+                                    console.log('2');
+                                    fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
+                                    setOriginObj('');
+                                }
                             } else {
-                                fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
-                                setOriginObj('');
+                                console.log('not confirmed');
                             }
                         }}
                     />

@@ -69,6 +69,7 @@ router.post('/driverlisting', async (req, res) => {
     const {origin, dest, price} = req.body;
     const hashMap = new Map();
     const result = [];
+    console.log({origin, dest, price});
     try {
         const firstResult = await DriverListing.find({
             origin: {
@@ -81,7 +82,7 @@ router.post('/driverlisting', async (req, res) => {
                 }
             },
             price: {
-                $gte: price
+                $lte: price
             }
         }).populate('lister');
         firstResult.map(doc => hashMap.set(doc._id.toString(), doc));
@@ -96,7 +97,7 @@ router.post('/driverlisting', async (req, res) => {
                 }
             },
             price: {
-                $gte: price
+                $lte: price
             }
         }).populate('lister');
         secondResult.map(doc => {
@@ -104,6 +105,8 @@ router.post('/driverlisting', async (req, res) => {
                 result.push(doc);
             }
         });
+        console.log(firstResult);
+        console.log(secondResult);
         res.send(result);
     } catch (err) {
         return res.status(422).send({ error: 'Failed to fetch listing' });

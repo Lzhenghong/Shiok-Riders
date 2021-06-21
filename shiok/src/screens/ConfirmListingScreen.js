@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Button, PricingCard } from 'react-native-elements';
 import {Context as ListingContext} from '../context/ListingContext';
 import Overlay from '../components/Overlay';
+import Header from '../components/Header';
 
 ConfirmListingScreen = ({navigation}) => {
     const {state, addListing} = useContext(ListingContext);

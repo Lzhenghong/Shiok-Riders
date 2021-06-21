@@ -48,7 +48,7 @@ const signup = (dispatch) => async ({ email, password, type, phoneNumber }) => {
   } catch (err) {
     dispatch({
       type: "add_error",
-      payload: "Something went wrong with sign up"
+      payload: "Email has already been registered"
     });
   }
 };
@@ -66,7 +66,7 @@ const signin = (dispatch) => async ({email, password, type}) => {
   } catch (err) {
     dispatch({
       type: 'add_error',
-      payload: 'Something went wrong with sign in'
+      payload: 'Invalid email or password'
     });
   }
 };

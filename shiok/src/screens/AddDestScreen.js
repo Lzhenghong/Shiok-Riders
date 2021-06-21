@@ -31,64 +31,66 @@ const AddDestScreen = ({navigation}) => {
         <View>
             <Header 
                 title = 'Add Drop Off Point'
-                backNav = {false}
+                backNav = {true}
                 marginBottom = {15}
                 callback = {() => navigation.navigate('AddOrigin')}
             />
-            <Input 
-                label = 'Drop Off Point'
-                labelStyle = {{color:'#555353'}}
-                value = {dest}
-                placeholder = 'Enter a location or address'
-                onChangeText = {setDest}
-                autoCapitalize = 'none'
-                autoCorrect = {false}
-            />
-            <Input 
-               value = {price}
-               placeholder = 'Enter a price'
-               onChangeText = {(newTerm) => {
-                   checkNum(newTerm) ? setPrice(newTerm) : setPrice('');
-               }} 
-            />
-            <Button 
-                title = 'Search'
-                callback = {() => {
-                    toggleErr();
-                    searchAPI(dest, limit);
-                }}
-            />
-            <Spacer />
-            {errorMsg == '' ? null :
-            (<Overlay 
-                visible = {errVisible}
-                onBackdrop = {() => toggleErr()}
-                body = {errorMsg}
-                subbody = 'Please check your connection'
-                onPress = {() => toggleErr()}
-            />)
-            }
-            <View style = {{height: '51%', marginBottom: 12}}>
-                <ScrollView>
-                    <GeoResults 
-                        results = {results}
-                        callbackText = {setDest}
-                        callbackObj = {setDestObj}
-                    />
-                </ScrollView>
-            </View>
-            <Spacer />
-            {destObj && price ? 
-            <Button 
-                title = 'Confirm Drop Off Point'
-                callback = {() => {
-                    addDest(destObj);
-                    addPrice(price);
-                    navigation.navigate('ConfirmListing');
-                }}
-            />
-            : null
-            }
+            <ScrollView>
+                <Input 
+                    label = 'Drop Off Point'
+                    labelStyle = {{color:'#555353'}}
+                    value = {dest}
+                    placeholder = 'Enter a location or address'
+                    onChangeText = {setDest}
+                    autoCapitalize = 'none'
+                    autoCorrect = {false}
+                />
+                <Input 
+                value = {price}
+                placeholder = 'Enter a price'
+                onChangeText = {(newTerm) => {
+                    checkNum(newTerm) ? setPrice(newTerm) : setPrice('');
+                }} 
+                />
+                <Button 
+                    title = 'Search'
+                    callback = {() => {
+                        toggleErr();
+                        searchAPI(dest, limit);
+                    }}
+                />
+                <Spacer />
+                {errorMsg == '' ? null :
+                (<Overlay 
+                    visible = {errVisible}
+                    onBackdrop = {() => toggleErr()}
+                    body = {errorMsg}
+                    subbody = 'Please check your connection'
+                    onPress = {() => toggleErr()}
+                />)
+                }
+                <View style = {{height: '48%', marginBottom: 12}}>
+                    <ScrollView>
+                        <GeoResults 
+                            results = {results}
+                            callbackText = {setDest}
+                            callbackObj = {setDestObj}
+                        />
+                    </ScrollView>
+                </View>
+                <Spacer />
+                {destObj && price ? 
+                <Button 
+                    title = 'Confirm Drop Off Point'
+                    callback = {() => {
+                        addDest(destObj);
+                        addPrice(price);
+                        navigation.navigate('ConfirmListing');
+                    }}
+                />
+                : null
+                }
+            </ScrollView>
         </View>
     );
 };
