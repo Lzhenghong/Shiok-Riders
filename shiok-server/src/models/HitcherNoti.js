@@ -11,7 +11,11 @@ const hitcherNotiSchema = new mongoose.Schema({
     },
     type: {
         type: String
-    }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }    
 });
 
 mongoose.model('hitcherNoti', hitcherNotiSchema);

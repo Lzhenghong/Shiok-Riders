@@ -1,15 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text, Header, Button, Input} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 import Communciations from 'react-native-communications';
+import {Context as NotiContext} from '../context/NotiContext';
 
 const SubmitOfferScreen = ({navigation}) => {
     const item = navigation.getParam('item');
     const [origin, setOrigin] = useState('');
     const [dest, setDest] = useState('');
     const [price, setPrice] = useState('');
+
+    const {sendToDriver} = useContext(NotiContext);
 
     const checkNum = (input) => {
         return !isNaN(input);
@@ -60,6 +63,8 @@ const SubmitOfferScreen = ({navigation}) => {
                         const finalOrigin = origin ? origin : item.origin.name;
                         const finalDest = dest ? dest : item.dest.name;
                         const finalPrice = price ? price : item.price.toString();
+                        const offer = {origin: finalOrigin, dest: finalDest, price: finalPrice};
+                        sendToDriver({recipient: item.lister, type: 'Offer', booking: item, offer});
                         Communciations.text(item.lister.phoneNumber,
                             `I would like to send you an offer on Shiok-Riders: from ${finalOrigin} to ${finalDest} for $${finalPrice}`);
                     }}

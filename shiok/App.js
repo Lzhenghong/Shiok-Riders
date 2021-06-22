@@ -23,6 +23,7 @@ import {setNavigator} from './src/navigationRef';
 import {Provider as LocationProvider} from './src/context/LocationContext';
 import {Provider as ProfProvider} from './src/context/ProfileContext';
 import {Provider as ListingProvider} from './src/context/ListingContext';
+import {Provider as NotiProvider} from './src/context/NotiContext';
 import {Feather} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
 import {Ionicons} from '@expo/vector-icons';
@@ -125,18 +126,20 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
 	return (
-		<ListingProvider>
-			<ProfProvider>
-				<LocationProvider>
-					<AuthProvider>
-					<App
-						ref={(navigator) => {
-						setNavigator(navigator);
-						}}
-					/>
-					</AuthProvider>
-				</LocationProvider>
-			</ProfProvider>
-		</ListingProvider>
+		<NotiProvider>
+			<ListingProvider>
+				<ProfProvider>
+					<LocationProvider>
+						<AuthProvider>
+						<App
+							ref={(navigator) => {
+							setNavigator(navigator);
+							}}
+						/>
+						</AuthProvider>
+					</LocationProvider>
+				</ProfProvider>
+			</ListingProvider>
+		</NotiProvider>
 	);
 };
