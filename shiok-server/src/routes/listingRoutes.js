@@ -11,12 +11,15 @@ router.use(requireAuth);
 router.post('/listing', async (req, res) => {
     const {origin, dest, price} = req.body;
     const lister = req.user;
+    if (!origin || !dest || !price) {
+        return res.status(422).send({error: 'Failed to post listing'});
+    }
     try {
         const listing = (lister.type == 'Hitcher') ? new HitcherListing({lister: req.user._id, origin, dest, price}) : new DriverListing({lister: req.user._id, origin, dest, price});
         await listing.save();
         res.send('Success');
     } catch (err) {
-        res.send('Error');
+        return res.status(422).send({error: 'Failed to post listing'});
     }
 });
 
@@ -69,7 +72,6 @@ router.post('/driverlisting', async (req, res) => {
     const {origin, dest, price} = req.body;
     const hashMap = new Map();
     const result = [];
-    console.log({origin, dest, price});
     try {
         const firstResult = await DriverListing.find({
             origin: {
@@ -105,8 +107,6 @@ router.post('/driverlisting', async (req, res) => {
                 result.push(doc);
             }
         });
-        console.log(firstResult);
-        console.log(secondResult);
         res.send(result);
     } catch (err) {
         return res.status(422).send({ error: 'Failed to fetch listing' });

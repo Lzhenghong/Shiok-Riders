@@ -33,7 +33,7 @@ const AddOriginScreen = ({navigation}) => {
     };
 
     return (
-        <View>
+        <View style = {{height: '100%'}}>
             <Header 
                 title = 'Add Pick Up Point'
                 backNav = {false}

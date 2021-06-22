@@ -28,7 +28,7 @@ const AddDestScreen = ({navigation}) => {
     };
 
     return (
-        <View>
+        <View style = {{height: '100%'}}>
             <Header 
                 title = 'Add Drop Off Point'
                 backNav = {true}

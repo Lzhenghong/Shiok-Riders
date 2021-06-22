@@ -11,7 +11,7 @@ export default () => {
             const response = await GeoAPI.get(`/forward?access_key=${access_key}&query=${searchTerm}&limit=${limit}&country=SG`); 
             setResults(response.data.data);
         } catch (err) {
-            setErrorMsg('Could not load pick up points');
+            setErrorMsg('Could not load locations');
         }
     };
     return {searchAPI, results, errorMsg};

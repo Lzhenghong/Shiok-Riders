@@ -10,9 +10,11 @@ const listingReducer = (state, action) => {
         case 'add_price':
             return {...state, price: action.payload};
         case 'add_error':
-            return {errorMessage: action.payload};
+            return {...state, errorMessage: action.payload};
         case 'fetch_listing':
             return {result: action.payload};
+        case 'clear_error_message':
+            return {...state, errorMessage: ''};
         default:
             return state;
     }
@@ -58,7 +60,6 @@ const addListing = (dispatch) => async ({originObj, destObj, priceString}) => {
             type: 'add_error',
             payload: 'Unable to post listing'
         });
-        console.log('Unable to post listing');
     }
 };
 
@@ -94,8 +95,12 @@ const fetchListing = (dispatch) => async ({originObj, destObj, priceString, type
     }
 };
 
+const clearErrorMessage = (dispatch) => () => {
+    dispatch({type: 'clear_error_message'});
+  };
+
 export const {Context, Provider} = createDataContext(
     listingReducer,
-    {addOrigin, addDest, addPrice, addListing, fetchListing},
+    {addOrigin, addDest, addPrice, addListing, fetchListing, clearErrorMessage},
     {origin: null}
 );
