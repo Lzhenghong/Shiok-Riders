@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Button, Text, Overlay } from 'react-native-elements';
 import {Entypo, AntDesign} from '@expo/vector-icons';
 
-const ListingResultOverlay = ({visible, onPress, errorMessage}) => {
+const ResultOverlay = ({visible, onPress, errorMessage, errorTitle, errorSubtitle, body}) => {
     return (
         <>
             <Overlay
@@ -15,13 +15,13 @@ const ListingResultOverlay = ({visible, onPress, errorMessage}) => {
                     {errorMessage ? 
                     (<>
                         <Entypo name = 'warning' size = {30} color = '#ffbf00'/> 
-                        <Text h3 style = {styles.text}>Could not submit listing</Text>
-                        <Text h4 style = {styles.subbody}>Please try again</Text> 
+                        <Text h3 style = {styles.text}>{errorTitle}</Text>
+                        <Text h4 style = {styles.subbody}>{errorSubtitle}</Text> 
                     </>)
                     : 
                     (<>
                         <AntDesign name = 'checkcircle' size = {30} color = '#3EB489'/>
-                        <Text h3 style = {styles.text}>Your listing is submitted!</Text>
+                        <Text h3 style = {styles.text}>{body}</Text>
                     </>)
                     }
                     <Button 
@@ -61,5 +61,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ListingResultOverlay;
+export default ResultOverlay;
 

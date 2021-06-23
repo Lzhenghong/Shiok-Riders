@@ -18,9 +18,9 @@ router.post('/drivernoti', async(req, res) => {
     if (!listing) {
         return res.status(422).send({ error: 'Unable to find booking' });
     }
-    const driver = await Driver.findById({_id: recipient._id});
-    if (!driver) {
-        return res.status(422).send({ error: 'Unable to find recipient' });
+    const submitted = await DriverNoti.find({sender: req.user._id, booking: booking._id});
+    if (submitted.length > 0) {
+        return res.status(422).send({error: 'Already submitted an offer'});
     }
     try {
         const noti = new DriverNoti({recipient: recipient._id, sender: req.user._id, type, booking: booking._id, offer});
@@ -28,6 +28,26 @@ router.post('/drivernoti', async(req, res) => {
         res.send('success');
     } catch (err) {
         return res.status(422).send({ error: 'Could not send notification' });
+    }
+});
+
+router.get('/bookingnoti', async(req, res) => {
+    const result = [];
+    try {
+        const docs = req.user.type == 'Driver' ? 
+            await DriverListing.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Result'}]}).populate('sender') : 
+            await HitcherListing.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Result'}]}).populate('sender');
+        docs.map(async (doc) => {
+            const listing = (req.user.type == 'Driver') ? await DriverListing.findById({_id: doc.booking}) : await HitcherListing.findById({_id: doc.booking});
+            if (listing) {
+                result.push({...doc, expired: false});
+            } else {
+                result.push({...doc, expired: true});
+            }
+        });
+        res.send(result);
+    } catch {
+        return res.status(422).send({ error: 'Could not fetch notifications' });
     }
 });
 

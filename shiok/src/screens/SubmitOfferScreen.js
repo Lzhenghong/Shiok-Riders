@@ -1,22 +1,45 @@
 import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text, Header, Button, Input} from 'react-native-elements';
+import {Header, Button, Input} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 import Communciations from 'react-native-communications';
 import {Context as NotiContext} from '../context/NotiContext';
+import {Context as ProfileContext} from '../context/ProfileContext';
+import Overlay from '../components/ResultOverlay';
 
 const SubmitOfferScreen = ({navigation}) => {
     const item = navigation.getParam('item');
     const [origin, setOrigin] = useState('');
     const [dest, setDest] = useState('');
     const [price, setPrice] = useState('');
+    const [visible, setVisible] = useState(false);
 
-    const {sendToDriver} = useContext(NotiContext);
+    const {state: profileState} = useContext(ProfileContext);
+    const {state, sendToDriver, clearErrorMessage} = useContext(NotiContext);
 
     const checkNum = (input) => {
         return !isNaN(input);
     };
+
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
+
+    const errorSubtitle = () => {
+        switch (state.errorMessage) {
+            case 'Unable to find booking':
+                return 'This booking has expired';
+            case 'Already submitted an offer':
+                return 'Please wait for the outcome';
+            default:
+                return 'Please check your connection';
+        }
+    }
+
+    const finalOrigin = origin ? origin : item.origin.name;
+    const finalDest = dest ? dest : item.dest.name;
+    const finalPrice = price ? price : item.price.toString();
 
     return (
         <View>
@@ -60,16 +83,25 @@ const SubmitOfferScreen = ({navigation}) => {
                     title = 'Submit Offer'
                     buttonStyle = {styles.button}
                     onPress = {() => {
-                        const finalOrigin = origin ? origin : item.origin.name;
-                        const finalDest = dest ? dest : item.dest.name;
-                        const finalPrice = price ? price : item.price.toString();
                         const offer = {origin: finalOrigin, dest: finalDest, price: finalPrice};
-                        sendToDriver({recipient: item.lister, type: 'Offer', booking: item, offer});
-                        Communciations.text(item.lister.phoneNumber,
-                            `I would like to send you an offer on Shiok-Riders: from ${finalOrigin} to ${finalDest} for $${finalPrice}`);
+                        sendToDriver({recipient: item.lister, type: 'Offer', booking: item, offer})
+                            .then(res => toggleOverlay());
                     }}
                 />
             </Spacer>
+            <Overlay 
+                visible = {visible}
+                onPress = {() => {
+                    toggleOverlay();
+                    clearErrorMessage();
+                    state.errorMessage ? navigation.navigate('Home') : Communciations.text(item.lister.phoneNumber,
+                        `I would like to send you an offer on Shiok-Riders: from ${finalOrigin} to ${finalDest} for $${finalPrice}`);
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = {errorSubtitle()}
+                body = 'Your offer is submitted!'
+            />
         </View>
     );
 };
@@ -94,3 +126,4 @@ const styles = StyleSheet.create({
 });
 
 export default SubmitOfferScreen;
+

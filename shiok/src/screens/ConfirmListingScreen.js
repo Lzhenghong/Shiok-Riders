@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button, PricingCard } from 'react-native-elements';
 import {Context as ListingContext} from '../context/ListingContext';
-import Overlay from '../components/ListingResultOverlay';
+import Overlay from '../components/ResultOverlay';
 import Header from '../components/Header';
 
 ConfirmListingScreen = ({navigation}) => {
@@ -44,6 +44,9 @@ ConfirmListingScreen = ({navigation}) => {
                     clearErrorMessage();
                 }}
                 errorMessage = {state.errorMessage}
+                errorTitle = 'Could not submit listing'
+                errorSubtitle = 'Please try again'
+                body = 'Your listing is submitted!'
             />
         </View>
     );
