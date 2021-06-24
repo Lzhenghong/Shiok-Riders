@@ -12,14 +12,12 @@ import { NavigationEvents } from 'react-navigation';
 import {Context as ListingContext} from '../context/ListingContext';
 import ListingResults from '../components/ListingResults';
 import Header from '../components/Header';
-//import geoSearch from '../hooks/geoSearch';
+import geoSearch from '../hooks/geoSearch';
 import reverseGeoSearch from '../hooks/reverseGeoSearch';
 import Overlay from '../components/Overlay';
-import GeoAPI from '../api/GeoAPI';
 import {Context as NotiContext} from '../context/NotiContext';
 
 const window = Dimensions.get('window');
-const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 
 const HomeScreen = ({navigation}) => {
     const [price, setPrice] = useState('');
@@ -29,17 +27,16 @@ const HomeScreen = ({navigation}) => {
     const [revVisible, setRevVisible] = useState(false);
     const [emptyVisible, setEmptyVisible] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    /*const [originObj, setOriginObj] = useState('');
-    const [destObj, setDestObj] = useState('');*/
+    const [revErrorMsg, setRevErrorMsg] = useState('');
 
     const {state, setLocation} = useContext(LocationContext);
     const {state: profileState, fetchProfile} = useContext(ProfContext);
-    const {state: listingState, fetchListing} = useContext(ListingContext);
+    const {state: listingState, fetchListing, clearErrorMessage} = useContext(ListingContext);
     const {fetchBookingNoti} = useContext(NotiContext);
     const err = useLocation(setLocation);
     
-    //const {searchAPI, results, errorMsg} = geoSearch();
-    const {searchAPI: revSearch, results: revResults, errorMsg: revErrorMsg} = reverseGeoSearch();
+    const searchAPI = geoSearch();
+    const revSearch = reverseGeoSearch();
 
     const checkNum = (input) => {
         return !isNaN(input);
@@ -78,12 +75,15 @@ const HomeScreen = ({navigation}) => {
             <OriginSearch 
                 term = {origin}
                 onTermChange = {setOrigin}
-                onIconTap = {() => {
-                    toggleRev();
+                onIconTap = {async () => {
                     const lat = state.currentLocation.coords.latitude.toString();
                     const long = state.currentLocation.coords.longitude.toString();
-                    revSearch(lat, long);
-                    setOrigin(revResults.name);
+                    const {error, result} = await revSearch(lat, long);
+                    if (error) {
+                        setRevErrorMsg(result);
+                    } else {
+                        setOrigin(result.name);
+                    }
                 }}
             />
             <DestSearch 
@@ -99,26 +99,20 @@ const HomeScreen = ({navigation}) => {
                         title = 'Search'
                         buttonStyle = {styles.button}
                         onPress = {async () => {
-                            toggleErr();
-                            toggleEmpty();
-                            try {
-                                const originResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${origin}&limit=1&country=SG`);
-                                const destResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${dest}&limit=1&country=SG`); 
-                                fetchListing({originObj: originResponse.data.data[0], destObj: destResponse.data.data[0], priceString: price, type: profileState.user.type});
-                            } catch {
-                                setErrorMsg('Could not fetch listing');
-                            }
-                            /*searchAPI(origin, 1)
-                                .then(res => {
-                                    console.log(results);
-                                    setOriginObj(Object.assign({}, results[0]));
-                                    searchAPI(dest, 1)
-                                })
-                                .then(res => {
-                                    setDestObj(Object.assign({}, results[0]));
-                                    console.log({originObj, destObj});
-                                    fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
-                                });*/
+                            const promises = [await searchAPI(origin, 1), await searchAPI(dest, 1)];
+                            Promise.all(promises).then(res => {
+                                const [{error: originError, result: originResult}, {error: destError, result: destResult}] = res;
+                                if (originError || destError) {
+                                    toggleErr();
+                                    setErrorMsg(originError);
+                                } else {
+                                    fetchListing({originObj: originResult[0], destObj: destResult[0], priceString: price, type: profileState.user.type})
+                                        .then(res => {
+                                            toggleEmpty();
+                                            toggleErr();
+                                    });                                
+                                }
+                            })
                         }}
                     />
                 </View>) : null}
@@ -140,15 +134,27 @@ const HomeScreen = ({navigation}) => {
                     onPress = {() => toggleErr()}
                 />)
                 }
-                {listingState.errorMessage == 'No search results' && price && origin && dest ?
+                {listingState.result && listingState.result.length == 0 && price && origin && dest ?
                 (<Overlay 
                     visible = {emptyVisible}
                     onBackdrop = {() => toggleEmpty()}
-                    body = {listingState.errorMessage}
+                    body = 'No search results'
                     subbody = 'Please create a new listing'
                     onPress = {() => {
                         toggleEmpty();
                         navigation.navigate('AddOrigin');
+                    }}
+                />)
+                : null}
+                {listingState.errorMessage ?
+                (<Overlay 
+                    visible = {errVisible}
+                    onBackdrop = {() => toggleErr()}
+                    body = {listingState.errorMessage}
+                    subbody = 'Please check your connection'
+                    onPress = {() => {
+                        toggleErr();
+                        clearErrorMessage();
                     }}
                 />)
                 : null}

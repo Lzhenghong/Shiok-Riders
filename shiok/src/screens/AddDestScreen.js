@@ -7,6 +7,7 @@ import GeoResults from '../components/GeoResults';
 import {Context as ListingContext} from '../context/ListingContext';
 import Button from '../components/ShiokButton';
 import Header from '../components/Header';
+import Overlay from '../components/Overlay';
 
 const limit = 12;
 
@@ -14,8 +15,11 @@ const AddDestScreen = ({navigation}) => {
     const [dest, setDest] = useState('');
     const [destObj, setDestObj] = useState('');
     const [price, setPrice] = useState('');
+    const [results, setResults] = useState([]);
+    const [errorMsg, setErrorMsg] = useState('');
     const {addDest, addPrice} = useContext(ListingContext);
-    const {searchAPI, results, errorMsg} = geoSearch();
+
+    const searchAPI = geoSearch();
 
     const [errVisible, setErrVisible] = useState(false);
 
@@ -54,10 +58,15 @@ const AddDestScreen = ({navigation}) => {
                 />
                 <Button 
                     title = 'Search'
-                    callback = {() => {
-                        toggleErr();
-                        searchAPI(dest, limit);
-                    }}
+                    callback = {async () => {
+                        const {error, result} = await searchAPI(dest, limit);
+                            if (error) {
+                                setErrorMsg(result);
+                                toggleErr();
+                            } else {
+                                setResults(result);
+                            }
+                        }}
                 />
                 <Spacer />
                 {errorMsg == '' ? null :

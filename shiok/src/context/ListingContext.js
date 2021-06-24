@@ -75,23 +75,15 @@ const fetchListing = (dispatch) => async ({originObj, destObj, priceString, type
     const price = Number(priceString);
     try {
         const response = type == 'Driver' ? await AuthAPI.post('/hitcherlisting', {origin, dest, price}) : await AuthAPI.post('/driverlisting', {origin, dest, price});
-        if (response.data.length == 0) {
-            dispatch({
-                type: 'add_error',
-                payload: 'No search results'
-            });
-        } else {
-            dispatch({
-                type: 'fetch_listing',
-                payload: response.data
-            });
-        }
+        dispatch({
+            type: 'fetch_listing',
+            payload: response.data
+        });
     } catch (err) {
         dispatch({
             type: 'add_error',
             payload: 'Unable to fetch listing'
         });
-        console.log('Unable to fetch listing');
     }
 };
 

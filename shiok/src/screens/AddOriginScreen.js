@@ -16,10 +16,15 @@ const limit = 12;
 const AddOriginScreen = ({navigation}) => {
     const [origin, setOrigin] = useState('');
     const [originObj, setOriginObj] = useState('');
+    const [results, setResults] = useState([]);
+    const [errorMsg, setErrorMsg] = useState('');
+    const [revErrorMsg, setRevErrorMsg] = useState('');
+
     const {state} = useContext(LocationContext);
     const {addOrigin} = useContext(ListingContext);
-    const {searchAPI, results, errorMsg} = geoSearch();
-    const {searchAPI: revSearch, results: revResults, errorMsg: revErrorMsg} = reverseGeoSearch();
+
+    const searchAPI = geoSearch();
+    const revSearch = reverseGeoSearch();
 
     const [errVisible, setErrVisible] = useState(false);
     const [revVisible, setRevVisible] = useState(false);
@@ -51,21 +56,30 @@ const AddOriginScreen = ({navigation}) => {
                 />
                 <Button
                     title = 'Use Current Location'
-                    callback = {() => {
-                        toggleRev();
+                    callback = {async () => {
                         const lat = state.currentLocation.coords.latitude.toString();
                         const long = state.currentLocation.coords.longitude.toString();
-                        revSearch(lat, long);
-                        setOrigin(revResults.name);
-                        setOriginObj(revResults);
+                        const {error, result} = await revSearch(lat, long);
+                        if (error) {
+                            setRevErrorMsg(result);
+                            toggleRev();
+                        } else {
+                            setOrigin(result.name);
+                            setOriginObj(result);
+                        }
                     }}
                 />
                 <Spacer>
                     <Button 
                         title = 'Search'
-                        callback = {() => {
-                            toggleErr();
-                            searchAPI(origin, limit);
+                        callback = {async () => {
+                            const {error, result} = await searchAPI(origin, limit);
+                            if (error) {
+                                setErrorMsg(result);
+                                toggleErr();
+                            } else {
+                                setResults(result);
+                            }
                         }}
                     />
                 </Spacer>
