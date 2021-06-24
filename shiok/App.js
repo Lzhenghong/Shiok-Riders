@@ -17,6 +17,7 @@ import FriendListScreen from './src/screens/FriendListScreen';
 import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 import SubmitOfferScreen from './src/screens/SubmitOfferScreen';
 import NotificationScreen from './src/screens/NotificationScreen';
+import OfferDecisionScreen from './src/screens/OfferDecisionScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -72,7 +73,8 @@ listingFlow.navigationOptions = () => {
 };
 
 const notificationFlow = createStackNavigator({
-  	Notification: NotificationScreen
+  	Notification: NotificationScreen,
+	OfferDecision: OfferDecisionScreen
 });
 
 notificationFlow.navigationOptions = () => {

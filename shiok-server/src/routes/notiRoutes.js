@@ -34,8 +34,8 @@ router.post('/drivernoti', async(req, res) => {
 router.get('/bookingnoti', async(req, res) => {
     try {
         const docs = req.user.type == 'Driver' ? 
-            await DriverNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Result'}]}).populate('sender') : 
-            await HitcherNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Result'}]}).populate('sender');
+            await DriverNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender') : 
+            await HitcherNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender');
         const promises = docs.map(async (doc) => {
             const listing = (req.user.type == 'Driver') ? await DriverListing.findById({_id: doc.booking}) : await HitcherListing.findById({_id: doc.booking});
             const expire = listing ? {expired: false} : {expired: true};
