@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {Tab } from 'react-native-elements';
 import BookingNoti from '../components/BookingNoti';
 import FriendNoti from '../components/FriendNoti';
 import Header from '../components/Header';
 
+const window = Dimensions.get('window');
 
 const NotificationScreen = () => {
     const [index, setIndex] = useState(0);
@@ -32,7 +33,13 @@ const NotificationScreen = () => {
                     titleStyle = {{color: '#FF8400'}}
                 />
             </Tab>
-            {!index ? <BookingNoti/> : <FriendNoti/>}
+            {!index ? 
+            (<View style = {{height: window.height, width: window.width}}>
+                <ScrollView>
+                    <BookingNoti/>
+                </ScrollView> 
+            </View>) :
+            <FriendNoti/>}
         </View>
     );
 };

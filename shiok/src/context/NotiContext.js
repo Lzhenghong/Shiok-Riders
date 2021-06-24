@@ -6,7 +6,7 @@ const notiReducer = (state, action) => {
         case 'add_error':
             return {...state, errorMessage: action.payload};
         case 'fetch_bookingnoti':
-            return {booking: action.payload}
+            return {...state, booking: action.payload}
         case 'clear_error_message':
             return {...state, errorMessage: action.payload};
         default:

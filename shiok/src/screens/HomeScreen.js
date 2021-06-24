@@ -12,28 +12,33 @@ import { NavigationEvents } from 'react-navigation';
 import {Context as ListingContext} from '../context/ListingContext';
 import ListingResults from '../components/ListingResults';
 import Header from '../components/Header';
-import geoSearch from '../hooks/geoSearch';
+//import geoSearch from '../hooks/geoSearch';
 import reverseGeoSearch from '../hooks/reverseGeoSearch';
 import Overlay from '../components/Overlay';
+import GeoAPI from '../api/GeoAPI';
+import {Context as NotiContext} from '../context/NotiContext';
 
 const window = Dimensions.get('window');
+const access_key = '816681ab0b49d0f2a6b999f51654fb33';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     const [price, setPrice] = useState('');
     const [origin, setOrigin] = useState('');
-    const [originObj, setOriginObj] = useState('');
-    const [destObj, setDestObj] = useState('');
     const [dest, setDest] = useState('');
     const [errVisible, setErrVisible] = useState(false);
     const [revVisible, setRevVisible] = useState(false);
-    const [confirm, setConfirm] = useState(false);
+    const [emptyVisible, setEmptyVisible] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+    /*const [originObj, setOriginObj] = useState('');
+    const [destObj, setDestObj] = useState('');*/
 
     const {state, setLocation} = useContext(LocationContext);
     const {state: profileState, fetchProfile} = useContext(ProfContext);
     const {state: listingState, fetchListing} = useContext(ListingContext);
+    const {fetchBookingNoti} = useContext(NotiContext);
     const err = useLocation(setLocation);
-
-    const {searchAPI, results, errorMsg} = geoSearch();
+    
+    //const {searchAPI, results, errorMsg} = geoSearch();
     const {searchAPI: revSearch, results: revResults, errorMsg: revErrorMsg} = reverseGeoSearch();
 
     const checkNum = (input) => {
@@ -48,9 +53,17 @@ const HomeScreen = () => {
         setRevVisible(!revVisible);
     };
 
+    const toggleEmpty = () => {
+        setEmptyVisible(!emptyVisible);
+    };
+
     return (
         <View>
-            <NavigationEvents onDidFocus = {fetchProfile}/>
+            <NavigationEvents onDidFocus = {() => {
+                fetchProfile();
+                fetchBookingNoti();
+                }}
+            />
             <Header 
                 title = 'Home'
                 backNav = {false}
@@ -71,22 +84,11 @@ const HomeScreen = () => {
                     const long = state.currentLocation.coords.longitude.toString();
                     revSearch(lat, long);
                     setOrigin(revResults.name);
-                    setOriginObj(revResults);
                 }}
             />
             <DestSearch 
                 term = {dest}
                 onTermChange = {setDest}
-                onTermSubmit = {() => {
-                    setConfirm(true);
-                    searchAPI(dest, 1);
-                    if (results) {
-                        setDestObj(results[0]);
-                        console.log(destObj);
-                    } else {
-                        toggleErr();
-                    }
-                }}
             />
             {err ? <Text>Please enable location services</Text> : null}
             <View>
@@ -97,23 +99,26 @@ const HomeScreen = () => {
                         title = 'Search'
                         buttonStyle = {styles.button}
                         onPress = {async () => {
-                            if (confirm) {
-                                if (!originObj) {
-                                    console.log('1');
-                                    searchAPI(origin, 1);
-                                    console.log(origin);
-                                    console.log(results[0]);
-                                    console.log(destObj);
-                                    fetchListing({originObj: Object.assign({}, results[0]), destObj, priceString: price, type: profileState.user.type});
-                                    setOriginObj('');
-                                } else {    
-                                    console.log('2');
-                                    fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
-                                    setOriginObj('');
-                                }
-                            } else {
-                                console.log('not confirmed');
+                            toggleErr();
+                            toggleEmpty();
+                            try {
+                                const originResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${origin}&limit=1&country=SG`);
+                                const destResponse = await GeoAPI.get(`/forward?access_key=${access_key}&query=${dest}&limit=1&country=SG`); 
+                                fetchListing({originObj: originResponse.data.data[0], destObj: destResponse.data.data[0], priceString: price, type: profileState.user.type});
+                            } catch {
+                                setErrorMsg('Could not fetch listing');
                             }
+                            /*searchAPI(origin, 1)
+                                .then(res => {
+                                    console.log(results);
+                                    setOriginObj(Object.assign({}, results[0]));
+                                    searchAPI(dest, 1)
+                                })
+                                .then(res => {
+                                    setDestObj(Object.assign({}, results[0]));
+                                    console.log({originObj, destObj});
+                                    fetchListing({originObj, destObj, priceString: price, type: profileState.user.type});
+                                });*/
                         }}
                     />
                 </View>) : null}
@@ -136,9 +141,16 @@ const HomeScreen = () => {
                 />)
                 }
                 {listingState.errorMessage == 'No search results' && price && origin && dest ?
-                (<View style = {{width: window.width, height: 250, position: 'absolute', top: 39, left: 0}}>
-                    <Text style = {styles.errorMessage}>No matching results found</Text>
-                </View>)
+                (<Overlay 
+                    visible = {emptyVisible}
+                    onBackdrop = {() => toggleEmpty()}
+                    body = {listingState.errorMessage}
+                    subbody = 'Please create a new listing'
+                    onPress = {() => {
+                        toggleEmpty();
+                        navigation.navigate('AddOrigin');
+                    }}
+                />)
                 : null}
                 {listingState.result && price && origin && dest ?
                 (<View style = {{width: window.width, height: 250, position: 'absolute', top: 39, left: 0}}>
