@@ -46,7 +46,6 @@ const NotiResults = ({results}) => {
     };  
 
     useEffect(() => {
-        console.log('a');
         fetchBookingNoti();
     }, [reload]);
 
