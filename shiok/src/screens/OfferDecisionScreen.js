@@ -6,10 +6,13 @@ import Header from '../components/Header';
 import Communciations from 'react-native-communications';
 import Spacer from '../components/Spacer';
 import TwinButtons from '../components/TwinButtons';
+import {Context as NotiContext} from '../context/NotiContext';
 
 OfferDecisionScreen = ({navigation}) => {
     const item = navigation.getParam('item');
     const [visible, setVisible] = useState(false);
+    const [outcome, setOutcome] = useState('');
+    const {state, sendResult, clearErrorMessage} = useContext(NotiContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -41,10 +44,36 @@ OfferDecisionScreen = ({navigation}) => {
                 <TwinButtons 
                     buttonTitleLeft = 'Accept Offer'
                     buttonTitleRight = 'Reject Offer'
-                    callbackLeft = {() => console.log('accepted')}
-                    callbackRight = {() => console.log('declined')}                
+                    callbackLeft = {() => {
+                        setOutcome('accepted')
+                        sendResult({result: 'Accept', item: item})
+                            .then(res => toggleOverlay());
+                    }}
+                    callbackRight = {() => {
+                        setOutcome('rejected');
+                        sendResult({result: 'Reject', item: item})
+                            .then(res => toggleOverlay());
+                    }}                
                 />
             </Spacer>
+            <Overlay 
+                visible = {visible}
+                onPress = {() => {
+                    toggleOverlay();
+                    clearErrorMessage();
+                    if (state.errorMessage) {
+                        navigation.navigate('Notification');
+                    } else {
+                        Communciations.text(item.sender.phoneNumber,
+                            `I have ${outcome} your offer from ${item.offer.origin} to ${item.offer.dest} for ${item.offer.price}`);
+                        navigation.navigate('Notification');
+                    }
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = 'Please check your connection'
+                body = 'You have sent a reply!'
+            />
         </View>
     );
 };

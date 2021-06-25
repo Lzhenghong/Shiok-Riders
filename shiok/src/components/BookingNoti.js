@@ -1,18 +1,20 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
 import {Text} from 'react-native-elements';
 import {Feather} from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import {Context as NotiContext} from '../context/NotiContext';
 import NotiResults from './NotiResults';
 
+const window = Dimensions.get('window');
+
 const BookingNoti = () => {
     const {state, fetchBookingNoti} = useContext(NotiContext);
 
     return (
-        <>
+    <>
         <NavigationEvents onDidFocus = {fetchBookingNoti}/>
-        {state.booking.length > 0 ? 
+        {state.booking && state.booking.length > 0 ? 
         (<View>
             <NotiResults 
                 results = {state.booking}
@@ -31,7 +33,8 @@ const styles = StyleSheet.create({
     icon: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80%'
+        height: '80%',
+        marginTop: window.height * 0.15
     },
     text: {
         color: '#b5b3b3',

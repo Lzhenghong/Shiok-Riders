@@ -5,7 +5,6 @@ import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 import Communciations from 'react-native-communications';
 import {Context as NotiContext} from '../context/NotiContext';
-import {Context as ProfileContext} from '../context/ProfileContext';
 import Overlay from '../components/ResultOverlay';
 
 const SubmitOfferScreen = ({navigation}) => {
@@ -15,8 +14,7 @@ const SubmitOfferScreen = ({navigation}) => {
     const [price, setPrice] = useState('');
     const [visible, setVisible] = useState(false);
 
-    const {state: profileState} = useContext(ProfileContext);
-    const {state, sendToDriver, clearErrorMessage} = useContext(NotiContext);
+    const {state, sendOffer, clearErrorMessage} = useContext(NotiContext);
 
     const checkNum = (input) => {
         return !isNaN(input);
@@ -84,7 +82,7 @@ const SubmitOfferScreen = ({navigation}) => {
                     buttonStyle = {styles.button}
                     onPress = {() => {
                         const offer = {origin: finalOrigin, dest: finalDest, price: finalPrice};
-                        sendToDriver({recipient: item.lister, type: 'Offer', booking: item, offer})
+                        sendOffer({recipient: item.lister, type: 'Offer', listing: item, offer})
                             .then(res => toggleOverlay());
                     }}
                 />
@@ -94,8 +92,13 @@ const SubmitOfferScreen = ({navigation}) => {
                 onPress = {() => {
                     toggleOverlay();
                     clearErrorMessage();
-                    state.errorMessage ? navigation.navigate('Home') : Communciations.text(item.lister.phoneNumber,
-                        `I would like to send you an offer on Shiok-Riders: from ${finalOrigin} to ${finalDest} for $${finalPrice}`);
+                    if (state.errorMessage) {
+                        navigation.navigate('Home');
+                    } else {
+                        Communciations.text(item.lister.phoneNumber,
+                            `I would like to send you an offer on Shiok-Riders: from ${finalOrigin} to ${finalDest} for $${finalPrice}`);
+                        navigation.navigate('Home'); 
+                    } 
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}

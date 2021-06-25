@@ -16,7 +16,7 @@ const driverNotiSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    booking: {
+    listing: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'DriverListing'
     },

@@ -15,7 +15,16 @@ const hitcherNotiSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }    
+    },
+    listing: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'HitcherListing'
+    },
+    offer: {
+        origin: String,
+        dest: String,
+        price: String
+    }
 });
 
 mongoose.model('hitcherNoti', hitcherNotiSchema);

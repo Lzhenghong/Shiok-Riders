@@ -12,18 +12,18 @@ const router = express.Router();
 
 router.use(requireAuth);
 
-router.post('/drivernoti', async(req, res) => {
-    const {recipient, type, booking, offer} = req.body;
-    const listing = await DriverListing.findById({_id: booking._id});
-    if (!listing) {
+router.post('/sendoffer', async(req, res) => {
+    const {recipient, type, listing, offer} = req.body;
+    const exist = (req.user.type == 'Hitcher') ? await DriverListing.findById({_id: listing._id}) : await HitcherListing.findById({_id: listing._id});
+    if (!exist) {
         return res.status(422).send({ error: 'Unable to find booking' });
     }
-    const submitted = await DriverNoti.find({sender: req.user._id, booking: booking._id});
+    const submitted = (req.user.type == 'Hitcher') ? await DriverNoti.find({sender: req.user._id, listing: listing._id}) : await HitcherNoti.find({sender: req.user._id, listing: listing._id});
     if (submitted.length > 0) {
         return res.status(422).send({error: 'Already submitted an offer'});
     }
     try {
-        const noti = new DriverNoti({recipient: recipient._id, sender: req.user._id, type, booking: booking._id, offer});
+        const noti = (req.user.type == 'Hitcher') ? new DriverNoti({recipient: recipient._id, sender: req.user._id, type, listing: listing._id, offer}) : new HitcherNoti({recipient: recipient._id, sender: req.user._id, type, listing: listing._id, offer});
         await noti.save();
         res.send('success');
     } catch (err) {
@@ -37,7 +37,7 @@ router.get('/bookingnoti', async(req, res) => {
             await DriverNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender') : 
             await HitcherNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender');
         const promises = docs.map(async (doc) => {
-            const listing = (req.user.type == 'Driver') ? await DriverListing.findById({_id: doc.booking}) : await HitcherListing.findById({_id: doc.booking});
+            const listing = (req.user.type == 'Driver') ? await DriverListing.findById({_id: doc.listing}) : await HitcherListing.findById({_id: doc.listing});
             const expire = listing ? {expired: false} : {expired: true};
             return Object.assign({}, doc._doc, expire);
         });
@@ -48,6 +48,24 @@ router.get('/bookingnoti', async(req, res) => {
         return res.status(422).send({ error: 'Could not fetch notifications' });
     }
 });
+
+router.post('/sendresult', async(req, res) => {
+    const {result, item} = req.body;
+    const exist = (req.user.type == 'Driver') ? await DriverListing.findById({_id: item.listing}) : await HitcherListing.find({_id: item.listing});
+    try {
+        if (result == 'Accept' && exist) {
+            req.user.type == 'Driver' ? await DriverListing.findByIdAndDelete({_id: item.listing}) : await HitcherListing.findByIdAndDelete({_id: item.listing});
+        }
+        const noti = (req.user.type == 'Driver') ? 
+            new HitcherNoti({recipient: item.sender._id, sender: req.user._id, type: result, listing: item.listing, offer: item.offer}) : 
+            new DriverNoti({recipient: item.sender._id, sender: req.user._id, type: result, listing: item.listing, offer: item.offer});
+        await noti.save();
+        req.user.type == 'Driver' ? await DriverNoti.findByIdAndDelete({_id: item._id}) : await HitcherNoti.findByIdAndDelete({_id: item._id});
+        res.send('success');
+    } catch (err) {
+        return res.status(422).send({error: 'Could not accept/reject'});
+    }
+})
 
 module.exports = router;
 

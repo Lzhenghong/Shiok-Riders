@@ -1,11 +1,16 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {ListItem} from 'react-native-elements';
+import {ListItem, Badge} from 'react-native-elements';
 import { navigate } from "../navigationRef";
 
 
 const NotiResults = ({results}) => {
     console.log(results);
+
+    const formatDate = (dateobj) => {
+        const date = new Date(dateobj);
+        return `${date.getDate()}/${date.getMonth() + 1}`;
+    }
 
     const subtitle = (item) => {
         switch (item.type) {
@@ -35,13 +40,22 @@ const NotiResults = ({results}) => {
                         bottomDivider 
                         topDivide
                         onPress = {onPress(item)}
+                        onLongPress = {() => console.log('longpress')}
                     >
-                        <ListItem.Content>
+                        <Badge 
+                            status = 'primary'
+                        />
+                        <ListItem.Content style = {{flex: 6}}>
                             <ListItem.Title style = {{fontWeight: 'bold'}}>
                                 {item.type}
                             </ListItem.Title>
                             <ListItem.Subtitle>
                                 {`${subtitle(item)} ${item.sender.username}`}
+                            </ListItem.Subtitle>
+                        </ListItem.Content>
+                        <ListItem.Content style = {{flex: 1, alignItems: 'flex-end'}}>
+                            <ListItem.Subtitle style = {{fontWeight: 'bold'}}>
+                                {formatDate(item.createdAt)}
                             </ListItem.Subtitle>
                         </ListItem.Content>
                         <ListItem.Chevron />

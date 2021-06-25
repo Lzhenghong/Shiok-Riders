@@ -14,9 +14,9 @@ const notiReducer = (state, action) => {
     }
 };
 
-const sendToDriver = (dispatch) => async ({recipient, type, booking, offer}) => {
+const sendOffer = (dispatch) => async ({recipient, type, listing, offer}) => {
     try {
-        await AuthAPI.post('/drivernoti', {recipient, type, booking, offer});
+        await AuthAPI.post('/sendoffer', {recipient, type, listing, offer});
     } catch (e) {
         dispatch({
             type: 'add_error',
@@ -40,6 +40,17 @@ const fetchBookingNoti = (dispatch) => async () => {
     }
 };
 
+const sendResult = (dispatch) => async ({result, item}) => {
+    try {
+        await AuthAPI.post('/sendresult', {result, item});
+    } catch (e) {
+        dispatch({
+            type: 'add_error',
+            payload: e.response.data.error
+        });
+    }
+};
+
 const clearErrorMessage = (dispatch) => () => {
     dispatch({
         type: 'clear_error_message',
@@ -49,6 +60,6 @@ const clearErrorMessage = (dispatch) => () => {
 
 export const {Context, Provider} = createDataContext(
     notiReducer,
-    {sendToDriver, fetchBookingNoti, clearErrorMessage},
-    {errorMessage: ''}
+    {sendOffer, fetchBookingNoti, sendResult, clearErrorMessage},
+    {errorMessage: '', booking: null}
 );
