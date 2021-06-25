@@ -26,8 +26,8 @@ const SubmitOfferScreen = ({navigation}) => {
 
     const errorSubtitle = () => {
         switch (state.errorMessage) {
-            case 'Unable to find booking':
-                return 'This booking has expired';
+            case 'Unable to find listing':
+                return 'This listing has expired';
             case 'Already submitted an offer':
                 return 'Please wait for the outcome';
             default:

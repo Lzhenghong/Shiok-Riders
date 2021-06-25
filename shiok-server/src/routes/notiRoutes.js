@@ -13,10 +13,11 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.post('/sendoffer', async(req, res) => {
+    return res.status(422).send({ error: 'Unable to find listing' });
     const {recipient, type, listing, offer} = req.body;
     const exist = (req.user.type == 'Hitcher') ? await DriverListing.findById({_id: listing._id}) : await HitcherListing.findById({_id: listing._id});
     if (!exist) {
-        return res.status(422).send({ error: 'Unable to find booking' });
+        return res.status(422).send({ error: 'Unable to find listing' });
     }
     const submitted = (req.user.type == 'Hitcher') ? await DriverNoti.find({sender: req.user._id, listing: listing._id}) : await HitcherNoti.find({sender: req.user._id, listing: listing._id});
     if (submitted.length > 0) {

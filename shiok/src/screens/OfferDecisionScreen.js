@@ -65,7 +65,7 @@ OfferDecisionScreen = ({navigation}) => {
                         navigation.navigate('Notification');
                     } else {
                         Communciations.text(item.sender.phoneNumber,
-                            `I have ${outcome} your offer from ${item.offer.origin} to ${item.offer.dest} for ${item.offer.price}`);
+                            `I have ${outcome} your offer from ${item.offer.origin} to ${item.offer.dest} for $${item.offer.price}`);
                         navigation.navigate('Notification');
                     }
                 }}
