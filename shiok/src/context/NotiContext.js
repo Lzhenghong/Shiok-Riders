@@ -51,6 +51,17 @@ const sendResult = (dispatch) => async ({result, item}) => {
     }
 };
 
+const deleteNoti = (dispatch) => async ({item}) => {
+    try {
+        await AuthAPI.post('/deletenoti', {item});
+    } catch (e) {
+        dispatch({
+            type: 'add_error',
+            payload: e.response.data.error
+        });
+    }
+};
+
 const clearErrorMessage = (dispatch) => () => {
     dispatch({
         type: 'clear_error_message',
@@ -60,6 +71,6 @@ const clearErrorMessage = (dispatch) => () => {
 
 export const {Context, Provider} = createDataContext(
     notiReducer,
-    {sendOffer, fetchBookingNoti, sendResult, clearErrorMessage},
+    {sendOffer, fetchBookingNoti, sendResult, deleteNoti, clearErrorMessage},
     {errorMessage: '', booking: null}
 );

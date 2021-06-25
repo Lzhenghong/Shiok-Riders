@@ -13,7 +13,6 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.post('/sendoffer', async(req, res) => {
-    return res.status(422).send({ error: 'Unable to find listing' });
     const {recipient, type, listing, offer} = req.body;
     const exist = (req.user.type == 'Hitcher') ? await DriverListing.findById({_id: listing._id}) : await HitcherListing.findById({_id: listing._id});
     if (!exist) {
@@ -66,7 +65,17 @@ router.post('/sendresult', async(req, res) => {
     } catch (err) {
         return res.status(422).send({error: 'Could not accept/reject'});
     }
-})
+});
+
+router.post('/deletenoti', async(req, res) => {
+    const {item} = req.body;
+    try {
+        req.user.type == 'Hitcher' ? await HitcherNoti.findByIdAndDelete({_id: item._id}) : await DriverNoti.findByIdAndDelete({_id: item._id});
+        res.send('success');
+    } catch (err) {
+        return res.status(422).send({error: 'Could not delete notification'});
+    }
+});
 
 module.exports = router;
 
