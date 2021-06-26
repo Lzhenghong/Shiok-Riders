@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {View} from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import {Badge} from 'react-native-elements';
 
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
@@ -29,6 +31,7 @@ import {Provider as NotiProvider} from './src/context/NotiContext';
 import {Feather} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
 import {Ionicons} from '@expo/vector-icons';
+import AuthAPI from './src/api/AuthAPI';
 
 const bookingFlow = createStackNavigator({
 	Home: HomeScreen,
@@ -79,11 +82,22 @@ const notificationFlow = createStackNavigator({
 	OfferResult: OfferResultScreen
 });
 
-notificationFlow.navigationOptions = () => {
+notificationFlow.navigationOptions = ({screenProps}) => {
 	return {
 		title: 'Notification',
 		tabBarIcon: ({tintColor}) => (
-			<Ionicons name = 'notifications-outline' size = {24} color = {tintColor}/>
+			<View>
+				<Ionicons
+					name = 'notifications-outline' 
+					size = {24} 
+					color = {tintColor}
+				/>
+				{screenProps.notiCount > 0 ?
+				(<Badge 
+					value = {screenProps.notiCount}
+					containerStyle = {{position: 'absolute', top: -4, right: -4}}
+				/>) : null}
+			</View>
 		)
 	}
 }
@@ -129,6 +143,15 @@ const switchNavigator = createSwitchNavigator({
 const App = createAppContainer(switchNavigator);
 
 export default () => {
+	const [notiCount, setNotiCount] = useState(0);
+	useEffect(() => {
+		(AuthAPI.get('/bookingnoti')).then(res => {
+			setNotiCount(res.data.length);
+		}, err => {
+			console.log('error');
+		});
+	}, [notiCount]);
+
 	return (
 		<NotiProvider>
 			<ListingProvider>
@@ -139,6 +162,7 @@ export default () => {
 							ref={(navigator) => {
 							setNavigator(navigator);
 							}}
+							screenProps = {{notiCount}}
 						/>
 						</AuthProvider>
 					</LocationProvider>

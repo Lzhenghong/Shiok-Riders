@@ -32,18 +32,15 @@ router.post('/sendoffer', async(req, res) => {
 });
 
 router.get('/bookingnoti', async(req, res) => {
+    result = [];
     try {
         const docs = req.user.type == 'Driver' ? 
             await DriverNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender') : 
             await HitcherNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender');
-        const promises = docs.map(async (doc) => {
-            const listing = (req.user.type == 'Driver') ? await DriverListing.findById({_id: doc.listing}) : await HitcherListing.findById({_id: doc.listing});
-            const expire = listing ? {expired: false} : {expired: true};
-            return Object.assign({}, doc._doc, expire);
+        docs.map(doc => {
+            result.push(doc);
         });
-        Promise.all(promises).then(result => {
-            res.send(result);
-        });        
+        res.send(result); 
     } catch {
         return res.status(422).send({ error: 'Could not fetch notifications' });
     }
