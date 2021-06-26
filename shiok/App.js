@@ -18,6 +18,7 @@ import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 import SubmitOfferScreen from './src/screens/SubmitOfferScreen';
 import NotificationScreen from './src/screens/NotificationScreen';
 import OfferDecisionScreen from './src/screens/OfferDecisionScreen';
+import OfferResultScreen from './src/screens/OfferResultScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -74,7 +75,8 @@ listingFlow.navigationOptions = () => {
 
 const notificationFlow = createStackNavigator({
   	Notification: NotificationScreen,
-	OfferDecision: OfferDecisionScreen
+	OfferDecision: OfferDecisionScreen,
+	OfferResult: OfferResultScreen
 });
 
 notificationFlow.navigationOptions = () => {

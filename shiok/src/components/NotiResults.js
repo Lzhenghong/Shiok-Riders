@@ -40,8 +40,13 @@ const NotiResults = ({results}) => {
     };
 
     const onPress = (item) => {
-        if (item.type == 'Offer') {
-            return () => navigate('OfferDecision', {item});
+        switch (item.type) {
+            case 'Offer':
+                return () => navigate('OfferDecision', {item});
+            case 'Accept':
+                return () => navigate('OfferResult', {item});
+            case 'Reject':
+                return () => navigate('OfferResult', {item});
         }
     };  
 
