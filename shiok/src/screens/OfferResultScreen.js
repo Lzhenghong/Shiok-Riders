@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Button, PricingCard } from 'react-native-elements';
 import Header from '../components/Header';
 
-OfferResultScreen = ({navigation}) => {
+OfferResultScreen = ({navigation}) => { 
     const item = navigation.getParam('item');
     
     return (

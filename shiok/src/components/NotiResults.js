@@ -37,7 +37,7 @@ const NotiResults = ({results}) => {
             default: 
                 return 'You have been added as a friend by';
         }
-    };
+    };  
 
     const onPress = (item) => {
         switch (item.type) {

@@ -37,7 +37,7 @@ const bookingFlow = createStackNavigator({
 });
 
 bookingFlow.navigationOptions = () => {
-	return {
+	return {  
 		title: 'Home',
 		tabBarIcon: ({tintColor}) => (
 			<Feather name = 'home' size = {24} color = {tintColor}/>
