@@ -6,7 +6,7 @@ const notiReducer = (state, action) => {
         case 'add_error':
             return {...state, errorMessage: action.payload};
         case 'fetch_bookingnoti':
-            return {...state, booking: action.payload}
+            return {...state, offer: action.payload}
         case 'clear_error_message':
             return {...state, errorMessage: action.payload};
         default:
@@ -72,5 +72,5 @@ const clearErrorMessage = (dispatch) => () => {
 export const {Context, Provider} = createDataContext(
     notiReducer,
     {sendOffer, fetchBookingNoti, sendResult, deleteNoti, clearErrorMessage},
-    {errorMessage: '', booking: null}
+    {errorMessage: '', offer: null}
 );

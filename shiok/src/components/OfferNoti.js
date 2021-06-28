@@ -8,16 +8,16 @@ import NotiResults from './NotiResults';
 
 const window = Dimensions.get('window');
 
-const BookingNoti = () => {
+const OfferNoti = () => {
     const {state, fetchBookingNoti} = useContext(NotiContext);
 
     return (
         <>
             <NavigationEvents onDidFocus = {fetchBookingNoti}/>
-            {state.booking && state.booking.length > 0 ? 
+            {state.offer && state.offer.length > 0 ? 
             (<View>
                 <NotiResults 
-                    results = {state.booking}
+                    results = {state.offer}
                 />
             </View>) :
             (<View style = {styles.icon}>
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default BookingNoti;
+export default OfferNoti;

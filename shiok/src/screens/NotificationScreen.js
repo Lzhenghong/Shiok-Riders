@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {Tab } from 'react-native-elements';
-import BookingNoti from '../components/BookingNoti';
+import BookingNoti from '../components/OfferNoti';
 import FriendNoti from '../components/FriendNoti';
 import Header from '../components/Header';
 
@@ -36,7 +36,7 @@ const NotificationScreen = () => {
             {!index ? 
             (<View style = {{height: window.height, width: window.width}}>
                 <ScrollView>
-                    <BookingNoti/>
+                    <OfferNoti/>
                 </ScrollView> 
             </View>) :
             <FriendNoti/>}
