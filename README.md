@@ -40,7 +40,7 @@ Please email me (hong2288@gmail.com) so that I will update ngrok's forwarding UR
 
 Download the Expo app on your mobile phone and sign into your Expo account
 
-Open this link https://expo.io/@zhenghong/shiok on your browser
+Open this link exp://exp.host/@zhenghong/shiok on your browser
 
 It should open the project on your Expo app
 
