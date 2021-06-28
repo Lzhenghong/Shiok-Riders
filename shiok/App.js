@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -28,6 +28,7 @@ import {Provider as LocationProvider} from './src/context/LocationContext';
 import {Provider as ProfProvider} from './src/context/ProfileContext';
 import {Provider as ListingProvider} from './src/context/ListingContext';
 import {Provider as NotiProvider} from './src/context/NotiContext';
+import {Provider as BookingProvider} from './src/context/BookingContext';
 import {Feather} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
 import {Ionicons} from '@expo/vector-icons';
@@ -143,7 +144,7 @@ const switchNavigator = createSwitchNavigator({
 const App = createAppContainer(switchNavigator);
 
 export default () => {
-	const [notiCount, setNotiCount] = useState(0);
+	const [notiCount, setNotiCount] = useState(null);
 	useEffect(() => {
 		(AuthAPI.get('/bookingnoti')).then(res => {
 			setNotiCount(res.data.length);
@@ -151,23 +152,28 @@ export default () => {
 			console.log('error');
 		});
 	}, [notiCount]);
-
-	return (
-		<NotiProvider>
-			<ListingProvider>
-				<ProfProvider>
-					<LocationProvider>
-						<AuthProvider>
-						<App
-							ref={(navigator) => {
-							setNavigator(navigator);
-							}}
-							screenProps = {{notiCount}}
-						/>
-						</AuthProvider>
-					</LocationProvider>
-				</ProfProvider>
-			</ListingProvider>
-		</NotiProvider>
-	);
+	if (notiCount) {
+		return (
+			<BookingProvider>
+				<NotiProvider>
+					<ListingProvider>
+						<ProfProvider>
+							<LocationProvider>
+								<AuthProvider>
+									<App
+										ref={(navigator) => {
+										setNavigator(navigator);
+										}}
+										screenProps = {{notiCount}}
+									/>
+								</AuthProvider>
+							</LocationProvider>
+						</ProfProvider>
+					</ListingProvider>
+				</NotiProvider>
+			</BookingProvider>
+		);
+	} else {
+		return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
+	}
 };

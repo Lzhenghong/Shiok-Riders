@@ -12,19 +12,19 @@ const BookingNoti = () => {
     const {state, fetchBookingNoti} = useContext(NotiContext);
 
     return (
-    <>
-        <NavigationEvents onDidFocus = {fetchBookingNoti}/>
-        {state.booking && state.booking.length > 0 ? 
-        (<View>
-            <NotiResults 
-                results = {state.booking}
-            />
-        </View>) :
-        (<View style = {styles.icon}>
-            <Feather name = 'list' size = {200} color = '#b5b3b3'/>
-            <Text h2 style = {styles.text}>You have no notification</Text>
-        </View>)
-        }
+        <>
+            <NavigationEvents onDidFocus = {fetchBookingNoti}/>
+            {state.booking && state.booking.length > 0 ? 
+            (<View>
+                <NotiResults 
+                    results = {state.booking}
+                />
+            </View>) :
+            (<View style = {styles.icon}>
+                <Feather name = 'list' size = {200} color = '#b5b3b3'/>
+                <Text h2 style = {styles.text}>You have no notification</Text>
+            </View>)
+            }
         </>
     );
 };

@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import { Text } from 'react-native-elements';
+import {View, StyleSheet, Dimensions} from 'react-native';
+import { Text} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
-import Spacer from '../components/Spacer';
+
+const window = Dimensions.get('window');
 
 const NoHistory = () => {
     return (
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
     icon: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: '85%'
+        height: '85%',
+        
     },
     text: {
         color: '#b5b3b3',

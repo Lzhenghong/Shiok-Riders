@@ -4,14 +4,19 @@ require('./models/DriverListing');
 require('./models/HitcherListing');
 require('./models/DriverNoti');
 require('./models/HitcherNoti');
+require('./models/HitcherBooking');
+require('./models/DriverBooking');
 
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const listingRoutes = require('./routes/listingRoutes');
 const notiRoutes = require('./routes/notiRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+
 const requireAuth = require("./middlewares/requireAuth");
 const cors = require('cors');
 
@@ -29,6 +34,7 @@ app.use(authRoutes);
 app.use(profileRoutes);
 app.use(listingRoutes);
 app.use(notiRoutes);
+app.use(bookingRoutes);
 
 const mongoUri = "mongodb+srv://zhenghong:6892380@cluster0.d9fa1.mongodb.net/db?retryWrites=true&w=majority";
 

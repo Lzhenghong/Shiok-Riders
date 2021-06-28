@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require("../middlewares/requireAuth");
-const Hitcher = mongoose.model('Hitcher');
-const Driver = mongoose.model('Driver');
+const HitcherBooking = mongoose.model('HitcherBooking');
+const DriverBooking = mongoose.model('DriverBooking');
 const HitcherListing = mongoose.model('HitcherListing');
 const DriverListing = mongoose.model('DriverListing');
 const HitcherNoti = mongoose.model('hitcherNoti');
@@ -58,6 +58,12 @@ router.post('/sendresult', async(req, res) => {
             new DriverNoti({recipient: item.sender._id, sender: req.user._id, type: result, listing: item.listing, offer: item.offer});
         await noti.save();
         req.user.type == 'Driver' ? await DriverNoti.findByIdAndDelete({_id: item._id}) : await HitcherNoti.findByIdAndDelete({_id: item._id});
+        if (result == 'Accept') {
+            const lister_booking = req.user.type == 'Driver' ? new DriverBooking({user: req.user._id, client: item.sender._id, offer: item.offer}) : new HitcherBooking({user: req.user._id, client: item.sender._id, offer: item.offer});
+            await lister_booking.save();
+            const client_booking = req.user.type == 'Driver' ? new HitcherBooking({user: item.sender._id, client: req.user._id, offer: item.offer}) : new DriverBooking({user: item.sender._id, client: req.user._id, offer: item.offer});
+            await client_booking.save();
+        }
         res.send('success');
     } catch (err) {
         return res.status(422).send({error: 'Could not accept/reject'});
