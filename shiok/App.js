@@ -87,18 +87,18 @@ notificationFlow.navigationOptions = ({screenProps}) => {
 	return {
 		title: 'Notification',
 		tabBarIcon: ({tintColor}) => (
-			<View>
+			//<View>
 				<Ionicons
 					name = 'notifications-outline' 
 					size = {24} 
 					color = {tintColor}
 				/>
-				{screenProps.notiCount > 0 ?
+				/*{screenProps.notiCount > 0 ?
 				(<Badge 
 					value = {screenProps.notiCount}
 					containerStyle = {{position: 'absolute', top: -4, right: -4}}
 				/>) : null}
-			</View>
+			</View>*/
 		)
 	}
 }
@@ -144,7 +144,7 @@ const switchNavigator = createSwitchNavigator({
 const App = createAppContainer(switchNavigator);
 
 export default () => {
-	const [notiCount, setNotiCount] = useState(null);
+	/*const [notiCount, setNotiCount] = useState(null);
 	useEffect(() => {
 		(AuthAPI.get('/bookingnoti')).then(res => {
 			setNotiCount(res.data.length);
@@ -152,7 +152,7 @@ export default () => {
 			console.log('error');
 		});
 	}, [notiCount]);
-	if (notiCount) {
+	if (notiCount) {*/
 		return (
 			<BookingProvider>
 				<NotiProvider>
@@ -164,7 +164,7 @@ export default () => {
 										ref={(navigator) => {
 										setNavigator(navigator);
 										}}
-										screenProps = {{notiCount}}
+										//screenProps = {{notiCount}}
 									/>
 								</AuthProvider>
 							</LocationProvider>
@@ -173,7 +173,7 @@ export default () => {
 				</NotiProvider>
 			</BookingProvider>
 		);
-	} else {
+	/*} else {
 		return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
-	}
+	}*/
 };

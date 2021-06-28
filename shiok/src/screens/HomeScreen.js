@@ -58,7 +58,7 @@ const HomeScreen = ({navigation}) => {
         <View>
             <NavigationEvents onDidFocus = {() => {
                 fetchProfile();
-                //fetchBookingNoti();
+                fetchBookingNoti();
                 }}
             />
             <Header 

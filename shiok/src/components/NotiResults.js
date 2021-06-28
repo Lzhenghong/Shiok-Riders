@@ -57,9 +57,9 @@ const NotiResults = ({results}) => {
     return (
         <View>
             {
-                results.map(item => (
+                results.map((item, index) => (
                     <ListItem
-                        key = {item._id}
+                        key = {index}
                         bottomDivider 
                         topDivide
                         onPress = {onPress(item)}

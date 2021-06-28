@@ -1,7 +1,9 @@
 {
   "expo": {
-    "name": "shiok",
+    "name": "Shiok-Riders",
     "slug": "shiok",
+    "privacy": "public",
+    "description": "SG Hitch on an app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
