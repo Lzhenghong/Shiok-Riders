@@ -32,7 +32,7 @@ const HomeScreen = ({navigation}) => {
     const {state, setLocation} = useContext(LocationContext);
     const {state: profileState, fetchProfile} = useContext(ProfContext);
     const {state: listingState, fetchListing, clearErrorMessage} = useContext(ListingContext);
-    const {fetchBookingNoti} = useContext(NotiContext);
+    const {fetchOfferNoti} = useContext(NotiContext);
     const err = useLocation(setLocation);
     
     const searchAPI = geoSearch();
@@ -58,7 +58,7 @@ const HomeScreen = ({navigation}) => {
         <View>
             <NavigationEvents onDidFocus = {() => {
                 fetchProfile();
-                fetchBookingNoti();
+                //fetchOfferNoti();
                 }}
             />
             <Header 
@@ -104,7 +104,7 @@ const HomeScreen = ({navigation}) => {
                                 const [{error: originError, result: originResult}, {error: destError, result: destResult}] = res;
                                 if (originError || destError) {
                                     toggleErr();
-                                    setErrorMsg(originError);
+                                    setErrorMsg(originError ? originResult : destResult);
                                 } else {
                                     fetchListing({originObj: originResult[0], destObj: destResult[0], priceString: price, type: profileState.user.type})
                                         .then(res => {

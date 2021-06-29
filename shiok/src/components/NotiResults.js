@@ -9,9 +9,10 @@ import ResultOverlay from '../components/ResultOverlay';
 const NotiResults = ({results}) => {
     const [visible, setVisible] = useState(false);
     const [delVisible, setDelVisible] = useState(false);
+    const [readVisible, setReadVisible] = useState(false);
     const [noti, setNoti] = useState('');
     const [reload, setReload] = useState(false);
-    const {state, deleteNoti, fetchBookingNoti, clearErrorMessage} = useContext(NotiContext);
+    const {state, deleteNoti, fetchOfferNoti, readNoti, clearErrorMessage} = useContext(NotiContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -19,6 +20,10 @@ const NotiResults = ({results}) => {
 
     const toggleDelete = () => {
         setDelVisible(!delVisible);
+    };
+
+    const toggleRead = () => {
+        setReadVisible(!readVisible);
     };
 
     const formatDate = (dateobj) => {
@@ -42,16 +47,16 @@ const NotiResults = ({results}) => {
     const onPress = (item) => {
         switch (item.type) {
             case 'Offer':
-                return () => navigate('OfferDecision', {item});
+                return navigate('OfferDecision', {item});
             case 'Accept':
-                return () => navigate('OfferResult', {item});
+                return navigate('OfferResult', {item});
             case 'Reject':
-                return () => navigate('OfferResult', {item});
+                return navigate('OfferResult', {item});
         }
-    };  
+    }; 
 
     useEffect(() => {
-        fetchBookingNoti();
+        fetchOfferNoti();
     }, [reload]);
 
     return (
@@ -62,15 +67,25 @@ const NotiResults = ({results}) => {
                         key = {index}
                         bottomDivider 
                         topDivide
-                        onPress = {onPress(item)}
+                        onPress = {async () => {
+                            readNoti({item}).then(res => {
+                                if (!state.errorMessage) {
+                                    onPress(item);
+                                } else {
+                                    console.log(state.errorMessage);
+                                    toggleRead();
+                                }
+                            });
+                        }}
                         onLongPress = {() => {
                             setNoti(item);
                             toggleOverlay();
                         }}
                     >
+                        {item.read ? null :
                         <Badge 
                             status = 'primary'
-                        />
+                        />}
                         <ListItem.Content style = {{flex: 6}}>
                             <ListItem.Title style = {{fontWeight: 'bold'}}>
                                 {item.type}
@@ -128,6 +143,17 @@ const NotiResults = ({results}) => {
                 errorTitle = {state.errorMessage}
                 errorSubtitle = 'Please check your connection'
                 body = 'Notification deleted'
+            />
+            <ResultOverlay 
+                visible = {readVisible}
+                onPress = {() => {
+                    clearErrorMessage();
+                    toggleRead();
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = 'Please check your connection'
+                body = ''
             />
         </View>
     );

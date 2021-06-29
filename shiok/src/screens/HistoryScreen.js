@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {View, StyleSheet, ScrollView, Dimensions, Badge} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import NoHistory from '../components/NoHistory';
 import Header from '../components/Header';
@@ -36,6 +36,10 @@ const HistoryScreen = () => {
                                 bottomDivider 
                                 topDivide
                             >
+                                {item.read ? null :
+                                <Badge 
+                                    status = 'primary'
+                                />}
                                 <ListItem.Content style = {{flex: 6}}>
                                     <ListItem.Title style = {{fontWeight: 'bold'}}>
                                         {`${item.offer.origin} to ${item.offer.dest} for $${item.offer.price}`}

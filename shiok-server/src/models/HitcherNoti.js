@@ -24,6 +24,10 @@ const hitcherNotiSchema = new mongoose.Schema({
         origin: String,
         dest: String,
         price: String
+    },
+    read: {
+        type: Boolean,
+        default: false
     }
 });
 

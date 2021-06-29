@@ -31,7 +31,7 @@ router.post('/sendoffer', async(req, res) => {
     }
 });
 
-router.get('/bookingnoti', async(req, res) => {
+router.get('/offernoti', async(req, res) => {
     result = [];
     try {
         const docs = req.user.type == 'Driver' ? 
@@ -77,6 +77,16 @@ router.post('/deletenoti', async(req, res) => {
         res.send('success');
     } catch (err) {
         return res.status(422).send({error: 'Could not delete notification'});
+    }
+});
+
+router.post('/readnoti', async (req, res) => {
+    const {item} = req.body;
+    try {
+        req.user.type == 'Driver' ? await DriverNoti.findByIdAndUpdate({_id: item._id}, {read: true}) : await HitcherNoti.findByIdAndUpdate({_id: item._id}, {read: true});
+        res.send('success');
+    } catch (err) {
+        return res.status(422).send({error: 'Could not update notification'});
     }
 });
 

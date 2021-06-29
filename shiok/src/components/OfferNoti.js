@@ -9,11 +9,11 @@ import NotiResults from './NotiResults';
 const window = Dimensions.get('window');
 
 const OfferNoti = () => {
-    const {state, fetchBookingNoti} = useContext(NotiContext);
+    const {state, fetchOfferNoti} = useContext(NotiContext);
 
     return (
         <>
-            <NavigationEvents onDidFocus = {fetchBookingNoti}/>
+            <NavigationEvents onDidFocus = {fetchOfferNoti}/>
             {state.offer && state.offer.length > 0 ? 
             (<View>
                 <NotiResults 

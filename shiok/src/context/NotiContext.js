@@ -5,7 +5,7 @@ const notiReducer = (state, action) => {
     switch(action.type) {
         case 'add_error':
             return {...state, errorMessage: action.payload};
-        case 'fetch_bookingnoti':
+        case 'fetch_offernoti':
             return {...state, offer: action.payload}
         case 'clear_error_message':
             return {...state, errorMessage: action.payload};
@@ -25,11 +25,11 @@ const sendOffer = (dispatch) => async ({recipient, type, listing, offer}) => {
     }   
 };
 
-const fetchBookingNoti = (dispatch) => async () => {
+const fetchOfferNoti = (dispatch) => async () => {
     try {
-        const response = await AuthAPI.get('/bookingnoti');
+        const response = await AuthAPI.get('/offernoti');
         dispatch({
-            type: 'fetch_bookingnoti',
+            type: 'fetch_offernoti',
             payload: response.data
         });
     } catch (e) {
@@ -62,6 +62,17 @@ const deleteNoti = (dispatch) => async ({item}) => {
     }
 };
 
+const readNoti = (dispatch) => async ({item}) => {
+    try {
+        await AuthAPI.post('/readnoti', {item});
+    } catch (e) {
+        dispatch({
+            type: 'add_error',
+            payload: e.response.data.error
+        });
+    }
+};
+
 const clearErrorMessage = (dispatch) => () => {
     dispatch({
         type: 'clear_error_message',
@@ -71,6 +82,6 @@ const clearErrorMessage = (dispatch) => () => {
 
 export const {Context, Provider} = createDataContext(
     notiReducer,
-    {sendOffer, fetchBookingNoti, sendResult, deleteNoti, clearErrorMessage},
+    {sendOffer, fetchOfferNoti, sendResult, deleteNoti, readNoti, clearErrorMessage},
     {errorMessage: '', offer: null}
 );
