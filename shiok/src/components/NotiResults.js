@@ -1,10 +1,10 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {ListItem, Badge, Overlay, Text, Button} from 'react-native-elements';
+import {ListItem, Badge} from 'react-native-elements';
 import { navigate } from "../navigationRef";
-import {Entypo} from '@expo/vector-icons';
 import {Context as NotiContext} from '../context/NotiContext';
 import ResultOverlay from '../components/ResultOverlay';
+import DeleteOverlay from '../components/DeleteOverlay';
 
 const NotiResults = ({results}) => {
     const [visible, setVisible] = useState(false);
@@ -72,7 +72,6 @@ const NotiResults = ({results}) => {
                                 if (!state.errorMessage) {
                                     onPress(item);
                                 } else {
-                                    console.log(state.errorMessage);
                                     toggleRead();
                                 }
                             });
@@ -103,35 +102,20 @@ const NotiResults = ({results}) => {
                     </ListItem>
                 ))
             }
-            <Overlay 
+            <DeleteOverlay 
                 visible = {visible}
-                onBackdropPress = {() => toggleOverlay()}
-                overlayStyle = {styles.overlay}
-            >
-                <View style = {{alignItems: 'center'}}>
-                    <Entypo name = 'warning' size = {30} color = '#ffbf00'/> 
-                    <Text h3 style = {styles.text}>Delete this notification?</Text>
-                    <Text h4 style = {styles.subbody}>This action is irrevisible</Text>
-                    <View style = {{flexDirection: 'row'}}>
-                        <Button 
-                            title = 'Yes'
-                            buttonStyle = {styles.leftbutton}
-                            onPress = {() => {
-                                deleteNoti({item: noti})
-                                    .then(res => {
-                                        toggleOverlay();
-                                        toggleDelete();
-                                })
-                            }}
-                        />
-                        <Button 
-                            title = 'No'
-                            buttonStyle = {styles.rightbutton}
-                            onPress = {() => toggleOverlay()}
-                        />
-                    </View>
-                </View>
-            </Overlay>
+                onBackdrop = {() => toggleOverlay()}
+                text = 'Delete this notification?'
+                subbody = 'This action is irrevisible'
+                onYes = {() => {
+                    deleteNoti({item: noti})
+                        .then(res => {
+                            toggleOverlay();
+                            toggleDelete();
+                    })
+                }}
+                onNo = {() => toggleOverlay()}
+            />
             <ResultOverlay 
                 visible = {delVisible}
                 onPress = {() => {

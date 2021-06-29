@@ -1,20 +1,39 @@
-import React, {useState, useContext} from 'react';
-import {View, StyleSheet, ScrollView, Dimensions, Badge} from 'react-native';
-import {ListItem} from 'react-native-elements';
+import React, {useState, useContext, useEffect} from 'react';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import {ListItem, Badge} from 'react-native-elements';
 import NoHistory from '../components/NoHistory';
 import Header from '../components/Header';
 import { NavigationEvents } from 'react-navigation';
 import {Context as BookingContext} from '../context/BookingContext';
+import ResultOverlay from '../components/ResultOverlay';
+import DeleteOverlay from '../components/DeleteOverlay';
 
 const window = Dimensions.get('window');
 
 const HistoryScreen = () => {
-    const {state, fetchHistory} = useContext(BookingContext);
+    const [reload, setReload] = useState(false);
+    const [booking, setBooking] = useState(null);
+    const [visible, setVisible] = useState(false);
+    const [delVisible, setDelVisible] = useState(false);
+
+    const {state, fetchHistory, deleteRecord, clearErrorMessage} = useContext(BookingContext);
+
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
+
+    const toggleDelete = () => {
+        setDelVisible(!delVisible);
+    };
 
     const formatDate = (dateobj) => {
         const date = new Date(dateobj);
         return `${date.getDate()}/${date.getMonth() + 1}`;
-    }
+    };
+
+    useEffect(() => {
+        fetchHistory();
+    }, [reload]);
 
     return (
         <View>
@@ -35,6 +54,10 @@ const HistoryScreen = () => {
                                 key = {item._id}
                                 bottomDivider 
                                 topDivide
+                                onLongPress = {() => {
+                                    setBooking(item);
+                                    toggleOverlay();
+                                }}
                             >
                                 {item.read ? null :
                                 <Badge 
@@ -60,6 +83,32 @@ const HistoryScreen = () => {
                 </ScrollView>
             </View>)
             : <NoHistory/>}
+            <DeleteOverlay
+                visible = {visible}
+                onBackdrop = {() => toggleOverlay()}
+                text = 'Delete this record?'
+                subbody = 'This action is irrevisible'
+                onYes = {() => {
+                    deleteRecord({item: booking})
+                        .then(res => {
+                            toggleOverlay();
+                            toggleDelete();
+                    })
+                }}
+                onNo = {() => toggleOverlay()}
+            />
+            <ResultOverlay 
+                visible = {delVisible}
+                onPress = {() => {
+                    clearErrorMessage();
+                    toggleDelete();
+                    setReload(!reload);
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = 'Please check your connection'
+                body = 'Record deleted'
+            />
         </View>
     );
 };

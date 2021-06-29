@@ -7,6 +7,8 @@ const bookingReducer = (state, action) => {
             return {...state, errorMessage: action.payload};
         case 'fetch_history':
             return {history: action.payload};
+        case 'clear_error_message':
+            return {...state, errorMessage: action.payload};
         default:
             return state;
     }
@@ -27,8 +29,25 @@ const fetchHistory = (dispatch) => async () => {
     }
 };
 
+const deleteRecord = (dispatch) => async ({item}) => {
+    try {
+        await AuthAPI.post('/deletehistory', {item});
+    } catch (e) {
+        dispatch({
+            type: 'add_error',
+            payload: e.response.data.error
+        });
+    }
+};
+
+const clearErrorMessage = (dispatch) => () => {
+    dispatch({
+        type: 'clear_error_message',
+        payload: ''
+    });
+};
 export const {Context, Provider} = createDataContext(
     bookingReducer,
-    {fetchHistory},
+    {fetchHistory, deleteRecord, clearErrorMessage},
     {errorMessage: '', history: null}
 );
