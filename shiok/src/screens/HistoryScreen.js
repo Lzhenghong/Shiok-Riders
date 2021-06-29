@@ -7,10 +7,11 @@ import { NavigationEvents } from 'react-navigation';
 import {Context as BookingContext} from '../context/BookingContext';
 import ResultOverlay from '../components/ResultOverlay';
 import DeleteOverlay from '../components/DeleteOverlay';
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 const window = Dimensions.get('window');
 
-const HistoryScreen = () => {
+const HistoryScreen = ({navigation}) => {
     const [reload, setReload] = useState(false);
     const [booking, setBooking] = useState(null);
     const [visible, setVisible] = useState(false);
@@ -31,9 +32,9 @@ const HistoryScreen = () => {
         return `${date.getDate()}/${date.getMonth() + 1}`;
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         fetchHistory();
-    }, [reload]);
+    }, [reload]);*/
 
     return (
         <View>
@@ -49,11 +50,12 @@ const HistoryScreen = () => {
             (<View style = {{height: window.height, width: window.width}}>
                 <ScrollView>
                     {
-                        state.history.map(item => (
+                        state.history.map((item, index) => (
                             <ListItem
-                                key = {item._id}
+                                key = {index}
                                 bottomDivider 
                                 topDivide
+                                onPress = {() => navigation.navigate('HistoryDetail', {item})}
                                 onLongPress = {() => {
                                     setBooking(item);
                                     toggleOverlay();

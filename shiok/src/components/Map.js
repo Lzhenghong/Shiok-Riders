@@ -1,7 +1,9 @@
 import React, {useContext} from 'react';
-import {StyleSheet, ActivityIndicator} from 'react-native';
+import {StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
 import MapView, {Circle} from 'react-native-maps';
 import {Context as LocationContext} from '../context/LocationContext';
+
+const window = Dimensions.get('window');
 
 const Map = () => {
     const {state} = useContext(LocationContext);
@@ -34,7 +36,7 @@ const Map = () => {
 
 const styles = StyleSheet.create({
     map: {
-        height: 540
+        height: window.height * 0.6
     }
 });
 

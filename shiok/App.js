@@ -21,6 +21,7 @@ import SubmitOfferScreen from './src/screens/SubmitOfferScreen';
 import NotificationScreen from './src/screens/NotificationScreen';
 import OfferDecisionScreen from './src/screens/OfferDecisionScreen';
 import OfferResultScreen from './src/screens/OfferResultScreen';
+import HistoryDetailScreen from './src/screens/HistoryDetailScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -50,7 +51,8 @@ bookingFlow.navigationOptions = () => {
 };
 
 const historyFlow = createStackNavigator({
-	History: HistoryScreen
+	History: HistoryScreen,
+	HistoryDetail: HistoryDetailScreen
 });
 
 historyFlow.navigationOptions = () => {

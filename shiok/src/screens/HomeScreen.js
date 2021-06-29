@@ -15,7 +15,6 @@ import Header from '../components/Header';
 import geoSearch from '../hooks/geoSearch';
 import reverseGeoSearch from '../hooks/reverseGeoSearch';
 import Overlay from '../components/Overlay';
-import {Context as NotiContext} from '../context/NotiContext';
 
 const window = Dimensions.get('window');
 
@@ -32,7 +31,6 @@ const HomeScreen = ({navigation}) => {
     const {state, setLocation} = useContext(LocationContext);
     const {state: profileState, fetchProfile} = useContext(ProfContext);
     const {state: listingState, fetchListing, clearErrorMessage} = useContext(ListingContext);
-    const {fetchOfferNoti} = useContext(NotiContext);
     const err = useLocation(setLocation);
     
     const searchAPI = geoSearch();
@@ -58,7 +56,6 @@ const HomeScreen = ({navigation}) => {
         <View>
             <NavigationEvents onDidFocus = {() => {
                 fetchProfile();
-                //fetchOfferNoti();
                 }}
             />
             <Header 
