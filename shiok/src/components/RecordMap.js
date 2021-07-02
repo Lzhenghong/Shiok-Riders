@@ -19,6 +19,7 @@ const RecordMap = ({origin, dest}) => {
             >
                 <Marker
                     coordinate = {{latitude: origin.latitude, longitude: origin.longitude}}
+                    pinColor = 'green'
                 />
                 <Marker
                     coordinate = {{latitude: dest.latitude, longitude: dest.longitude}}
@@ -30,7 +31,8 @@ const RecordMap = ({origin, dest}) => {
 
 const styles = StyleSheet.create({
     map: {
-        height: window.height * 0.25
+        height: window.height * 0.25,
+        marginVertical: 10  
     }
 });
 

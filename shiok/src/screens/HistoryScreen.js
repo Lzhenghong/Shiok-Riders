@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import {ListItem, Badge} from 'react-native-elements';
 import NoHistory from '../components/NoHistory';
 import Header from '../components/Header';
@@ -7,7 +7,6 @@ import { NavigationEvents } from 'react-navigation';
 import {Context as BookingContext} from '../context/BookingContext';
 import ResultOverlay from '../components/ResultOverlay';
 import DeleteOverlay from '../components/DeleteOverlay';
-import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 const window = Dimensions.get('window');
 
@@ -32,6 +31,54 @@ const HistoryScreen = ({navigation}) => {
         return `${date.getDate()}/${date.getMonth() + 1}`;
     };
 
+    const render = () => {
+        if (!state.history) {
+            return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
+        } else if (state.history.length == 0) {
+            return <NoHistory/>;
+        } else {
+            return (
+                <View style = {{height: window.height, width: window.width}}>
+                    <ScrollView>
+                        {
+                            state.history.map((item, index) => (
+                                <ListItem
+                                    key = {index}
+                                    bottomDivider 
+                                    topDivide
+                                    onPress = {() => navigation.navigate('HistoryDetail', {item})}
+                                    onLongPress = {() => {
+                                        setBooking(item);
+                                        toggleOverlay();
+                                    }}
+                                >
+                                    {item.read ? null :
+                                    <Badge 
+                                        status = 'primary'
+                                    />}
+                                    <ListItem.Content style = {{flex: 6}}>
+                                        <ListItem.Title style = {{fontWeight: 'bold'}}>
+                                            {`${item.offer.origin} to ${item.offer.dest} for $${item.offer.price}`}
+                                        </ListItem.Title>
+                                        <ListItem.Subtitle>
+                                            {`${item.client.username}`}
+                                        </ListItem.Subtitle>
+                                    </ListItem.Content>
+                                    <ListItem.Content style = {{flex: 1, alignItems: 'flex-end'}}>
+                                        <ListItem.Subtitle style = {{fontWeight: 'bold'}}>
+                                            {formatDate(item.createdAt)}
+                                        </ListItem.Subtitle>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron />
+                                </ListItem>
+                            ))
+                        }
+                    </ScrollView>
+                </View>
+            );
+        }
+    };
+
     /*useEffect(() => {
         fetchHistory();
     }, [reload]);*/
@@ -46,45 +93,7 @@ const HistoryScreen = ({navigation}) => {
                 backNav = {false}
                 marginBottom = {-1}
             />
-            {state.history && state.history.length > 0 ?
-            (<View style = {{height: window.height, width: window.width}}>
-                <ScrollView>
-                    {
-                        state.history.map((item, index) => (
-                            <ListItem
-                                key = {index}
-                                bottomDivider 
-                                topDivide
-                                onPress = {() => navigation.navigate('HistoryDetail', {item})}
-                                onLongPress = {() => {
-                                    setBooking(item);
-                                    toggleOverlay();
-                                }}
-                            >
-                                {item.read ? null :
-                                <Badge 
-                                    status = 'primary'
-                                />}
-                                <ListItem.Content style = {{flex: 6}}>
-                                    <ListItem.Title style = {{fontWeight: 'bold'}}>
-                                        {`${item.offer.origin} to ${item.offer.dest} for $${item.offer.price}`}
-                                    </ListItem.Title>
-                                    <ListItem.Subtitle>
-                                        {`${item.client.username}`}
-                                    </ListItem.Subtitle>
-                                </ListItem.Content>
-                                <ListItem.Content style = {{flex: 1, alignItems: 'flex-end'}}>
-                                    <ListItem.Subtitle style = {{fontWeight: 'bold'}}>
-                                        {formatDate(item.createdAt)}
-                                    </ListItem.Subtitle>
-                                </ListItem.Content>
-                                <ListItem.Chevron />
-                            </ListItem>
-                        ))
-                    }
-                </ScrollView>
-            </View>)
-            : <NoHistory/>}
+            {render()}
             <DeleteOverlay
                 visible = {visible}
                 onBackdrop = {() => toggleOverlay()}

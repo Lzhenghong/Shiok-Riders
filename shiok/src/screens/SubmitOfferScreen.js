@@ -53,7 +53,6 @@ const SubmitOfferScreen = ({navigation}) => {
                 value = {origin}
                 placeholder = {item.origin.name}
                 onChangeText = {setOrigin}
-                autoCapitalize = 'none'
                 autoCorrect = {false}
             />
             <Input 
@@ -62,7 +61,6 @@ const SubmitOfferScreen = ({navigation}) => {
                 value = {dest}
                 placeholder = {item.dest.name}
                 onChangeText = {setDest}
-                autoCapitalize = 'none'
                 autoCorrect = {false}
             />
             <Input 

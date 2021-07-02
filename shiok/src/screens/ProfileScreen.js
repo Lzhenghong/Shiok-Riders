@@ -26,14 +26,14 @@ const ProfileScreen = ({navigation}) => {
                     marginBottom = {-1}
                 />
                 <Spacer />
-                    <Icon
-                        name = 'user'
-                        type = 'evilicon'
-                        color = '#CCCCCC'
-                        size = {150}
-                        containerStyle = {styles.icon}
-                        reverse = {true}
-                    />
+                <Icon
+                    name = 'user'
+                    type = 'evilicon'
+                    color = '#CCCCCC'
+                    size = {150}
+                    containerStyle = {styles.icon}
+                    reverse = {true}
+                />
                 <View style = {{flexDirection: 'row'}}>
                     <Text h4 style = {styles.profileLeft}>Username: </Text>
                     {state.user.username 
