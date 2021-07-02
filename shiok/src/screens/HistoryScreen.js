@@ -15,8 +15,9 @@ const HistoryScreen = ({navigation}) => {
     const [booking, setBooking] = useState(null);
     const [visible, setVisible] = useState(false);
     const [delVisible, setDelVisible] = useState(false);
+    const [readVisible, setReadVisible] = useState(false);
 
-    const {state, fetchHistory, deleteRecord, clearErrorMessage} = useContext(BookingContext);
+    const {state, fetchHistory, deleteRecord, readRecord, clearErrorMessage} = useContext(BookingContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -24,6 +25,10 @@ const HistoryScreen = ({navigation}) => {
 
     const toggleDelete = () => {
         setDelVisible(!delVisible);
+    };
+
+    toggleRead = () => {
+        setReadVisible(!readVisible);
     };
 
     const formatDate = (dateobj) => {
@@ -46,7 +51,15 @@ const HistoryScreen = ({navigation}) => {
                                     key = {index}
                                     bottomDivider 
                                     topDivide
-                                    onPress = {() => navigation.navigate('HistoryDetail', {item})}
+                                    onPress = {async () => {
+                                        readRecord({item}).then(res => {
+                                            if (!state.errorMessage) {
+                                                navigation.navigate('HistoryDetail', {item});
+                                            } else {
+                                                toggleRead();
+                                            }
+                                        });
+                                    }}
                                     onLongPress = {() => {
                                         setBooking(item);
                                         toggleOverlay();
@@ -79,9 +92,9 @@ const HistoryScreen = ({navigation}) => {
         }
     };
 
-    /*useEffect(() => {
+        useEffect(() => {
         fetchHistory();
-    }, [reload]);*/
+    }, [reload]);
 
     return (
         <View>
@@ -119,6 +132,17 @@ const HistoryScreen = ({navigation}) => {
                 errorTitle = {state.errorMessage}
                 errorSubtitle = 'Please check your connection'
                 body = 'Record deleted'
+            />
+            <ResultOverlay 
+                visible = {readVisible}
+                onPress = {() => {
+                    clearErrorMessage();
+                    toggleRead();
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = 'Please check your connection'
+                body = ''
             />
         </View>
     );

@@ -35,8 +35,10 @@ router.get('/offernoti', async(req, res) => {
     result = [];
     try {
         const docs = req.user.type == 'Driver' ? 
-            await DriverNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender') : 
-            await HitcherNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]}).populate('sender');
+            await DriverNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]})
+                .populate('sender').sort({createdAt: 'desc'}) : 
+            await HitcherNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]})
+                .populate('sender').sort({createdAt: 'desc'});
         docs.map(doc => {
             result.push(doc);
         });
