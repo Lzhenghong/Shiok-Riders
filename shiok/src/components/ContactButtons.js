@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Linking} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
-import Communciations from 'react-native-communications';
+import Communications from 'react-native-communications';
 import Spacer from '../components/Spacer';
 import {FontAwesome} from '@expo/vector-icons';
 import {EvilIcons} from '@expo/vector-icons';
@@ -24,7 +24,7 @@ const ContactButtons = ({item}) => {
                             color = 'white'
                         />
                     }
-                    onPress = {() => Communciations.text(item.lister.phoneNumber, '')}
+                    onPress = {() => Communications.textWithoutEncoding(item.lister.phoneNumber, '')}
                 />
                 <Button 
                     title = 'Call'
@@ -37,7 +37,7 @@ const ContactButtons = ({item}) => {
                             color = 'white'
                         />
                     }
-                    onPress = {() => Communciations.phonecall(item.lister.phoneNumber, true)}
+                    onPress = {() => Communications.phonecall(item.lister.phoneNumber, true)}
                 />
             </View>
             <Spacer />

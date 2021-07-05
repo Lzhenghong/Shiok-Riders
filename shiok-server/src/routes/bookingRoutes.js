@@ -5,6 +5,8 @@ const HitcherBooking = mongoose.model('HitcherBooking');
 const DriverBooking = mongoose.model('DriverBooking');
 const Driver = mongoose.model('Driver');
 const Hitcher = mongoose.model('Hitcher');
+const HitcherNoti = mongoose.model('hitcherNoti');
+const DriverNoti = mongoose.model('driverNoti');
 
 const router = express.Router();
 
@@ -61,7 +63,24 @@ router.post('/rate', async (req, res) => {
     } catch (err) {
         return res.status(422).send({error: 'Could not update rating'});
     }
-})
+});
+
+router.post('/addfriend', async (req, res) => {
+    const {client} = req.body;
+    try {
+        const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : await Driver.findById({_id: req.user._id});
+        if (user.friends.has(client._id.toString())) {
+            return res.status(422).send({error: 'Existing friend'});
+        }
+        user.friends.set(client._id.toString(), client._id);
+        req.user.type == 'Hitcher' ? await Hitcher.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends}) : await Driver.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends});
+        const noti = (req.user.type == 'Hitcher') ? new DriverNoti({recipient: client._id, sender: req.user._id, type: 'Friend'}) : new HitcherNoti({recipient: client._id, sender: req.user._id, type: 'Friend'});
+        await noti.save();
+        res.send('success');
+    } catch (err) {
+        return res.status(422).send({error: 'Could not add friend'});
+    }
+});
 
 module.exports = router;
 

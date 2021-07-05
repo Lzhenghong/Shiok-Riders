@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Button, PricingCard } from 'react-native-elements';
 import Overlay from '../components/ResultOverlay';
 import Header from '../components/Header';
-import Communciations from 'react-native-communications';
+import Communications from 'react-native-communications';
 import Spacer from '../components/Spacer';
 import TwinButtons from '../components/TwinButtons';
 import {Context as NotiContext} from '../context/NotiContext';
@@ -37,7 +37,7 @@ OfferDecisionScreen = ({navigation}) => {
                     <Button 
                         title = 'Message Lister' 
                         buttonStyle = {styles.button} 
-                        onPress = {() => Communciations.text(item.sender.phoneNumber, '')}
+                        onPress = {() => Communications.textWithoutEncoding(item.sender.phoneNumber, '')}
                     />}
             />  
             <Spacer>
@@ -64,7 +64,7 @@ OfferDecisionScreen = ({navigation}) => {
                     if (state.errorMessage) {
                         navigation.navigate('Notification');
                     } else {
-                        Communciations.text(item.sender.phoneNumber,
+                        Communications.textWithoutEncoding(item.sender.phoneNumber,
                             `I have ${outcome} your offer from ${item.offer.origin} to ${item.offer.dest} for $${item.offer.price}`);
                         navigation.navigate('Notification');
                     }

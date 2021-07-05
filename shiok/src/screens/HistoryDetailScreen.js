@@ -18,8 +18,9 @@ const HistoryDetailScreen = ({navigation}) => {
     const [rating, setRating] = useState(0);
     const [rateVisible, setRateVisible] = useState(false);
     const [errVisible, setErrVisible] = useState(false);
+    const [friendVisible, setFriendVisible] = useState(false);
 
-    const {state, rateClient, clearErrorMessage} = useContext(BookingContext);
+    const {state, rateClient, addFriend, clearErrorMessage} = useContext(BookingContext);
 
     const toggleRating = () => {
         setRateVisible(!rateVisible);
@@ -29,11 +30,24 @@ const HistoryDetailScreen = ({navigation}) => {
         setErrVisible(!errVisible);
     };
 
+    const toggleFriend = () => {
+        setFriendVisible(!friendVisible);
+    };
+
     const searchAPI = geoSearch();
 
     const formatDate = (dateobj) => {
         const date = new Date(dateobj);
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
+    };
+
+    const errSubtitle = () => {
+        switch (state.errorMessage) {
+            case 'Existing friend':
+                return 'This user had been added previously';
+            default:
+                return 'Please check your connection';
+        }
     };
 
     return (
@@ -73,6 +87,11 @@ const HistoryDetailScreen = ({navigation}) => {
             <Spacer>
                 <Button 
                     title = 'Add Friend'
+                    callback = {async () => {
+                        addFriend({client: item.client}).then(res => {
+                            toggleFriend();
+                        });
+                    }}
                 />
             </Spacer>
             {origin && dest ? 
@@ -136,8 +155,19 @@ const HistoryDetailScreen = ({navigation}) => {
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}
-                errorSubtitle = 'Please check your connection'
+                errorSubtitle = {errSubtitle()}
                 body = 'Your rating is submitted'
+            />
+            <ResultOverlay 
+                visible = {friendVisible}
+                onPress = {() => {
+                    clearErrorMessage();
+                    toggleFriend();
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = {errSubtitle()}
+                body = 'You have added this user'
             />
         </View>
     );

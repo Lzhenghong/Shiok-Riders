@@ -62,6 +62,17 @@ const rateClient = (dispatch) => async ({item, rating}) => {
     }
 };
 
+const addFriend = (dispatch) => async ({client}) => {
+    try {
+        await AuthAPI.post('/addfriend', {client});
+    } catch (e) {
+        dispatch({
+            type: 'add_error',
+            payload: e.response.data.error
+        });
+    }
+};
+
 const clearErrorMessage = (dispatch) => () => {
     dispatch({
         type: 'clear_error_message',
@@ -70,6 +81,6 @@ const clearErrorMessage = (dispatch) => () => {
 };
 export const {Context, Provider} = createDataContext(
     bookingReducer,
-    {fetchHistory, deleteRecord, readRecord, rateClient, clearErrorMessage},
+    {fetchHistory, deleteRecord, readRecord, rateClient, addFriend, clearErrorMessage},
     {errorMessage: '', history: null}
 );

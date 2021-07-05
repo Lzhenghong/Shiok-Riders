@@ -33,8 +33,9 @@ const hitcherSchema = new mongoose.Schema({
 		default: {"average": 0, "len": 0}
 	},
 	friends: {
-		type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Driver'}],
-		default: []
+		type: Map,
+		of: {type: mongoose.Schema.Types.ObjectId, ref: 'Driver'},
+		default: {}
 	}
 });
 

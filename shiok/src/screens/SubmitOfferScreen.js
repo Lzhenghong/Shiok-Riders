@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Header, Button, Input} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
-import Communciations from 'react-native-communications';
+import Communications from 'react-native-communications';
 import {Context as NotiContext} from '../context/NotiContext';
 import Overlay from '../components/ResultOverlay';
 
@@ -93,7 +93,7 @@ const SubmitOfferScreen = ({navigation}) => {
                     if (state.errorMessage) {
                         navigation.navigate('Home');
                     } else {
-                        Communciations.text(item.lister.phoneNumber,
+                        Communications.textWithoutEncoding(item.lister.phoneNumber,
                             `I would like to send you an offer on Shiok-Riders: from ${finalOrigin} to ${finalDest} for $${finalPrice}`);
                         navigation.navigate('Home'); 
                     } 
