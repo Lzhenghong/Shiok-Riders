@@ -1,17 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {Tab } from 'react-native-elements';
 import OfferNoti from '../components/OfferNoti';
 import FriendNoti from '../components/FriendNoti';
 import Header from '../components/Header';
+import { NavigationEvents } from 'react-navigation';
+import {Context as NotiContext} from '../context/NotiContext';
 
 const window = Dimensions.get('window');
 
 const NotificationScreen = () => {
     const [index, setIndex] = useState(0);
+    const {fetchOfferNoti} = useContext(NotiContext);
 
     return (
         <View>
+            <NavigationEvents onDidFocus = {() => fetchOfferNoti()}/>
             <Header 
                 title = 'Notification'
                 backNav = {false}

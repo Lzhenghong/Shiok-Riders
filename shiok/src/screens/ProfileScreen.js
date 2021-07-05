@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Text, Icon} from 'react-native-elements';
+import {Text, Icon, Rating} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
 import {Context as ProfContext} from '../context/ProfileContext';
@@ -30,10 +30,17 @@ const ProfileScreen = ({navigation}) => {
                     name = 'user'
                     type = 'evilicon'
                     color = '#CCCCCC'
-                    size = {150}
+                    size = {100}
                     containerStyle = {styles.icon}
                     reverse = {true}
                 />
+                <Rating
+                    startingValue = {state.user.rating.average}
+                    size = {50}
+                    readOnly = {true}
+                    tintColor = '#f2f3f5'
+                />
+                <Spacer />
                 <View style = {{flexDirection: 'row'}}>
                     <Text h4 style = {styles.profileLeft}>Username: </Text>
                     {state.user.username 

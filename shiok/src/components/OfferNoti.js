@@ -2,14 +2,13 @@ import React, {useContext} from 'react';
 import {View, StyleSheet, Dimensions, ActivityIndicator} from 'react-native';
 import {Text} from 'react-native-elements';
 import {Feather} from '@expo/vector-icons';
-import { NavigationEvents } from 'react-navigation';
 import {Context as NotiContext} from '../context/NotiContext';
 import NotiResults from './NotiResults';
 
 const window = Dimensions.get('window');
 
 const OfferNoti = () => {
-    const {state, fetchOfferNoti} = useContext(NotiContext);
+    const {state} = useContext(NotiContext);
 
     const render = () => {
         if (!state.offer) {
@@ -34,7 +33,6 @@ const OfferNoti = () => {
 
     return (
         <>
-            <NavigationEvents onDidFocus = {fetchOfferNoti}/>
             {render()}
         </>
     );

@@ -30,7 +30,7 @@ OfferDecisionScreen = ({navigation}) => {
                 color = '#FF8400'
                 title = 'Offer Details'
                 price = {'$'.concat(item.offer.price)}
-                info = {[`From: ${item.offer.origin}`, `To: ${item.offer.dest}`, `By: ${item.sender.username}`, 
+                info = {[`From: ${item.offer.origin}`, `To: ${item.offer.dest}`, `By: ${item.sender.username}`, `Rating: ${item.sender.rating.average}/5`,
                     `Phone: ${item.sender.phoneNumber}`, `Telehandle: @${item.sender.teleHandle}`
                 ]}
                 button = {

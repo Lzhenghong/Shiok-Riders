@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text, Header, Button, Icon} from 'react-native-elements';
+import {Text, Header, Button, Icon, Rating} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 import ContactButtons from '../components/ContactButtons';
@@ -21,10 +21,17 @@ const ListingDetailsScreen = ({navigation}) => {
                 name = 'user'
                 type = 'evilicon'
                 color = '#CCCCCC'
-                size = {150}
+                size = {100}
                 containerStyle = {styles.icon}
                 reverse = {true}
             />
+            <Rating
+                    startingValue = {item.lister.rating.average}
+                    size = {50}
+                    readOnly = {true}
+                    tintColor = '#f2f3f5'
+                />
+            <Spacer />
             <View style = {{flexDirection: 'row'}}>
                 <Text h4 style = {styles.profileLeft}>Username: </Text>
                 {item.lister.username 

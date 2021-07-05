@@ -51,6 +51,17 @@ const readRecord = (dispatch) => async ({item}) => {
     }
 };
 
+const rateClient = (dispatch) => async ({item, rating}) => {
+    try {
+        await AuthAPI.post('/rate', {item, rating});
+    } catch (e) {
+        dispatch({
+            type: 'add_error',
+            payload: e.response.data.error
+        });
+    }
+};
+
 const clearErrorMessage = (dispatch) => () => {
     dispatch({
         type: 'clear_error_message',
@@ -59,6 +70,6 @@ const clearErrorMessage = (dispatch) => () => {
 };
 export const {Context, Provider} = createDataContext(
     bookingReducer,
-    {fetchHistory, deleteRecord, readRecord, clearErrorMessage},
+    {fetchHistory, deleteRecord, readRecord, rateClient, clearErrorMessage},
     {errorMessage: '', history: null}
 );

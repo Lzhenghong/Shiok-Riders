@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const requireAuth = require("../middlewares/requireAuth");
 const HitcherBooking = mongoose.model('HitcherBooking');
 const DriverBooking = mongoose.model('DriverBooking');
+const Driver = mongoose.model('Driver');
+const Hitcher = mongoose.model('Hitcher');
 
 const router = express.Router();
 
@@ -42,6 +44,24 @@ router.post('/readhistory', async (req, res) => {
         return res.status(422).send({error: 'Could not update record'});
     }
 });
+
+router.post('/rate', async (req, res) => {
+    const {item, rating} = req.body;
+    try {
+        req.user.type == 'Hitcher' ? 
+            await HitcherBooking.findByIdAndUpdate({_id: item._id}, {rated: true}) : 
+            await DriverBooking.findByIdAndUpdate({_id: item._id}, {rated: true});
+        const client = item.client.type == 'Hitcher' ? await Hitcher.findById({_id: item.client._id}) : await Driver.findById({_id: item.client._id});
+        const newLen = client.rating.get('len') + 1;
+        const newAverage = (client.rating.get('average') + rating) / newLen;
+        item.client.type == 'Hitcher' ?
+            await Hitcher.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAverage, 'len': newLen}}) :
+            await Driver.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAverage, 'len': newLen}});
+        res.send('success');
+    } catch (err) {
+        return res.status(422).send({error: 'Could not update rating'});
+    }
+})
 
 module.exports = router;
 

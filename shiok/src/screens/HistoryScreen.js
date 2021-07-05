@@ -3,10 +3,10 @@ import {View, StyleSheet, ScrollView, Dimensions, ActivityIndicator} from 'react
 import {ListItem, Badge} from 'react-native-elements';
 import NoHistory from '../components/NoHistory';
 import Header from '../components/Header';
-import { NavigationEvents } from 'react-navigation';
 import {Context as BookingContext} from '../context/BookingContext';
 import ResultOverlay from '../components/ResultOverlay';
 import DeleteOverlay from '../components/DeleteOverlay';
+import { NavigationEvents } from 'react-navigation';
 
 const window = Dimensions.get('window');
 
@@ -52,6 +52,7 @@ const HistoryScreen = ({navigation}) => {
                                     bottomDivider 
                                     topDivide
                                     onPress = {async () => {
+                                        setReload(!reload);
                                         readRecord({item}).then(res => {
                                             if (!state.errorMessage) {
                                                 navigation.navigate('HistoryDetail', {item});
@@ -92,15 +93,13 @@ const HistoryScreen = ({navigation}) => {
         }
     };
 
-        useEffect(() => {
+    useEffect(() => {
         fetchHistory();
     }, [reload]);
 
     return (
         <View>
-            <NavigationEvents onDidFocus = {() => {
-                fetchHistory();
-            }}/>
+            <NavigationEvents onDidFocus = {() => setReload(!reload)}/>
             <Header 
                 title = 'History'
                 backNav = {false}

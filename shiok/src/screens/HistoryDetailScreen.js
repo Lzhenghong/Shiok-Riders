@@ -1,18 +1,33 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Badge, Text, Icon} from 'react-native-elements';
+import {Badge, Text, Icon, AirbnbRating, Overlay} from 'react-native-elements';
 import Header from '../components/Header';
 import geoSearch from '../hooks/geoSearch';
 import { NavigationEvents } from 'react-navigation';
 import RecordMap from '../components/RecordMap';
 import Spacer from '../components/Spacer';
 import Button from '../components/ShiokButton';
+import {Context as BookingContext} from '../context/BookingContext';
+import ResultOverlay from '../components/ResultOverlay';
 
 const HistoryDetailScreen = ({navigation}) => {
     const item = navigation.getParam('item');
 
     const [origin, setOrigin] = useState(null);
     const [dest, setDest] = useState(null);
+    const [rating, setRating] = useState(0);
+    const [rateVisible, setRateVisible] = useState(false);
+    const [errVisible, setErrVisible] = useState(false);
+
+    const {state, rateClient, clearErrorMessage} = useContext(BookingContext);
+
+    const toggleRating = () => {
+        setRateVisible(!rateVisible);
+    };
+
+    const toggleErr = () => {
+        setErrVisible(!errVisible);
+    };
 
     const searchAPI = geoSearch();
 
@@ -25,6 +40,9 @@ const HistoryDetailScreen = ({navigation}) => {
         <View>
             <NavigationEvents 
                 onDidFocus = {async () => {
+                    if (!item.rated) {
+                        toggleRating();
+                    }
                     const promises = [await searchAPI(item.offer.origin, 1), await searchAPI(item.offer.dest, 1)];
                     Promise.all(promises).then(res => {
                         const [{error: originError, result: originResult}, {error: destError, result: destResult}] = res;
@@ -58,36 +76,69 @@ const HistoryDetailScreen = ({navigation}) => {
                 />
             </Spacer>
             {origin && dest ? 
-            (<>
-                <RecordMap 
-                    origin = {origin}
-                    dest = {dest}
-                />
-                <View style = {{flexDirection: 'row'}}>
+            (<RecordMap 
+                origin = {origin}
+                dest = {dest}
+            />) : 
+            <ActivityIndicator size = 'large' style = {{marginTop: 20}} />} 
+            <View style = {{flexDirection: 'row'}}>
                     <Badge 
                         status = 'success' 
                         containerStyle = {styles.badge}
                     />
                     <Text h4>{`From: ${item.offer.origin}`}</Text>
-                </View> 
-                <Spacer />
-                <View style = {{flexDirection: 'row'}}>
-                    <Badge 
-                        status = 'error' 
-                        containerStyle = {styles.badge}
+            </View> 
+            <Spacer />
+            <View style = {{flexDirection: 'row'}}>
+                <Badge 
+                    status = 'error' 
+                    containerStyle = {styles.badge}
+                />
+                <Text h4>{`To: ${item.offer.dest}`}</Text>
+            </View>
+            <Spacer />
+            <View style = {{flexDirection: 'row'}}>
+                <Badge 
+                    status = 'warning' 
+                    containerStyle = {styles.badge}
+                />
+                <Text h4>{`For: $${item.offer.price}`}</Text>
+            </View>
+            <Overlay 
+                isVisible = {rateVisible}
+                onBackdropPress = {() => toggleRating()}
+                overlayStyle = {styles.overlay}
+            >
+                <View style = {{alignItems: 'center'}}>
+                    <AirbnbRating 
+                        count = {5}
+                        defaultRating = {5}
+                        size = {50}
+                        onFinishRating = {(rating) => setRating(rating)}
                     />
-                    <Text h4>{`To: ${item.offer.dest}`}</Text>
-                </View>
-                <Spacer />
-                <View style = {{flexDirection: 'row'}}>
-                    <Badge 
-                        status = 'warning' 
-                        containerStyle = {styles.badge}
+                    <Spacer />
+                    <Button 
+                        title = 'Done'
+                        callback = {async () => {
+                            rateClient({item, rating}).then(res => {
+                                toggleRating();
+                                toggleErr();
+                            });
+                        }}
                     />
-                    <Text h4>{`For: $${item.offer.price}`}</Text>
                 </View>
-            </>) : 
-            <ActivityIndicator size = 'large' style = {{marginTop: 20}} />} 
+            </Overlay>
+            <ResultOverlay 
+                visible = {errVisible}
+                onPress = {() => {
+                    clearErrorMessage();
+                    toggleErr();
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = 'Please check your connection'
+                body = 'Your rating is submitted'
+            />
         </View>
     );
 };
@@ -109,7 +160,19 @@ const styles = StyleSheet.create({
     },
     client: {
         marginLeft: 10
-    }
+    },
+    overlay: {
+        height: 200,
+        alignSelf: 'center',
+        justifyContent: 'center'
+    },
+    button: {
+        backgroundColor: '#FF8400',
+        borderRadius: 20,
+        alignSelf: 'center',
+        width: 387.5,
+        marginVertical: 5
+    },
 });
 
 export default HistoryDetailScreen;
