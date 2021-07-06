@@ -9,11 +9,14 @@ const window = Dimensions.get('window');
 
 const OfferNoti = () => {
     const {state} = useContext(NotiContext);
+    const offerNoti = state.noti.filter(item => {
+        return (item.type == 'Offer' || item.type == 'Accept' || item.type == 'Reject');
+    });
 
     const render = () => {
-        if (!state.offer) {
+        if (!state.noti) {
             return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
-        } else if (state.offer.length == 0) {
+        } else if (offerNoti.length == 0) {
             return (
                 <View style = {styles.icon}>
                     <Feather name = 'list' size = {200} color = '#b5b3b3'/>
@@ -24,9 +27,7 @@ const OfferNoti = () => {
             return (
                 <View>
                     <NotiResults 
-                        results = {state.offer.filter(item => {
-                            return (item.type == 'Offer' || item.type == 'Accept' || item.type == 'Reject');
-                        })}
+                        results = {offerNoti}
                     />
                 </View>
             );

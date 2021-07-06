@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
 
     const { userId } = payload;
 
-    const user = (type == 'Hitcher') ? await Hitcher.findById(userId) : await Driver.findById(userId);
+    const user = (type == 'Hitcher') ? await Hitcher.findById(userId).populate('friends') : await Driver.findById(userId).populate('friends');
     req.user = user;
     next();
   });

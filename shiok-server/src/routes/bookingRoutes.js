@@ -68,7 +68,7 @@ router.post('/rate', async (req, res) => {
 router.post('/addfriend', async (req, res) => {
     const {client} = req.body;
     try {
-        const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : await Driver.findById({_id: req.user._id});
+        const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : Driver.findById({_id: req.user._id}); 
         if (user.friends.has(client._id.toString())) {
             return res.status(422).send({error: 'Existing friend'});
         }

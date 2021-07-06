@@ -9,19 +9,33 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.get('/profile', async (req, res) => {
-    res.send(req.user);
-  });
+	res.send(req.user);
+});
 
 router.put('/editprofile', async (req, res) => {
-    const {username, phoneNumber, teleHandle, licenseNumber} = req.body;
-    try {
-        (req.user.type == 'Hitcher') 
-        ? await Hitcher.updateOne({_id: req.user._id}, {username, phoneNumber, teleHandle}) 
-        : await Driver.updateOne({_id: req.user._id}, {username, phoneNumber, licenseNumber, teleHandle});
-        res.send('Successfully updated');
-    } catch (err) {
-        res.send('Update failed');
-    }
-  });
-  
+	const {username, phoneNumber, teleHandle, licenseNumber} = req.body;
+	try {
+		(req.user.type == 'Hitcher') 
+		? await Hitcher.updateOne({_id: req.user._id}, {username, phoneNumber, teleHandle}) 
+		: await Driver.updateOne({_id: req.user._id}, {username, phoneNumber, licenseNumber, teleHandle});
+		const updated = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}).populate('friends') : Driver.findById({_id: req.user._id}).populate('friends');
+		res.send(updated);
+	} catch (err) {
+		return res.status(422).send({error: 'Could not update profile'});
+	}
+});
+
+router.post('/deletefriend', async (req, res) => {
+	const {friend} = req.body;
+	try {
+		const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : Driver.findById({_id: req.user._id});
+		user.friends.delete(friend._id.toString());
+		req.user.type == 'Hitcher' ? await Hitcher.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends}) : await Driver.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends});
+		const updated = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}).populate('friends') : Driver.findById({_id: req.user._id}).populate('friends');
+		res.send(updated);
+	} catch (err) {
+		return res.status(422).send({error: 'Could not delete friend'});
+	}
+});
+	
 module.exports = router;    

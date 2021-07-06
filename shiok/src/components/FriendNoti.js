@@ -9,11 +9,14 @@ const window = Dimensions.get('window');
 
 const FriendNoti = () => {
     const {state} = useContext(NotiContext);
+    const friendNoti = state.noti.filter(item => {
+        return (item.type == 'Friend');
+    });
 
     const render = () => {
-        if (!state.friend) {
+        if (!state.noti) {
             return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
-        } else if (state.friend.length == 0) {
+        } else if (friendNoti.length == 0) {
             return (
                 <View style = {styles.icon}>
                     <FontAwesome5 name = 'user-friends' size = {205} color = '#b5b3b3'/>
@@ -24,9 +27,7 @@ const FriendNoti = () => {
             return (
                 <View>
                     <NotiResults 
-                        results = {state.friend.filter(item => {
-                            return (item.type == 'Friend');
-                        })}
+                        results = {friendNoti}
                     />
                 </View>
             );

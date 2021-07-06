@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {ListItem, Badge} from 'react-native-elements';
 import { navigate } from "../navigationRef";
@@ -11,8 +11,7 @@ const NotiResults = ({results}) => {
     const [delVisible, setDelVisible] = useState(false);
     const [readVisible, setReadVisible] = useState(false);
     const [noti, setNoti] = useState('');
-    const [reload, setReload] = useState(false);
-    const {state, deleteNoti, fetchOfferNoti, fetchFriendNoti, readNoti, clearErrorMessage} = useContext(NotiContext);
+    const {state, deleteNoti, readNoti, clearErrorMessage} = useContext(NotiContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -56,11 +55,6 @@ const NotiResults = ({results}) => {
                 return navigate('AddFriend', {item});
         }
     }; 
-
-    useEffect(() => {
-        fetchOfferNoti();
-        fetchFriendNoti();
-    }, [reload]);
 
     return (
         <View>
@@ -124,7 +118,6 @@ const NotiResults = ({results}) => {
                 onPress = {() => {
                     clearErrorMessage();
                     toggleDelete();
-                    setReload(!reload);
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}

@@ -5,10 +5,8 @@ const notiReducer = (state, action) => {
     switch(action.type) {
         case 'add_error':
             return {...state, errorMessage: action.payload};
-        case 'fetch_offernoti':
-            return {...state, offer: action.payload};
-        case 'fetch_friendnoti':
-            return {...state, friend: action.payload};
+        case 'fetch_noti':
+            return {noti: action.payload};
         case 'clear_error_message':
             return {...state, errorMessage: action.payload};
         default:
@@ -27,26 +25,11 @@ const sendOffer = (dispatch) => async ({recipient, type, listing, offer}) => {
     }   
 };
 
-const fetchOfferNoti = (dispatch) => async () => {
+const fetchNoti = (dispatch) => async () => {
     try {
-        const response = await AuthAPI.get('/offernoti');
+        const response = await AuthAPI.get('fetchnoti');
         dispatch({
-            type: 'fetch_offernoti',
-            payload: response.data
-        });
-    } catch (e) {
-        dispatch({
-            type: 'add_error',
-            payload: e.response.data.error
-        });
-    }
-};
-
-const fetchFriendNoti = (dispatch) => async () => {
-    try {
-        const response = await AuthAPI.get('/friendnoti');
-        dispatch({
-            type: 'fetch_friendnoti',
+            type: 'fetch_noti',
             payload: response.data
         });
     } catch (e) {
@@ -70,7 +53,11 @@ const sendResult = (dispatch) => async ({result, item}) => {
 
 const deleteNoti = (dispatch) => async ({item}) => {
     try {
-        await AuthAPI.post('/deletenoti', {item});
+        const response = await AuthAPI.post('/deletenoti', {item});
+        dispatch({
+            type: 'fetch_noti',
+            payload: response.data
+        });
     } catch (e) {
         dispatch({
             type: 'add_error',
@@ -99,6 +86,6 @@ const clearErrorMessage = (dispatch) => () => {
 
 export const {Context, Provider} = createDataContext(
     notiReducer,
-    {sendOffer, fetchOfferNoti, fetchFriendNoti, sendResult, deleteNoti, readNoti, clearErrorMessage},
-    {errorMessage: '', offer: null, friend: null}
+    {sendOffer, fetchNoti, sendResult, deleteNoti, readNoti, clearErrorMessage},
+    {errorMessage: '', noti: []}
 );

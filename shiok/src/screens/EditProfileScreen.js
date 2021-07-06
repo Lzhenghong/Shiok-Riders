@@ -5,16 +5,22 @@ import Spacer from '../components/Spacer';
 import {Context as ProfContext} from '../context/ProfileContext';
 import Button from '../components/ShiokButton';
 import Header from '../components/Header';
+import ResultOverlay from '../components/ResultOverlay';
 
 const EditProfileScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [hp, setHp] = useState('');
     const [tele, setTele] = useState('');
     const [lic, setLic] = useState('');
-    const {state, editProfile} = useContext(ProfContext);
+    const [visible, setVisible] = useState(false);
+    const {state, editProfile, clearErrorMessage} = useContext(ProfContext);
 
     const checkNum = (input) => {
         return !isNaN(input);
+    };
+
+    const toggleOverlay = () => {
+        setVisible(!visible);
     };
 
     return (
@@ -67,13 +73,14 @@ const EditProfileScreen = ({navigation}) => {
             <Spacer>
                 <Button
                     title = 'Save Changes'
-                    callback = {() => {
+                    callback = {async () => {
                         const newUsername = (username == '' ? state.user.username : username);
                         const newHp = (hp == '' ? state.user.phoneNumber : hp);
                         const newTele = (tele == '' ? state.user.teleHandle : tele);
                         const newLic = (lic == '' ? state.user.licenseNumber : lic);
-                        editProfile({username: newUsername, phoneNumber: newHp, teleHandle: newTele, licenseNumber: newLic});
-                        navigation.navigate('Profile');
+                        editProfile({username: newUsername, phoneNumber: newHp, teleHandle: newTele, licenseNumber: newLic}).then(res => {
+                            toggleOverlay();
+                        });
                     }}
                 />
             </Spacer>
@@ -83,6 +90,22 @@ const EditProfileScreen = ({navigation}) => {
                     callback = {() => navigation.navigate('Profile')}
                 />
             </Spacer>
+            <ResultOverlay 
+                visible = {visible}
+                onPress = {() => {
+                    if (state.errorMessage) {
+                        clearErrorMessage();
+                        toggleOverlay();
+                    } else {
+                        toggleOverlay();
+                        navigation.navigate('Profile');
+                    }
+                }}
+                errorMessage = {state.errorMessage}
+                errorTitle = {state.errorMessage}
+                errorSubtitle = 'Please check your connection'
+                body = 'Profile Updated'
+            />
         </View>
     );
 };

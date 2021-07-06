@@ -31,29 +31,12 @@ router.post('/sendoffer', async(req, res) => {
     }
 });
 
-router.get('/offernoti', async(req, res) => {
+router.get('/fetchnoti', async(req, res) => {
     result = [];
     try {
-        const docs = req.user.type == 'Driver' ? 
-            await DriverNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]})
-                .populate('sender').sort({createdAt: 'desc'}) : 
-            await HitcherNoti.find({recipient: req.user._id, $or: [{type: 'Offer'}, {type: 'Accept'}, {type: 'Reject'}]})
-                .populate('sender').sort({createdAt: 'desc'});
-        docs.map(doc => {
-            result.push(doc);
-        });
-        res.send(result); 
-    } catch {
-        return res.status(422).send({ error: 'Could not fetch notifications' });
-    }
-});
-
-router.get('/friendnoti', async(req, res) => {
-    result = [];
-    try {
-        const docs = req.user.type == 'Driver' ?
-            await DriverNoti.find({recipient: req.user._id, type: 'Friend'}).populate('sender').sort({createdAt: 'desc'}) :
-            await HitcherNoti.find({recipient: req.user._id, type: 'Friend'}).populate('sender').sort({createdAt: 'desc'});
+        const docs = req.user.type == 'Hitcher' ?
+            await HitcherNoti.find({recipient: req.user._id}).populate('sender').sort({createdAt: 'desc'}) : 
+            await DriverNoti.find({recipient: req.user._id}).populate('sender').sort({createdAt: 'desc'});
         docs.map(doc => {
             result.push(doc);
         });
@@ -61,7 +44,7 @@ router.get('/friendnoti', async(req, res) => {
     } catch (err) {
         return res.status(422).send({ error: 'Could not fetch notifications' });
     }
-});
+})
 
 router.post('/sendresult', async(req, res) => {
     const {result, item} = req.body;
@@ -91,7 +74,12 @@ router.post('/deletenoti', async(req, res) => {
     const {item} = req.body;
     try {
         req.user.type == 'Hitcher' ? await HitcherNoti.findByIdAndDelete({_id: item._id}) : await DriverNoti.findByIdAndDelete({_id: item._id});
-        res.send('success');
+        result = []
+        const docs = req.user.type == 'Hitcher' ? await HitcherNoti.find({recipient: req.user._id}) : await DriverNoti.find({recipient: req.user._id});
+        docs.map(doc => {
+            result.push(doc);
+        });
+        res.send(result);
     } catch (err) {
         return res.status(422).send({error: 'Could not delete notification'});
     }

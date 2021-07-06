@@ -11,13 +11,12 @@ const window = Dimensions.get('window');
 
 const NotificationScreen = () => {
     const [index, setIndex] = useState(0);
-    const {fetchOfferNoti, fetchFriendNoti} = useContext(NotiContext);
+    const {fetchNoti} = useContext(NotiContext);
 
     return (
         <View>
             <NavigationEvents onDidFocus = {() => {
-                fetchOfferNoti();
-                fetchFriendNoti();
+                fetchNoti();
             }}/>
             <Header 
                 title = 'Notification'

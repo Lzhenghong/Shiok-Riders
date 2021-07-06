@@ -8,7 +8,6 @@ import { NavigationEvents } from 'react-navigation';
 import Button from '../components/ShiokButton';
 import Header from '../components/Header';
 
-
 const ProfileScreen = ({navigation}) => {
     const {signout} = useContext(AuthContext);
     const {state, fetchProfile} = useContext(ProfContext);
