@@ -6,7 +6,9 @@ const notiReducer = (state, action) => {
         case 'add_error':
             return {...state, errorMessage: action.payload};
         case 'fetch_offernoti':
-            return {...state, offer: action.payload}
+            return {...state, offer: action.payload};
+        case 'fetch_friendnoti':
+            return {...state, friend: action.payload};
         case 'clear_error_message':
             return {...state, errorMessage: action.payload};
         default:
@@ -30,6 +32,21 @@ const fetchOfferNoti = (dispatch) => async () => {
         const response = await AuthAPI.get('/offernoti');
         dispatch({
             type: 'fetch_offernoti',
+            payload: response.data
+        });
+    } catch (e) {
+        dispatch({
+            type: 'add_error',
+            payload: e.response.data.error
+        });
+    }
+};
+
+const fetchFriendNoti = (dispatch) => async () => {
+    try {
+        const response = await AuthAPI.get('/friendnoti');
+        dispatch({
+            type: 'fetch_friendnoti',
             payload: response.data
         });
     } catch (e) {
@@ -82,6 +99,6 @@ const clearErrorMessage = (dispatch) => () => {
 
 export const {Context, Provider} = createDataContext(
     notiReducer,
-    {sendOffer, fetchOfferNoti, sendResult, deleteNoti, readNoti, clearErrorMessage},
-    {errorMessage: '', offer: null}
+    {sendOffer, fetchOfferNoti, fetchFriendNoti, sendResult, deleteNoti, readNoti, clearErrorMessage},
+    {errorMessage: '', offer: null, friend: null}
 );

@@ -48,6 +48,21 @@ router.get('/offernoti', async(req, res) => {
     }
 });
 
+router.get('/friendnoti', async(req, res) => {
+    result = [];
+    try {
+        const docs = req.user.type == 'Driver' ?
+            await DriverNoti.find({recipient: req.user._id, type: 'Friend'}).populate('sender').sort({createdAt: 'desc'}) :
+            await HitcherNoti.find({recipient: req.user._id, type: 'Friend'}).populate('sender').sort({createdAt: 'desc'});
+        docs.map(doc => {
+            result.push(doc);
+        });
+        res.send(result);
+    } catch (err) {
+        return res.status(422).send({ error: 'Could not fetch notifications' });
+    }
+});
+
 router.post('/sendresult', async(req, res) => {
     const {result, item} = req.body;
     const exist = (req.user.type == 'Driver') ? await DriverListing.findById({_id: item.listing}) : await HitcherListing.find({_id: item.listing});

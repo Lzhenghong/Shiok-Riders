@@ -12,7 +12,7 @@ const NotiResults = ({results}) => {
     const [readVisible, setReadVisible] = useState(false);
     const [noti, setNoti] = useState('');
     const [reload, setReload] = useState(false);
-    const {state, deleteNoti, fetchOfferNoti, readNoti, clearErrorMessage} = useContext(NotiContext);
+    const {state, deleteNoti, fetchOfferNoti, fetchFriendNoti, readNoti, clearErrorMessage} = useContext(NotiContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -52,11 +52,14 @@ const NotiResults = ({results}) => {
                 return navigate('OfferResult', {item});
             case 'Reject':
                 return navigate('OfferResult', {item});
+            default:
+                return navigate('AddFriend', {item});
         }
     }; 
 
     useEffect(() => {
         fetchOfferNoti();
+        fetchFriendNoti();
     }, [reload]);
 
     return (

@@ -13,7 +13,7 @@ const OfferNoti = () => {
     const render = () => {
         if (!state.offer) {
             return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
-        } else if (state.offer == 0) {
+        } else if (state.offer.length == 0) {
             return (
                 <View style = {styles.icon}>
                     <Feather name = 'list' size = {200} color = '#b5b3b3'/>
@@ -24,7 +24,9 @@ const OfferNoti = () => {
             return (
                 <View>
                     <NotiResults 
-                        results = {state.offer}
+                        results = {state.offer.filter(item => {
+                            return (item.type == 'Offer' || item.type == 'Accept' || item.type == 'Reject');
+                        })}
                     />
                 </View>
             );

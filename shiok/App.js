@@ -22,6 +22,7 @@ import NotificationScreen from './src/screens/NotificationScreen';
 import OfferDecisionScreen from './src/screens/OfferDecisionScreen';
 import OfferResultScreen from './src/screens/OfferResultScreen';
 import HistoryDetailScreen from './src/screens/HistoryDetailScreen';
+import AddFriendScreen from './src/screens/AddFriendScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -82,7 +83,8 @@ listingFlow.navigationOptions = () => {
 const notificationFlow = createStackNavigator({
   	Notification: NotificationScreen,
 	OfferDecision: OfferDecisionScreen,
-	OfferResult: OfferResultScreen
+	OfferResult: OfferResultScreen,
+	AddFriend: AddFriendScreen
 });
 
 notificationFlow.navigationOptions = ({screenProps}) => {

@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, PricingCard } from 'react-native-elements';
+import {PricingCard, Button } from 'react-native-elements';
 import Header from '../components/Header';
+import Communications from 'react-native-communications';
 
 OfferResultScreen = ({navigation}) => { 
     const item = navigation.getParam('item');
@@ -18,11 +19,14 @@ OfferResultScreen = ({navigation}) => {
                 color = '#FF8400'
                 title = {`Offer ${item.type}ed`} 
                 price = {'$'.concat(item.offer.price)}
-                info = {[`From: ${item.offer.origin}`, `To: ${item.offer.dest}`, `By: ${item.sender.username}`]}
+                info = {[`From: ${item.offer.origin}`, `To: ${item.offer.dest}`, `By: ${item.sender.username}`, `Phone Number: ${item.sender.phoneNumber}`, `Telehandle: @${item.sender.teleHandle}`]}
                 button = {
                     <Button 
-                        title = 'Add Friend' 
+                        title = 'Message' 
                         buttonStyle = {styles.button} 
+                        onPress = {() => {
+                            Communications.textWithoutEncoding(item.sender.phoneNumber, '');
+                        }}
                     />}
             /> 
         </View>

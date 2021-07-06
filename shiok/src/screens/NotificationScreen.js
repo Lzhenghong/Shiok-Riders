@@ -11,11 +11,14 @@ const window = Dimensions.get('window');
 
 const NotificationScreen = () => {
     const [index, setIndex] = useState(0);
-    const {fetchOfferNoti} = useContext(NotiContext);
+    const {fetchOfferNoti, fetchFriendNoti} = useContext(NotiContext);
 
     return (
         <View>
-            <NavigationEvents onDidFocus = {() => fetchOfferNoti()}/>
+            <NavigationEvents onDidFocus = {() => {
+                fetchOfferNoti();
+                fetchFriendNoti();
+            }}/>
             <Header 
                 title = 'Notification'
                 backNav = {false}
@@ -43,7 +46,11 @@ const NotificationScreen = () => {
                     <OfferNoti/>
                 </ScrollView> 
             </View>) :
-            <FriendNoti/>}
+            (<View style = {{height: window.height, width: window.width}}>
+                <ScrollView>
+                    <FriendNoti/>
+                </ScrollView> 
+            </View>)}
         </View>
     );
 };
