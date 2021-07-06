@@ -31,7 +31,14 @@ router.post('/deletehistory', async(req, res) => {
     const {item} = req.body;
     try {
         req.user.type == 'Hitcher' ? await HitcherBooking.findByIdAndDelete({_id: item._id}) : await DriverBooking.findByIdAndDelete({_id: item._id});
-        res.send('success');
+        result = [];
+        const docs = req.user.type == 'Hitcher' ? 
+            await HitcherBooking.find({user: req.user._id}).populate('client').sort({createdAt: 'desc'}) : 
+            await DriverBooking.find({user: req.user._id}).populate('client').sort({createdAt: 'desc'});
+        docs.map(doc => {
+            result.push(doc);
+        });
+        res.send(result);
     } catch (err) {
         return res.status(422).send({error: 'Could not delete record'});
     }
@@ -68,7 +75,7 @@ router.post('/rate', async (req, res) => {
 router.post('/addfriend', async (req, res) => {
     const {client} = req.body;
     try {
-        const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : Driver.findById({_id: req.user._id}); 
+        const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : await Driver.findById({_id: req.user._id});
         if (user.friends.has(client._id.toString())) {
             return res.status(422).send({error: 'Existing friend'});
         }
@@ -76,7 +83,7 @@ router.post('/addfriend', async (req, res) => {
         req.user.type == 'Hitcher' ? await Hitcher.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends}) : await Driver.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends});
         const noti = (req.user.type == 'Hitcher') ? new DriverNoti({recipient: client._id, sender: req.user._id, type: 'Friend'}) : new HitcherNoti({recipient: client._id, sender: req.user._id, type: 'Friend'});
         await noti.save();
-        res.send('success');
+        res.send('success');;
     } catch (err) {
         return res.status(422).send({error: 'Could not add friend'});
     }

@@ -28,10 +28,10 @@ router.put('/editprofile', async (req, res) => {
 router.post('/deletefriend', async (req, res) => {
 	const {friend} = req.body;
 	try {
-		const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : Driver.findById({_id: req.user._id});
+		const user = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}) : await Driver.findById({_id: req.user._id});
 		user.friends.delete(friend._id.toString());
 		req.user.type == 'Hitcher' ? await Hitcher.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends}) : await Driver.findByIdAndUpdate({_id: req.user._id}, {friends: user.friends});
-		const updated = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}).populate('friends') : Driver.findById({_id: req.user._id}).populate('friends');
+		const updated = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}).populate('friends') : await Driver.findById({_id: req.user._id}).populate('friends');
 		res.send(updated);
 	} catch (err) {
 		return res.status(422).send({error: 'Could not delete friend'});

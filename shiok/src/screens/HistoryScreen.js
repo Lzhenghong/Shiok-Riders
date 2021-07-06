@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, StyleSheet, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import {ListItem, Badge} from 'react-native-elements';
 import NoHistory from '../components/NoHistory';
@@ -11,7 +11,6 @@ import { NavigationEvents } from 'react-navigation';
 const window = Dimensions.get('window');
 
 const HistoryScreen = ({navigation}) => {
-    const [reload, setReload] = useState(false);
     const [booking, setBooking] = useState(null);
     const [visible, setVisible] = useState(false);
     const [delVisible, setDelVisible] = useState(false);
@@ -52,7 +51,6 @@ const HistoryScreen = ({navigation}) => {
                                     bottomDivider 
                                     topDivide
                                     onPress = {async () => {
-                                        setReload(!reload);
                                         readRecord({item}).then(res => {
                                             if (!state.errorMessage) {
                                                 navigation.navigate('HistoryDetail', {item});
@@ -93,13 +91,9 @@ const HistoryScreen = ({navigation}) => {
         }
     };
 
-    useEffect(() => {
-        fetchHistory();
-    }, [reload]);
-
     return (
         <View>
-            <NavigationEvents onDidFocus = {() => setReload(!reload)}/>
+            <NavigationEvents onDidFocus = {() => fetchHistory()}/>
             <Header 
                 title = 'History'
                 backNav = {false}
@@ -125,7 +119,6 @@ const HistoryScreen = ({navigation}) => {
                 onPress = {() => {
                     clearErrorMessage();
                     toggleDelete();
-                    setReload(!reload);
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}

@@ -9,6 +9,7 @@ import Spacer from '../components/Spacer';
 import Button from '../components/ShiokButton';
 import {Context as BookingContext} from '../context/BookingContext';
 import ResultOverlay from '../components/ResultOverlay';
+import Communications from 'react-native-communications';
 
 const HistoryDetailScreen = ({navigation}) => {
     const item = navigation.getParam('item');
@@ -163,6 +164,10 @@ const HistoryDetailScreen = ({navigation}) => {
                 onPress = {() => {
                     clearErrorMessage();
                     toggleFriend();
+                    if (!state.errorMessage) {
+                        Communications.textWithoutEncoding(item.client.phoneNumber,
+                            `I would like to add you as friend on Shiok-Riders`);
+                    }
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}

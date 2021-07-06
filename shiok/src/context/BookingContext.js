@@ -31,7 +31,11 @@ const fetchHistory = (dispatch) => async () => {
 
 const deleteRecord = (dispatch) => async ({item}) => {
     try {
-        await AuthAPI.post('/deletehistory', {item});
+        const response = await AuthAPI.post('/deletehistory', {item});
+        dispatch({
+            type: 'fetch_history',
+            payload: response.data
+        });
     } catch (e) {
         dispatch({
             type: 'add_error',
