@@ -28,7 +28,7 @@ const ListingDetailsScreen = ({navigation}) => {
             <Rating
                     startingValue = {item.lister.rating.average}
                     size = {50}
-                    readOnly = {true}
+                    readonly = {true}
                     tintColor = '#f2f3f5'
                 />
             <Spacer />

@@ -36,7 +36,7 @@ const ProfileScreen = ({navigation}) => {
                 <Rating
                     startingValue = {state.user.rating.average}
                     size = {50}
-                    readOnly = {true}
+                    readonly = {true}
                     tintColor = '#f2f3f5'
                 />
                 <Spacer />

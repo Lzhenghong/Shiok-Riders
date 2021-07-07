@@ -62,7 +62,7 @@ router.post('/rate', async (req, res) => {
             await DriverBooking.findByIdAndUpdate({_id: item._id}, {rated: true});
         const client = item.client.type == 'Hitcher' ? await Hitcher.findById({_id: item.client._id}) : await Driver.findById({_id: item.client._id});
         const newLen = client.rating.get('len') + 1;
-        const newAverage = (client.rating.get('average') + rating) / newLen;
+        const newAverage = ((client.rating.get('average') * (newLen - 1) + rating) / newLen).toFixed(1);
         item.client.type == 'Hitcher' ?
             await Hitcher.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAverage, 'len': newLen}}) :
             await Driver.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAverage, 'len': newLen}});

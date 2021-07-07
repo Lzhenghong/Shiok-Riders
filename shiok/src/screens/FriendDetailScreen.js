@@ -46,7 +46,7 @@ const FriendDetailScreen = ({navigation}) => {
             <Rating
                 startingValue = {item.rating.average}
                 size = {50}
-                readOnly = {true}
+                readonly = {true}
                 tintColor = '#f2f3f5'
             />
             <Spacer />
