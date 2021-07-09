@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text, Header, Button, Icon, Rating} from 'react-native-elements';
+import {Text, Header, Button, Icon, Rating, Avatar} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 import ContactButtons from '../components/ContactButtons';
@@ -17,14 +17,22 @@ const ListingDetailsScreen = ({navigation}) => {
                 centerComponent = {{text: 'Details', style: {color: '#fff', fontSize: 20, fontWeight: 'bold', paddingBottom: 20, marginBottom: 14}}}
             />
             <Spacer />
-            <Icon
+            {item.lister.pic == '' ?
+            (<Icon
                 name = 'user'
                 type = 'evilicon'
                 color = '#CCCCCC'
                 size = {100}
                 containerStyle = {styles.icon}
                 reverse = {true}
+            />) : 
+            (<Avatar 
+                rounded 
+                containerStyle = {styles.icon}
+                size = {221}
+                source = {{uri: 'data:image/jpeg;base64,' + item.lister.pic}}
             />
+            )}
             <Rating
                     startingValue = {item.lister.rating.average}
                     size = {50}

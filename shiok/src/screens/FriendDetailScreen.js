@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Icon, Text, Rating } from 'react-native-elements';
+import { Icon, Text, Rating, Avatar } from 'react-native-elements';
 import Header from '../components/Header';
 import Spacer from '../components/Spacer';
 import Button from '../components/ShiokButton';
@@ -35,14 +35,22 @@ const FriendDetailScreen = ({navigation}) => {
                 callback = {() => navigation.navigate('FriendList')}
             />
             <Spacer />
-            <Icon
+            {item.pic == '' ?
+            (<Icon
                 name = 'user'
                 type = 'evilicon'
                 color = '#CCCCCC'
                 size = {100}
                 containerStyle = {styles.icon}
                 reverse = {true}
+            />) :
+            (<Avatar 
+                rounded 
+                containerStyle = {styles.icon}
+                size = {211}
+                source = {{uri: 'data:image/jpeg;base64,' + item.pic}}
             />
+            )}
             <Rating
                 startingValue = {item.rating.average}
                 size = {50}

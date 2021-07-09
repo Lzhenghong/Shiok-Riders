@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Icon, Text, Rating } from 'react-native-elements';
+import { Icon, Text, Rating, Avatar } from 'react-native-elements';
 import Header from '../components/Header';
 import Spacer from '../components/Spacer';
 import Button from '../components/ShiokButton';
@@ -37,14 +37,22 @@ const AddFriendScreen = ({navigation}) => {
                 callback = {() => navigation.goBack()}
             />
             <Spacer />
-            <Icon
+            {item.sender.pic == '' ?
+            (<Icon
                 name = 'user'
                 type = 'evilicon'
                 color = '#CCCCCC'
                 size = {100}
                 containerStyle = {styles.icon}
                 reverse = {true}
+            />) : 
+            (<Avatar 
+                rounded 
+                containerStyle = {styles.icon}
+                size = {211}
+                source = {{uri: 'data:image/jpeg;base64,' + item.sender.pic}}
             />
+            )}
             <Rating
                 startingValue = {item.sender.rating.average}
                 size = {50}

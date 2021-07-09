@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Badge, Text, Icon, AirbnbRating, Overlay} from 'react-native-elements';
+import {Badge, Text, Icon, AirbnbRating, Overlay, Avatar} from 'react-native-elements';
 import Header from '../components/Header';
 import geoSearch from '../hooks/geoSearch';
 import { NavigationEvents } from 'react-navigation';
@@ -75,14 +75,22 @@ const HistoryDetailScreen = ({navigation}) => {
                 callback = {() => navigation.navigate('History')}
             />
             <Spacer />
-            <Icon
+            {item.client.pic == '' ? 
+            (<Icon
                 name = 'user'
                 type = 'evilicon'
                 color = '#CCCCCC'
                 size = {90}
                 containerStyle = {styles.icon}
                 reverse = {true}
+            />) : 
+            (<Avatar 
+                rounded 
+                containerStyle = {styles.icon}
+                size = {191}
+                source = {{uri: 'data:image/jpeg;base64,' + item.client.pic}}
             />
+            )}
             <Text h4 style = {styles.client}>{`Username: ${item.client.username}`}</Text>
             <Text h4 style = {styles.client}>{`Phone Number: ${item.client.phoneNumber}`}</Text>
             <Spacer>
