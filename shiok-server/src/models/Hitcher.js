@@ -36,6 +36,10 @@ const hitcherSchema = new mongoose.Schema({
 		type: Map,
 		of: {type: mongoose.Schema.Types.ObjectId, ref: 'Driver'},
 		default: {}
+	},
+	pic: {
+		type: String,
+		default: ''
 	}
 });
 
