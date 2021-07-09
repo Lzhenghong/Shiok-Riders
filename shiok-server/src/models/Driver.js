@@ -41,6 +41,10 @@ const driverSchema = new mongoose.Schema({
 		type: Map,
 		of: {type: mongoose.Schema.Types.ObjectId, ref: 'Hitcher'},
 		default: {}
+	},
+	pic: {
+		type: String,
+		default: ''
 	}
 });
 
