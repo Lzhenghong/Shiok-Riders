@@ -61,6 +61,21 @@ const deleteFriend = (dispatch) => async ({friend}) => {
 	}
 };
 
+const editPic = (dispatch) => async ({pic}) => {
+	try {
+		const response = await AuthAPI.post('/editpic', {pic});
+		dispatch({
+			type: 'fetch',
+			payload: response.data
+		});
+	} catch (e) {
+		dispatch({
+			type: 'add_error',
+			payload: e.response.data.error
+		});
+	}
+};
+
 const clearErrorMessage = (dispatch) => () => {
 	dispatch({
 		type: 'clear_error_message',
@@ -70,6 +85,6 @@ const clearErrorMessage = (dispatch) => () => {
 
 export const { Provider, Context } = createDataContext(
 	profileReducer,
-	{ fetchProfile, editProfile, deleteFriend, clearErrorMessage },
+	{ fetchProfile, editProfile, deleteFriend, editPic, clearErrorMessage },
 	{errorMessage: ''}
 );

@@ -18,7 +18,7 @@ router.put('/editprofile', async (req, res) => {
 		(req.user.type == 'Hitcher') 
 		? await Hitcher.updateOne({_id: req.user._id}, {username, phoneNumber, teleHandle}) 
 		: await Driver.updateOne({_id: req.user._id}, {username, phoneNumber, licenseNumber, teleHandle});
-		const updated = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}).populate('friends') : Driver.findById({_id: req.user._id}).populate('friends');
+		const updated = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}).populate('friends') : await Driver.findById({_id: req.user._id}).populate('friends');
 		res.send(updated);
 	} catch (err) {
 		return res.status(422).send({error: 'Could not update profile'});
@@ -35,6 +35,17 @@ router.post('/deletefriend', async (req, res) => {
 		res.send(updated);
 	} catch (err) {
 		return res.status(422).send({error: 'Could not delete friend'});
+	}
+});
+
+router.post('/editpic', async (req, res) => {
+	const {pic} = req.body;
+	try {
+		req.user.type == 'Hitcher' ? await Hitcher.updateOne({_id: req.user._id}, {pic}) : await Driver.updateOne({_id: req.user._id}, {pic});
+		const updated = req.user.type == 'Hitcher' ? await Hitcher.findById({_id: req.user._id}).populate('friends') : await Driver.findById({_id: req.user._id}).populate('friends');
+		res.send(updated);
+	} catch (err) {
+		return res.status(422).send({error: 'Could not update profile picture'});
 	}
 });
 	

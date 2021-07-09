@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Text, Icon, Rating} from 'react-native-elements';
+import {Text, Icon, Rating, Avatar} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
 import {Context as ProfContext} from '../context/ProfileContext';
@@ -14,8 +14,7 @@ const ProfileScreen = ({navigation}) => {
 
     if (!state.user) {
         return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
-    }
-    else {
+    } else {
         return (
             <View>
                 <NavigationEvents onDidFocus = {fetchProfile}/>
@@ -25,14 +24,45 @@ const ProfileScreen = ({navigation}) => {
                     marginBottom = {-1}
                 />
                 <Spacer />
-                <Icon
-                    name = 'user'
-                    type = 'evilicon'
-                    color = '#CCCCCC'
-                    size = {100}
-                    containerStyle = {styles.icon}
-                    reverse = {true}
-                />
+                {state.user.pic == '' ? 
+                (
+                <View>
+                    <Icon
+                        name = 'user'
+                        type = 'evilicon'
+                        color = '#CCCCCC'
+                        size = {100}
+                        containerStyle = {styles.icon}
+                        reverse = {true}
+                    />
+                    <View style = {{height: 40, width: 40, position: 'absolute', bottom: 15, right: 100}}>
+                        <Icon 
+                            name = 'pencil'
+                            type = 'evilicon'
+                            color = '#CCCCCC'
+                            size = {40}
+                            onPress = {() => navigation.navigate('ProfilePic')}
+                        />
+                    </View>
+                </View>) : 
+                (
+                <View>
+                    <Avatar 
+                        rounded 
+                        containerStyle = {styles.icon}
+                        size = {221}
+                        source = {{uri: 'data:image/jpeg;base64,' + state.user.pic}}
+                    />
+                    <View style = {{height: 40, width: 40, position: 'absolute', bottom: 15, right: 100}}>
+                        <Icon 
+                            name = 'pencil'
+                            type = 'evilicon'
+                            color = '#CCCCCC'
+                            size = {40}
+                            onPress = {() => navigation.navigate('ProfilePic')}
+                        />
+                    </View>
+                </View>)}
                 <Rating
                     startingValue = {state.user.rating.average}
                     size = {50}

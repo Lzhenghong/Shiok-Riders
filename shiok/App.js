@@ -24,6 +24,7 @@ import OfferResultScreen from './src/screens/OfferResultScreen';
 import HistoryDetailScreen from './src/screens/HistoryDetailScreen';
 import AddFriendScreen from './src/screens/AddFriendScreen';
 import FriendDetailScreen from './src/screens/FriendDetailScreen';
+import ProfilePicScreen from './src/screens/ProfilePicScreen';
 
 import {Provider as AuthProvider} from './src/context/AuthContext';
 import {setNavigator} from './src/navigationRef';
@@ -112,7 +113,8 @@ const profileFlow = createStackNavigator({
 	Profile: ProfileScreen,
 	EditProfile: EditProfileScreen,
 	FriendList: FriendListScreen,
-	FriendDetail: FriendDetailScreen
+	FriendDetail: FriendDetailScreen,
+	ProfilePic: ProfilePicScreen
 });
 
 profileFlow.navigationOptions = () => {

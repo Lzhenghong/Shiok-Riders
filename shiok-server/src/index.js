@@ -29,7 +29,12 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
+
+app.use(bodyParser.json({
+  limit: '50mb',
+  extended: true
+}));
+
 app.use(authRoutes);
 app.use(profileRoutes);
 app.use(listingRoutes);
