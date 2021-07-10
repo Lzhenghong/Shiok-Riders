@@ -1,12 +1,13 @@
 import React, {useState, useContext} from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import {Icon, Avatar} from 'react-native-elements';
+import { View, StyleSheet, ActivityIndicator} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Header from '../components/Header';
 import Spacer from '../components/Spacer';
 import Button from '../components/ShiokButton';
 import {Context as ProfContext} from '../context/ProfileContext';
 import ResultOverlay from '../components/ResultOverlay';
+import NoPicIcon from '../components/NoPicIcon';
+import Avatar from '../components/Avatar';
 
 const ProfilePicScreen = ({navigation}) => {
     const {state, editPic, clearErrorMessage} = useContext(ProfContext);
@@ -44,19 +45,12 @@ const ProfilePicScreen = ({navigation}) => {
             />
             <Spacer />
             {pic == '' ? 
-            (<Icon
-                name = 'user'
-                type = 'evilicon'
-                color = '#CCCCCC'
-                size = {100}
-                containerStyle = {styles.icon}
-                reverse = {true}
+            (<NoPicIcon 
+                fraction = {0.11}
             />) : 
             (<Avatar 
-                rounded 
-                size = {211}
-                containerStyle = {styles.icon}
-                source = {{uri: 'data:image/jpeg;base64,' + pic}}
+                fraction = {0.24}
+                pic = {pic}
             />)}
             <Spacer>
                 <Button 

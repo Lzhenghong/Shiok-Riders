@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
-import { View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Badge, Text, Icon, AirbnbRating, Overlay, Avatar} from 'react-native-elements';
+import { View, StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
+import {Badge, Text, AirbnbRating, Overlay} from 'react-native-elements';
 import Header from '../components/Header';
 import geoSearch from '../hooks/geoSearch';
 import { NavigationEvents } from 'react-navigation';
@@ -10,6 +10,10 @@ import Button from '../components/ShiokButton';
 import {Context as BookingContext} from '../context/BookingContext';
 import ResultOverlay from '../components/ResultOverlay';
 import Communications from 'react-native-communications';
+import NoPicIcon from '../components/NoPicIcon';
+import Avatar from '../components/Avatar';
+
+const window = Dimensions.get('window');
 
 const HistoryDetailScreen = ({navigation}) => {
     const item = navigation.getParam('item');
@@ -76,23 +80,16 @@ const HistoryDetailScreen = ({navigation}) => {
             />
             <Spacer />
             {item.client.pic == '' ? 
-            (<Icon
-                name = 'user'
-                type = 'evilicon'
-                color = '#CCCCCC'
-                size = {90}
-                containerStyle = {styles.icon}
-                reverse = {true}
+            (<NoPicIcon 
+                fraction = {0.099}
             />) : 
             (<Avatar 
-                rounded 
-                containerStyle = {styles.icon}
-                size = {191}
-                source = {{uri: 'data:image/jpeg;base64,' + item.client.pic}}
+                fraction = {0.216}
+                pic = {item.client.pic}
             />
             )}
-            <Text h4 style = {styles.client}>{`Username: ${item.client.username}`}</Text>
-            <Text h4 style = {styles.client}>{`Phone Number: ${item.client.phoneNumber}`}</Text>
+            <Text style = {styles.client}>{`Username: ${item.client.username}`}</Text>
+            <Text style = {styles.client}>{`Phone Number: ${item.client.phoneNumber}`}</Text>
             <Spacer>
                 <Button 
                     title = 'Add Friend'
@@ -114,7 +111,7 @@ const HistoryDetailScreen = ({navigation}) => {
                         status = 'success' 
                         containerStyle = {styles.badge}
                     />
-                    <Text h4>{`From: ${item.offer.origin}`}</Text>
+                    <Text style = {styles.client}>{`From: ${item.offer.origin}`}</Text>
             </View> 
             <Spacer />
             <View style = {{flexDirection: 'row'}}>
@@ -122,7 +119,7 @@ const HistoryDetailScreen = ({navigation}) => {
                     status = 'error' 
                     containerStyle = {styles.badge}
                 />
-                <Text h4>{`To: ${item.offer.dest}`}</Text>
+                <Text style = {styles.client}>{`To: ${item.offer.dest}`}</Text>
             </View>
             <Spacer />
             <View style = {{flexDirection: 'row'}}>
@@ -130,7 +127,7 @@ const HistoryDetailScreen = ({navigation}) => {
                     status = 'warning' 
                     containerStyle = {styles.badge}
                 />
-                <Text h4>{`For: $${item.offer.price}`}</Text>
+                <Text style = {styles.client}>{`For: $${item.offer.price}`}</Text>
             </View>
             <Overlay 
                 isVisible = {rateVisible}
@@ -197,12 +194,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginHorizontal: 10
     },
-    icon: {
-        alignSelf: 'center',
-        marginBottom: 30
-    },
     client: {
-        marginLeft: 10
+        marginLeft: 10,
+        fontSize: window.height * 0.025
     },
     overlay: {
         height: 200,

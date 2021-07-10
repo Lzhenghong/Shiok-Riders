@@ -1,12 +1,16 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Text, Icon, Rating, Avatar} from 'react-native-elements';
+import {View, StyleSheet, ActivityIndicator, Dimensions, ScrollView} from 'react-native';
+import {Text, Icon, Rating} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';
 import {Context as ProfContext} from '../context/ProfileContext';
 import { NavigationEvents } from 'react-navigation';
 import Button from '../components/ShiokButton';
 import Header from '../components/Header';
+import NoPicIcon from '../components/NoPicIcon';
+import Avatar from '../components/Avatar';
+
+const window = Dimensions.get('window');
 
 const ProfileScreen = ({navigation}) => {
     const {signout} = useContext(AuthContext);
@@ -27,20 +31,15 @@ const ProfileScreen = ({navigation}) => {
                 {state.user.pic == '' ? 
                 (
                 <View>
-                    <Icon
-                        name = 'user'
-                        type = 'evilicon'
-                        color = '#CCCCCC'
-                        size = {100}
-                        containerStyle = {styles.icon}
-                        reverse = {true}
+                    <NoPicIcon 
+                        fraction = {0.11}
                     />
                     <View style = {{height: 40, width: 40, position: 'absolute', bottom: 15, right: 100}}>
                         <Icon 
                             name = 'pencil'
                             type = 'evilicon'
                             color = '#CCCCCC'
-                            size = {40}
+                            size = {window.height * 0.045}
                             onPress = {() => navigation.navigate('ProfilePic')}
                         />
                     </View>
@@ -48,10 +47,8 @@ const ProfileScreen = ({navigation}) => {
                 (
                 <View>
                     <Avatar 
-                        rounded 
-                        containerStyle = {styles.icon}
-                        size = {221}
-                        source = {{uri: 'data:image/jpeg;base64,' + state.user.pic}}
+                        fraction = {0.24}
+                        pic = {state.user.pic}
                     />
                     <View style = {{height: 40, width: 40, position: 'absolute', bottom: 15, right: 100}}>
                         <Icon 
@@ -71,33 +68,33 @@ const ProfileScreen = ({navigation}) => {
                 />
                 <Spacer />
                 <View style = {{flexDirection: 'row'}}>
-                    <Text h4 style = {styles.profileLeft}>Username: </Text>
+                    <Text style = {styles.profileLeft}>Username: </Text>
                     {state.user.username 
-                        ? (<Text h4 style = {styles.profileRight}>{state.user.username}</Text>)
-                        : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                        ? (<Text style = {styles.profileRight}>{state.user.username}</Text>)
+                        : (<Text style = {styles.profileRight}>-</Text>)}
                 </View>
                 <View style = {{flexDirection: 'row'}}>
-                    <Text h4 style = {styles.profileLeft}>Email: </Text>
-                    <Text h4 style = {styles.profileRight}>{state.user.email}</Text>
+                    <Text style = {styles.profileLeft}>Email: </Text>
+                    <Text style = {styles.profileRight}>{state.user.email}</Text>
                 </View>
                 <View style = {{flexDirection: 'row'}}>
-                    <Text h4 style = {styles.profileLeft}>Phone Number: </Text>
+                    <Text style = {styles.profileLeft}>Phone Number: </Text>
                     {state.user.phoneNumber 
-                        ? (<Text h4 style = {styles.profileRight}>{state.user.phoneNumber}</Text>)
-                        : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                        ? (<Text style = {styles.profileRight}>{state.user.phoneNumber}</Text>)
+                        : (<Text style = {styles.profileRight}>-</Text>)}
                 </View>
                 <View style = {{flexDirection: 'row'}}>
-                    <Text h4 style = {styles.profileLeft}>Telegram Handle: </Text>
+                    <Text style = {styles.profileLeft}>Telegram Handle: </Text>
                     {state.user.teleHandle 
-                        ? (<Text h4 style = {styles.profileRight}>@{state.user.teleHandle}</Text>)
-                        : (<Text h4 style = {styles.profileRight}>@-</Text>)}
+                        ? (<Text style = {styles.profileRight}>@{state.user.teleHandle}</Text>)
+                        : (<Text style = {styles.profileRight}>@-</Text>)}
                 </View>
                 {state.user.type == 'Driver' ? 
                 (<View style = {{flexDirection: 'row'}}>
-                    <Text h4 style = {styles.profileLeft}>License Number: </Text>
+                    <Text style = {styles.profileLeft}>License Number: </Text>
                     {state.user.licenseNumber 
-                        ? (<Text h4 style = {styles.profileRight}>{state.user.licenseNumber}</Text>)
-                        : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                        ? (<Text style = {styles.profileRight}>{state.user.licenseNumber}</Text>)
+                        : (<Text style = {styles.profileRight}>-</Text>)}
                 </View>) : null}   
                 <Spacer />          
                 <Spacer>
@@ -118,6 +115,7 @@ const ProfileScreen = ({navigation}) => {
                         callback = {signout}
                     />
                 </Spacer>
+                
             </View>
         );
     }
@@ -130,20 +128,18 @@ ProfileScreen.navigationOptions = () => {
   };
 
 const styles = StyleSheet.create({
-    icon: {
-        alignSelf: 'center',
-        marginBottom: 30
-    },
     profileLeft: {
         color: 'black',
         alignSelf: 'flex-start',
         fontWeight: 'bold',
-        marginLeft: 15
+        marginLeft: 15,
+        fontSize: window.height * 0.025
     },
     profileRight: {
         color: '#555353',
         alignSelf: 'flex-start',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: window.height * 0.025
     }
 });
 

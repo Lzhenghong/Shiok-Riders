@@ -1,10 +1,14 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Text, Header, Button, Icon, Rating, Avatar} from 'react-native-elements';
+import {View, StyleSheet, Dimensions} from 'react-native';
+import {Text, Header, Button, Rating} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 import ContactButtons from '../components/ContactButtons';
 import { navigate } from "../navigationRef";
+import NoPicIcon from '../components/NoPicIcon';
+import Avatar from '../components/Avatar';
+
+const window = Dimensions.get('window');
 
 const ListingDetailsScreen = ({navigation}) => {
     const item = navigation.getParam('item');
@@ -18,19 +22,12 @@ const ListingDetailsScreen = ({navigation}) => {
             />
             <Spacer />
             {item.lister.pic == '' ?
-            (<Icon
-                name = 'user'
-                type = 'evilicon'
-                color = '#CCCCCC'
-                size = {100}
-                containerStyle = {styles.icon}
-                reverse = {true}
+            (<NoPicIcon 
+                fraction = {0.11}
             />) : 
             (<Avatar 
-                rounded 
-                containerStyle = {styles.icon}
-                size = {221}
-                source = {{uri: 'data:image/jpeg;base64,' + item.lister.pic}}
+                fraction = {0.24}
+                pic = {item.lister.pic}
             />
             )}
             <Rating
@@ -41,29 +38,29 @@ const ListingDetailsScreen = ({navigation}) => {
                 />
             <Spacer />
             <View style = {{flexDirection: 'row'}}>
-                <Text h4 style = {styles.profileLeft}>Username: </Text>
+                <Text style = {styles.profileLeft}>Username: </Text>
                 {item.lister.username 
-                    ? (<Text h4 style = {styles.profileRight}>{item.lister.username}</Text>)
-                    : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                    ? (<Text style = {styles.profileRight}>{item.lister.username}</Text>)
+                    : (<Text style = {styles.profileRight}>-</Text>)}
             </View>
             <View style = {{flexDirection: 'row'}}>
-                <Text h4 style = {styles.profileLeft}>Phone Number: </Text>
+                <Text style = {styles.profileLeft}>Phone Number: </Text>
                 {item.lister.phoneNumber 
-                    ? (<Text h4 style = {styles.profileRight}>{item.lister.phoneNumber}</Text>)
-                    : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                    ? (<Text style = {styles.profileRight}>{item.lister.phoneNumber}</Text>)
+                    : (<Text style = {styles.profileRight}>-</Text>)}
             </View>
             <View style = {{flexDirection: 'row'}}>
-                <Text h4 style = {styles.profileLeft}>Telegram Handle: </Text>
+                <Text style = {styles.profileLeft}>Telegram Handle: </Text>
                 {item.lister.teleHandle 
-                    ? (<Text h4 style = {styles.profileRight}>{item.lister.teleHandle}</Text>)
-                    : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                    ? (<Text style = {styles.profileRight}>{item.lister.teleHandle}</Text>)
+                    : (<Text style = {styles.profileRight}>-</Text>)}
             </View>
             {item.lister.type == 'Driver' ? 
             (<View style = {{flexDirection: 'row'}}>
-                <Text h4 style = {styles.profileLeft}>License Number: </Text>
+                <Text style = {styles.profileLeft}>License Number: </Text>
                 {item.lister.licenseNumber 
-                    ? (<Text h4 style = {styles.profileRight}>{item.lister.licenseNumber}</Text>)
-                    : (<Text h4 style = {styles.profileRight}>-</Text>)}
+                    ? (<Text style = {styles.profileRight}>{item.lister.licenseNumber}</Text>)
+                    : (<Text style = {styles.profileRight}>-</Text>)}
             </View>) : null}             
             <Spacer />
             <Spacer>
@@ -92,20 +89,18 @@ const styles = StyleSheet.create({
         marginBottom: -1,
         height: 78.5
     },
-    icon: {
-        alignSelf: 'center',
-        marginBottom: 30
-    },
     profileLeft: {
         color: 'black',
         alignSelf: 'flex-start',
         fontWeight: 'bold',
-        marginLeft: 15
+        marginLeft: 15,
+        fontSize: window.height * 0.025
     },
     profileRight: {
         color: '#555353',
         alignSelf: 'flex-start',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: window.height * 0.025
     },
     button: {
         backgroundColor: '#FF8400',

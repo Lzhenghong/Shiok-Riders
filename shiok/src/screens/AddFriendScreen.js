@@ -1,12 +1,14 @@
 import React, {useState, useContext} from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Icon, Text, Rating, Avatar } from 'react-native-elements';
+import {Text, Rating } from 'react-native-elements';
 import Header from '../components/Header';
 import Spacer from '../components/Spacer';
 import Button from '../components/ShiokButton';
 import {Context as BookingContext} from '../context/BookingContext';
 import ResultOverlay from '../components/ResultOverlay';
 import Communications from 'react-native-communications';
+import NoPicIcon from '../components/NoPicIcon';
+import Avatar from '../components/Avatar';
 
 const window = Dimensions.get('window');
 
@@ -38,19 +40,12 @@ const AddFriendScreen = ({navigation}) => {
             />
             <Spacer />
             {item.sender.pic == '' ?
-            (<Icon
-                name = 'user'
-                type = 'evilicon'
-                color = '#CCCCCC'
-                size = {100}
-                containerStyle = {styles.icon}
-                reverse = {true}
+            (<NoPicIcon 
+                fraction = {0.11}
             />) : 
             (<Avatar 
-                rounded 
-                containerStyle = {styles.icon}
-                size = {211}
-                source = {{uri: 'data:image/jpeg;base64,' + item.sender.pic}}
+                fraction = {0.24}
+                pic = {item.sender.pic}
             />
             )}
             <Rating
@@ -60,11 +55,11 @@ const AddFriendScreen = ({navigation}) => {
                 tintColor = '#f2f3f5'
             />
             <Spacer />
-            <Text h4 style = {styles.client}>{`Username: ${item.sender.username}`}</Text>
-            <Text h4 style = {styles.client}>{`Phone Number: ${item.sender.phoneNumber}`}</Text>
-            <Text h4 style = {styles.client}>{`Telehandle: @${item.sender.teleHandle}`}</Text>
+            <Text style = {styles.client}>{`Username: ${item.sender.username}`}</Text>
+            <Text style = {styles.client}>{`Phone Number: ${item.sender.phoneNumber}`}</Text>
+            <Text style = {styles.client}>{`Telehandle: @${item.sender.teleHandle}`}</Text>
             {item.sender.type == 'Driver' ?
-            <Text h4 style = {styles.client}>{`License Number: @${item.sender.licenseNumber}`}</Text> 
+            <Text style = {styles.client}>{`License Number: @${item.sender.licenseNumber}`}</Text> 
             : null}
             <Spacer />
             <Button 
@@ -103,12 +98,9 @@ AddFriendScreen.navigationOptions = () => {
   };
 
 const styles = StyleSheet.create({
-    icon: {
-        alignSelf: 'center',
-        marginBottom: 30
-    },
     client: {
-        marginLeft: 10
+        marginLeft: 10,
+        fontSize: window.height * 0.025
     },
 });
 
