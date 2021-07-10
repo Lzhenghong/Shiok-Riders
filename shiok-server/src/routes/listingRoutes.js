@@ -62,6 +62,15 @@ router.post('/hitcherlisting', async (req, res) => {
                 result.push(doc);
             }
         });
+        result.sort((e1, e2) => {
+            if (!req.user.friends.has(e1.lister._id.toString()) && req.user.friends.has(e2.lister._id.toString())) {
+                return 1;
+            } else if (e1.lister.rating.average < e2.lister.rating.average) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
         res.send(result);
     } catch (err) {
         return res.status(422).send({ error: 'Failed to fetch listing' });
@@ -105,6 +114,15 @@ router.post('/driverlisting', async (req, res) => {
         secondResult.map(doc => {
             if (hashMap.has(doc._id.toString())) {
                 result.push(doc);
+            }
+        });
+        result.sort((e1, e2) => {
+            if (!req.user.friends.has(e1.lister._id.toString()) && req.user.friends.has(e2.lister._id.toString())) {
+                return 1;
+            } else if (e1.lister.rating.average < e2.lister.rating.average) {
+                return 1;
+            } else {
+                return -1;
             }
         });
         res.send(result);

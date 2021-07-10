@@ -1,9 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {View, ActivityIndicator} from 'react-native';
+import React  from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import {Badge} from 'react-native-elements';
 
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
@@ -36,7 +34,6 @@ import {Provider as BookingProvider} from './src/context/BookingContext';
 import {Feather} from '@expo/vector-icons';
 import {AntDesign} from '@expo/vector-icons';
 import {Ionicons} from '@expo/vector-icons';
-import AuthAPI from './src/api/AuthAPI';
 
 const bookingFlow = createStackNavigator({
 	Home: HomeScreen,
@@ -93,18 +90,11 @@ notificationFlow.navigationOptions = ({screenProps}) => {
 	return {
 		title: 'Notification',
 		tabBarIcon: ({tintColor}) => (
-			//<View>
-				<Ionicons
-					name = 'notifications-outline' 
-					size = {24} 
-					color = {tintColor}
-				/>
-				/*{screenProps.notiCount > 0 ?
-				(<Badge 
-					value = {screenProps.notiCount}
-					containerStyle = {{position: 'absolute', top: -4, right: -4}}
-				/>) : null}
-			</View>*/
+			<Ionicons
+				name = 'notifications-outline' 
+				size = {24} 
+				color = {tintColor}
+			/>
 		)
 	}
 }
@@ -152,36 +142,24 @@ const switchNavigator = createSwitchNavigator({
 const App = createAppContainer(switchNavigator);
 
 export default () => {
-	/*const [notiCount, setNotiCount] = useState(null);
-	useEffect(() => {
-		(AuthAPI.get('/bookingnoti')).then(res => {
-			setNotiCount(res.data.length);
-		}, err => {
-			console.log('error');
-		});
-	}, [notiCount]);
-	if (notiCount) {*/
-		return (
-			<BookingProvider>
-				<NotiProvider>
-					<ListingProvider>
-						<ProfProvider>
-							<LocationProvider>
-								<AuthProvider>
-									<App
-										ref={(navigator) => {
-										setNavigator(navigator);
-										}}
-										//screenProps = {{notiCount}}
-									/>
-								</AuthProvider>
-							</LocationProvider>
-						</ProfProvider>
-					</ListingProvider>
-				</NotiProvider>
-			</BookingProvider>
-		);
-	/*} else {
-		return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;
-	}*/
+	return (
+		<BookingProvider>
+			<NotiProvider>
+				<ListingProvider>
+					<ProfProvider>
+						<LocationProvider>
+							<AuthProvider>
+								<App
+									ref={(navigator) => {
+									setNavigator(navigator);
+									}}
+									//screenProps = {{notiCount}}
+								/>
+							</AuthProvider>
+						</LocationProvider>
+					</ProfProvider>
+				</ListingProvider>
+			</NotiProvider>
+		</BookingProvider>
+	);
 };
