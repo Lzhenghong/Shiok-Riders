@@ -1,6 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import {Button} from 'react-native-elements';
+
+const window = Dimensions.get('window');
 
 const TwinButtons = ({buttonTitleLeft, buttonTitleRight, callbackLeft, callbackRight}) => {
     return (
@@ -27,7 +29,8 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#FF8400',
         borderRadius: 20,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        width: window.width * 0.466
     }
 });
 

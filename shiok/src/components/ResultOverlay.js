@@ -1,7 +1,9 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
 import {Button, Text, Overlay } from 'react-native-elements';
 import {Entypo, AntDesign} from '@expo/vector-icons';
+
+const window = Dimensions.get('window');
 
 const ResultOverlay = ({visible, onPress, errorMessage, errorTitle, errorSubtitle, body}) => {
     return (
@@ -15,13 +17,13 @@ const ResultOverlay = ({visible, onPress, errorMessage, errorTitle, errorSubtitl
                     {errorMessage ? 
                     (<>
                         <Entypo name = 'warning' size = {30} color = '#ffbf00'/> 
-                        <Text h3 style = {styles.text}>{errorTitle}</Text>
-                        <Text h4 style = {styles.subbody}>{errorSubtitle}</Text> 
+                        <Text style = {styles.text}>{errorTitle}</Text>
+                        <Text style = {styles.subbody}>{errorSubtitle}</Text> 
                     </>)
                     : 
                     (<>
                         <AntDesign name = 'checkcircle' size = {30} color = '#3EB489'/>
-                        <Text h3 style = {styles.text}>{body}</Text>
+                        <Text style = {styles.text}>{body}</Text>
                     </>)
                     }
                     <Button 
@@ -51,13 +53,15 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         alignSelf: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        fontSize: window.height * 0.035
     },
     subbody: {
         fontSize: 16,
         alignSelf: 'center',
         marginBottom: 10,
-        color: '#babcbf'
+        color: '#babcbf',
+        fontSize: window.height * 0.025
     }
 });
 

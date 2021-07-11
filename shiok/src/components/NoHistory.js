@@ -8,9 +8,9 @@ const window = Dimensions.get('window');
 const NoHistory = () => {
     return (
         <View style = {styles.icon}>
-            <AntDesign name = 'clockcircleo' size = {200} color = '#b5b3b3' />
+            <AntDesign name = 'clockcircleo' size = {window.height * 0.24} color = '#b5b3b3' />
             <View style = {{marginTop: 10}}>
-                <Text h2 style = {styles.text}>You have no records</Text>
+                <Text style = {styles.text}>You have no records</Text>
             </View>
         </View>
     );
@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#b5b3b3',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontSize: window.height * 0.04
         
     }
 });
