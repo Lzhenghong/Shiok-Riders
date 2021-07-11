@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {Input} from 'react-native-elements';
 import {Context as LocationContext} from '../context/LocationContext';
 import Spacer from '../components/Spacer';
@@ -12,6 +12,7 @@ import Header from '../components/Header';
 import Overlay from '../components/Overlay';
 
 const limit = 12;
+const window = Dimensions.get('window');
 
 const AddOriginScreen = ({navigation}) => {
     const [origin, setOrigin] = useState('');
@@ -38,7 +39,7 @@ const AddOriginScreen = ({navigation}) => {
     };
 
     return (
-        <View style = {{height: '100%'}}>
+        <View style = {{height: window.height}}>
             <Header 
                 title = 'Add Pick Up Point'
                 backNav = {false}
@@ -112,7 +113,7 @@ const AddOriginScreen = ({navigation}) => {
                 />)
                 }
                 <Spacer />
-                <View style = {{height: '48%'}}>
+                <View style = {{height: window.height * 0.4}}>
                     <ScrollView>
                         <GeoResults 
                             results = {results}

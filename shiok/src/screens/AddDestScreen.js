@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import { Input} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import geoSearch from '../hooks/geoSearch';
@@ -10,6 +10,7 @@ import Header from '../components/Header';
 import Overlay from '../components/Overlay';
 
 const limit = 12;
+const window = Dimensions.get('window');
 
 const AddDestScreen = ({navigation}) => {
     const [dest, setDest] = useState('');
@@ -32,7 +33,7 @@ const AddDestScreen = ({navigation}) => {
     };
 
     return (
-        <View style = {{height: '100%'}}>
+        <View style = {{height: window.height}}>
             <Header 
                 title = 'Add Drop Off Point'
                 backNav = {true}
@@ -78,7 +79,7 @@ const AddDestScreen = ({navigation}) => {
                     onPress = {() => toggleErr()}
                 />)
                 }
-                <View style = {{height: '48%', marginBottom: 12}}>
+                <View style = {{height: window.height * 0.4, marginBottom: 12}}>
                     <ScrollView>
                         <GeoResults 
                             results = {results}
