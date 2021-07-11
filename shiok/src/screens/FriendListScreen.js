@@ -22,9 +22,9 @@ const FriendListScreen = ({navigation}) => {
             (<View style = {styles.icon}>
                 <AntDesign 
                     name = 'adduser'
-                    size = {200} color = '#b5b3b3'
+                    size = {window.height * 0.2} color = '#b5b3b3'
                 />
-                <Text h2 style = {styles.text}>You have no friends</Text>
+                <Text style = {styles.text}>You have no friends</Text>
             </View>) :
             (<View style = {{height: window.height, width: window.width}}>
                 <ScrollView>
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#b5b3b3',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontSize: window.height * 0.04
     }
 });
 

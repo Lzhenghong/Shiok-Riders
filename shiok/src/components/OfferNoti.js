@@ -19,8 +19,8 @@ const OfferNoti = () => {
         } else if (offerNoti.length == 0) {
             return (
                 <View style = {styles.icon}>
-                    <Feather name = 'list' size = {200} color = '#b5b3b3'/>
-                    <Text h2 style = {styles.text}>You have no notification</Text>
+                    <Feather name = 'list' size = {window.height * 0.24} color = '#b5b3b3'/>
+                    <Text style = {styles.text}>You have no notification</Text>
                 </View>
             );
         } else {
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#b5b3b3',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontSize: window.height * 0.04
     }
 });
 

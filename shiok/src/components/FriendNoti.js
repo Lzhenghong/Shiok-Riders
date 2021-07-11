@@ -4,6 +4,7 @@ import {Text} from 'react-native-elements';
 import {FontAwesome5} from '@expo/vector-icons';
 import {Context as NotiContext} from '../context/NotiContext';
 import NotiResults from './NotiResults';
+import Spacer from '../components/Spacer';
 
 const window = Dimensions.get('window');
 
@@ -19,8 +20,9 @@ const FriendNoti = () => {
         } else if (friendNoti.length == 0) {
             return (
                 <View style = {styles.icon}>
-                    <FontAwesome5 name = 'user-friends' size = {205} color = '#b5b3b3'/>
-                    <Text h2 style = {styles.text}>You have no notification</Text>
+                    <FontAwesome5 name = 'user-friends' size = {window.height * 0.2} color = '#b5b3b3'/>
+                    <Spacer />
+                    <Text style = {styles.text}>You have no notification</Text>
                 </View>
             );
         } else {
@@ -50,7 +52,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#b5b3b3',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontSize: window.height * 0.04
     }
 });
 
