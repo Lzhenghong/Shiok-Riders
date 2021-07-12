@@ -14,6 +14,6 @@ test('forward geocoding', async () => {
 	expect(searchAPI('sheares hall', 1).result).toEqual([testLoc]);
 });
 
-test()
+
 
 
