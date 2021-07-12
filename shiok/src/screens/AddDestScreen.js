@@ -20,8 +20,6 @@ const AddDestScreen = ({navigation}) => {
     const [errorMsg, setErrorMsg] = useState('');
     const {addDest, addPrice} = useContext(ListingContext);
 
-    //const searchAPI = geoSearch();
-
     const [errVisible, setErrVisible] = useState(false);
 
     const toggleErr = () => {

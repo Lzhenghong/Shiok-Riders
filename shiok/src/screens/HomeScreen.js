@@ -33,9 +33,6 @@ const HomeScreen = ({navigation}) => {
     const {state: listingState, fetchListing, clearErrorMessage} = useContext(ListingContext);
     const err = useLocation(setLocation);
     
-    //const geoSearch = geoSearch();
-    //const revSearch = reverseGeoSearch();
-
     const checkNum = (input) => {
         return !isNaN(input);
     };

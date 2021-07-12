@@ -24,9 +24,6 @@ const AddOriginScreen = ({navigation}) => {
     const {state} = useContext(LocationContext);
     const {addOrigin} = useContext(ListingContext);
 
-    //const searchAPI = geoSearch();
-    //const revSearch = reverseGeoSearch();
-
     const [errVisible, setErrVisible] = useState(false);
     const [revVisible, setRevVisible] = useState(false);
 
