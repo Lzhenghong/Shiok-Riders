@@ -24,8 +24,8 @@ const AddOriginScreen = ({navigation}) => {
     const {state} = useContext(LocationContext);
     const {addOrigin} = useContext(ListingContext);
 
-    const searchAPI = geoSearch();
-    const revSearch = reverseGeoSearch();
+    //const searchAPI = geoSearch();
+    //const revSearch = reverseGeoSearch();
 
     const [errVisible, setErrVisible] = useState(false);
     const [revVisible, setRevVisible] = useState(false);
@@ -60,7 +60,7 @@ const AddOriginScreen = ({navigation}) => {
                     callback = {async () => {
                         const lat = state.currentLocation.coords.latitude.toString();
                         const long = state.currentLocation.coords.longitude.toString();
-                        const {error, result} = await revSearch(lat, long);
+                        const {error, result} = await reverseGeoSearch(lat, long);
                         if (error) {
                             setRevErrorMsg(result);
                             toggleRev();
@@ -74,7 +74,7 @@ const AddOriginScreen = ({navigation}) => {
                     <Button 
                         title = 'Search'
                         callback = {async () => {
-                            const {error, result} = await searchAPI(origin, limit);
+                            const {error, result} = await geoSearch(origin, limit);
                             if (error) {
                                 setErrorMsg(result);
                                 toggleErr();

@@ -20,7 +20,7 @@ const AddDestScreen = ({navigation}) => {
     const [errorMsg, setErrorMsg] = useState('');
     const {addDest, addPrice} = useContext(ListingContext);
 
-    const searchAPI = geoSearch();
+    //const searchAPI = geoSearch();
 
     const [errVisible, setErrVisible] = useState(false);
 
@@ -60,7 +60,7 @@ const AddDestScreen = ({navigation}) => {
                 <Button 
                     title = 'Search'
                     callback = {async () => {
-                        const {error, result} = await searchAPI(dest, limit);
+                        const {error, result} = await geoSearch(dest, limit);
                             if (error) {
                                 setErrorMsg(result);
                                 toggleErr();

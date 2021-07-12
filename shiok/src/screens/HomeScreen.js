@@ -33,8 +33,8 @@ const HomeScreen = ({navigation}) => {
     const {state: listingState, fetchListing, clearErrorMessage} = useContext(ListingContext);
     const err = useLocation(setLocation);
     
-    const searchAPI = geoSearch();
-    const revSearch = reverseGeoSearch();
+    //const geoSearch = geoSearch();
+    //const revSearch = reverseGeoSearch();
 
     const checkNum = (input) => {
         return !isNaN(input);
@@ -75,7 +75,7 @@ const HomeScreen = ({navigation}) => {
                 onIconTap = {async () => {
                     const lat = state.currentLocation.coords.latitude.toString();
                     const long = state.currentLocation.coords.longitude.toString();
-                    const {error, result} = await revSearch(lat, long);
+                    const {error, result} = await reverseGeoSearch(lat, long);
                     if (error) {
                         setRevErrorMsg(result);
                     } else {
@@ -96,7 +96,7 @@ const HomeScreen = ({navigation}) => {
                         title = 'Search'
                         buttonStyle = {styles.button}
                         onPress = {async () => {
-                            const promises = [await searchAPI(origin, 1), await searchAPI(dest, 1)];
+                            const promises = [await geoSearch(origin, 1), await geoSearch(dest, 1)];
                             Promise.all(promises).then(res => {
                                 const [{error: originError, result: originResult}, {error: destError, result: destResult}] = res;
                                 if (originError || destError) {
