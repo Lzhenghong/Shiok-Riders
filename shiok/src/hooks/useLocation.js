@@ -7,6 +7,9 @@ export default (callback) => {
     const startWatching = async () => {
         try {
             const {granted} = await requestForegroundPermissionsAsync();
+            if (!granted) {
+                throw new Error('Location tracking permission not granted');
+            }
             await watchPositionAsync({
                 accuracy: Accuracy.BestForNavigation,
                 timeInterval: 1000,
@@ -16,9 +19,6 @@ export default (callback) => {
                 //console.log(location);
                 callback(location);
             });
-            if (!granted) {
-                throw new Error('Location tracking permission not granted');
-            }
         } catch (e) {
             setErr(e);
         }
