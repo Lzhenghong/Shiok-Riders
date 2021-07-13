@@ -15,6 +15,7 @@ import Header from '../components/Header';
 import geoSearch from '../hooks/geoSearch';
 import reverseGeoSearch from '../hooks/reverseGeoSearch';
 import Overlay from '../components/Overlay';
+import checkNum from '../hooks/checkNum';
 
 const window = Dimensions.get('window');
 
@@ -32,10 +33,6 @@ const HomeScreen = ({navigation}) => {
     const {state: profileState, fetchProfile} = useContext(ProfContext);
     const {state: listingState, fetchListing, clearErrorMessage} = useContext(ListingContext);
     const err = useLocation(setLocation);
-    
-    const checkNum = (input) => {
-        return !isNaN(input);
-    };
 
     const toggleErr = () => {
         setErrVisible(!errVisible);

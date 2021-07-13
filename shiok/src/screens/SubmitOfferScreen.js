@@ -6,6 +6,7 @@ import Spacer from '../components/Spacer';
 import Communications from 'react-native-communications';
 import {Context as NotiContext} from '../context/NotiContext';
 import Overlay from '../components/ResultOverlay';
+import checkNum from '../hooks/checkNum';
 
 const SubmitOfferScreen = ({navigation}) => {
     const item = navigation.getParam('item');
@@ -15,10 +16,6 @@ const SubmitOfferScreen = ({navigation}) => {
     const [visible, setVisible] = useState(false);
 
     const {state, sendOffer, clearErrorMessage} = useContext(NotiContext);
-
-    const checkNum = (input) => {
-        return !isNaN(input);
-    };
 
     const toggleOverlay = () => {
         setVisible(!visible);

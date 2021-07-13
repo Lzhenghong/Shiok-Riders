@@ -6,6 +6,7 @@ import {Context as ProfContext} from '../context/ProfileContext';
 import Button from '../components/ShiokButton';
 import Header from '../components/Header';
 import ResultOverlay from '../components/ResultOverlay';
+import checkNum from '../hooks/checkNum';
 
 const EditProfileScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
@@ -14,10 +15,6 @@ const EditProfileScreen = ({navigation}) => {
     const [lic, setLic] = useState('');
     const [visible, setVisible] = useState(false);
     const {state, editProfile, clearErrorMessage} = useContext(ProfContext);
-
-    const checkNum = (input) => {
-        return !isNaN(input);
-    };
 
     const toggleOverlay = () => {
         setVisible(!visible);

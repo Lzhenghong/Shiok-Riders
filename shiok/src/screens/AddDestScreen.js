@@ -8,6 +8,7 @@ import {Context as ListingContext} from '../context/ListingContext';
 import Button from '../components/ShiokButton';
 import Header from '../components/Header';
 import Overlay from '../components/Overlay';
+import checkNum from '../hooks/checkNum';
 
 const limit = 12;
 const window = Dimensions.get('window');
@@ -24,10 +25,6 @@ const AddDestScreen = ({navigation}) => {
 
     const toggleErr = () => {
         setErrVisible(!errVisible);
-    };
-
-    const checkNum = (input) => {
-        return !isNaN(input);
     };
 
     return (

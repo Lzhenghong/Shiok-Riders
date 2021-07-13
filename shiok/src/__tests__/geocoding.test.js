@@ -1,6 +1,6 @@
 import GeoAPI from '../api/GeoAPI';
-import geoSearch from './geoSearch';
-import reverseGeoSearch from './reverseGeoSearch';
+import geoSearch from '../hooks/geoSearch';
+import reverseGeoSearch from '../hooks/reverseGeoSearch';
 
 test('forward geocoding', async () => {
 	const testLoc = {
