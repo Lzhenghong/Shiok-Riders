@@ -20,30 +20,25 @@ Starting the expo-cli app:
 
 Download the Expo app on your mobile phone 
 
-Open 3 terminals
+Create an Expo account and login into it on your Expo app
 
-cd into /Shiok-Riders/shiok-server in the first terminal, then enter >npm run dev
+Open this link "exp://exp.host/@zhenghong/shiok" in your phone's browser
 
-In the second terminal, cd into /Shiok-Riders/shiok-server, then enter >ngrok http 3000
+This should navigate to the Expo app on your phone 
 
-Copy the forwarding URL into the baseUrl in API.js and AuthAPI.js in shiok/src/api 
-
-In the third terminal, cd into /Shiok-Riders/shiok, then enter >npm start
-
-Scan the QR code using your mobile phone 
+If your Iphone's version IOS is 14 and above, this will not work, please refer to the steps below
 
 -----------------------------------------------------------
 
-Running our project prototype:
+For Iphone IOS 14 and above:
 
-Please email me (hong2288@gmail.com) so that I will update ngrok's forwarding URL before updating the published project
+Clone heroku-dev branch into your local repository
 
-Download the Expo app on your mobile phone and sign into your Expo account
+cd into /Shiok-Riders/shiok-server and run npm install
 
-Open this link exp://exp.host/@zhenghong/shiok on your browser
+cd into /Shiok-Rider/shiok and run npm install, then npm start
 
-It should open the project on your Expo app
-
+Scan the QR code on the browser, this should navigate to the Expo app
 
 
 
