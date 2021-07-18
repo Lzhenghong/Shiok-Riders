@@ -36,5 +36,10 @@
     "@babel/core": "^7.9.0",
     "jest": "^27.0.6"
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|react-navigation|@react-navigation/.*))"
+    ]
+  },
   "private": true
 }

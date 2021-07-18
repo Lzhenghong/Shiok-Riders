@@ -96,3 +96,5 @@ export const {Context, Provider} = createDataContext(
     {addOrigin, addDest, addPrice, addListing, fetchListing, clearErrorMessage},
     {origin: null}
 );
+
+export default listingReducer;

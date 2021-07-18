@@ -89,3 +89,5 @@ export const {Context, Provider} = createDataContext(
     {sendOffer, fetchNoti, sendResult, deleteNoti, readNoti, clearErrorMessage},
     {errorMessage: '', noti: []}
 );
+
+export default notiReducer;

@@ -7,8 +7,6 @@ const profileReducer = (state, action) => {
 			return { ...state, errorMessage: action.payload };
 		case 'fetch':
 			return {user: action.payload};
-		case 'edit_profile':
-			return {user: action.payload};
 		case 'clear_error_message':
 			return {...state, errorMessage: action.payload};
 		default:
@@ -88,3 +86,5 @@ export const { Provider, Context } = createDataContext(
 	{ fetchProfile, editProfile, deleteFriend, editPic, clearErrorMessage },
 	{errorMessage: ''}
 );
+
+export default profileReducer;

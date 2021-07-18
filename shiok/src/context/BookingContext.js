@@ -88,3 +88,5 @@ export const {Context, Provider} = createDataContext(
     {fetchHistory, deleteRecord, readRecord, rateClient, addFriend, clearErrorMessage},
     {errorMessage: '', history: null}
 );
+
+export default bookingReducer;

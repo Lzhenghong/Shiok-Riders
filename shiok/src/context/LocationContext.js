@@ -18,3 +18,5 @@ export const {Context, Provider} = createDataContext(
     {setLocation},
     {currentLocation: null}
 );
+
+export default locationReducer;
