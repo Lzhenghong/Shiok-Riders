@@ -1,9 +1,9 @@
 import notiReducer from '../context/NotiContext';
 
-const testNoti = {
+const testNoti = [{
     recipient: 'jmhitcher',
     sender: 'jmdriver'
-};
+}];
 
 const testErrorMessage = 'test error message';
 

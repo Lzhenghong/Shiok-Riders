@@ -1,10 +1,10 @@
 import bookingReducer from '../context/BookingContext';
 
-const testRecord = {
+const testRecord = [{
     origin: 'sheares hall',
     dest: 'city hall',
     price: 10
-};
+}]
 
 const testErrorMessage = 'test error message';
 
