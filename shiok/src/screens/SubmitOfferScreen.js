@@ -7,6 +7,7 @@ import Communications from 'react-native-communications';
 import {Context as NotiContext} from '../context/NotiContext';
 import Overlay from '../components/ResultOverlay';
 import checkNum from '../hooks/checkNum';
+import errorSubtitle from '../hooks/offerErrSub';
 
 const SubmitOfferScreen = ({navigation}) => {
     const item = navigation.getParam('item');
@@ -20,17 +21,6 @@ const SubmitOfferScreen = ({navigation}) => {
     const toggleOverlay = () => {
         setVisible(!visible);
     };
-
-    const errorSubtitle = () => {
-        switch (state.errorMessage) {
-            case 'Unable to find listing':
-                return 'This listing has expired';
-            case 'Already submitted an offer':
-                return 'Please wait for the outcome';
-            default:
-                return 'Please check your connection';
-        }
-    }
 
     const finalOrigin = origin ? origin : item.origin.name;
     const finalDest = dest ? dest : item.dest.name;
@@ -97,7 +87,7 @@ const SubmitOfferScreen = ({navigation}) => {
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}
-                errorSubtitle = {errorSubtitle()}
+                errorSubtitle = {errorSubtitle(state)}
                 body = 'Your offer is submitted!'
             />
         </View>

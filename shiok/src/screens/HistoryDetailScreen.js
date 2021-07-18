@@ -12,6 +12,7 @@ import ResultOverlay from '../components/ResultOverlay';
 import Communications from 'react-native-communications';
 import NoPicIcon from '../components/NoPicIcon';
 import Avatar from '../components/Avatar';
+import errSubtitle from '../hooks/historyErrSub';
 
 const window = Dimensions.get('window');
 
@@ -46,14 +47,7 @@ const HistoryDetailScreen = ({navigation}) => {
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
     };
 
-    const errSubtitle = () => {
-        switch (state.errorMessage) {
-            case 'Existing friend':
-                return 'This user had been added previously';
-            default:
-                return 'Please check your connection';
-        }
-    };
+   
 
     return (
         <View>
@@ -161,7 +155,7 @@ const HistoryDetailScreen = ({navigation}) => {
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}
-                errorSubtitle = {errSubtitle()}
+                errorSubtitle = {errSubtitle(state)}
                 body = 'Your rating is submitted'
             />
             <ResultOverlay 
@@ -176,7 +170,7 @@ const HistoryDetailScreen = ({navigation}) => {
                 }}
                 errorMessage = {state.errorMessage}
                 errorTitle = {state.errorMessage}
-                errorSubtitle = {errSubtitle()}
+                errorSubtitle = {errSubtitle(state)}
                 body = 'You have added this user'
             />
         </View>

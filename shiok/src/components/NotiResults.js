@@ -5,6 +5,7 @@ import { navigate } from "../navigationRef";
 import {Context as NotiContext} from '../context/NotiContext';
 import ResultOverlay from '../components/ResultOverlay';
 import DeleteOverlay from '../components/DeleteOverlay';
+import subtitle from '../hooks/notiSub';
 
 const NotiResults = ({results}) => {
     const [visible, setVisible] = useState(false);
@@ -29,19 +30,6 @@ const NotiResults = ({results}) => {
         const date = new Date(dateobj);
         return `${date.getDate()}/${date.getMonth() + 1}`;
     }
-
-    const subtitle = (item) => {
-        switch (item.type) {
-            case 'Offer':
-                return 'You have received an offer from';
-            case 'Accept':
-                return 'Your offer is accepted by';
-            case 'Reject':
-                return 'Your offer is rejected by';
-            default: 
-                return 'You have been added as a friend by';
-        }
-    };  
 
     const onPress = (item) => {
         switch (item.type) {
