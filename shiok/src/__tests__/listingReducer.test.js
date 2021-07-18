@@ -3,7 +3,7 @@ import listingReducer from '../context/ListingContext';
 const origin = 'sheares hall';
 const dest = 'city hall';
 const price = 10;
-const testListing = {origin, dest, price};
+const testListing = [{origin, dest, price}];
 const testErrorMessage = 'test error message';
 
 describe('test listing reducer', () => {
