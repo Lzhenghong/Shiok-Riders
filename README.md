@@ -40,6 +40,12 @@ cd into /Shiok-Rider/shiok and run npm install, then npm start
 
 Scan the QR code on the browser, this should navigate to the Expo app
 
+-----------------------------------------------------------
+
+Documentation: https://docs.google.com/document/d/1t8CVSue6BJ29s0DnYRoyFXGHvCuuQDDLWj4a-czXFeU/edit?usp=sharing
+
+
+
 
 
 
