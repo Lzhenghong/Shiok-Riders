@@ -18,7 +18,7 @@ describe('test notification subtitles', () => {
         expect(notiSub({type: 'Reject'})).toEqual(reject);
     });
 
-    test('offer rejected', () => {
+    test('added as friend', () => {
         expect(notiSub({type: 'Friend'})).toEqual(friend);
     });
 });
