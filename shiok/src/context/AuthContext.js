@@ -45,10 +45,10 @@ const signup = (dispatch) => async ({ email, password, type, phoneNumber }) => {
       payload: response.data.token
     });
     navigate("Home");
-  } catch (err) {
+  } catch (e) {
     dispatch({
       type: "add_error",
-      payload: "Email has already been registered"
+      payload: e.response.data.error
     });
   }
 };
@@ -63,10 +63,10 @@ const signin = (dispatch) => async ({email, password, type}) => {
       payload: response.data.token
     });
     navigate('Home');
-  } catch (err) {
+  } catch (e) {
     dispatch({
       type: 'add_error',
-      payload: 'Invalid email or password'
+      payload: e.response.data.error
     });
   }
 };

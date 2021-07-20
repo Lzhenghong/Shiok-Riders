@@ -9,6 +9,10 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
   const { email, password, type, phoneNumber } = req.body;
 
+  if (!email || !password || !phoneNumber) {
+    return res.status(422).send({ error: 'Must provide email, password and phone number' });
+  }
+
   try {
     const user = (type == 'Hitcher') ? new Hitcher({ email, password, phoneNumber }) : new Driver({email, password, phoneNumber});
     await user.save();
@@ -16,7 +20,7 @@ router.post('/signup', async (req, res) => {
     const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY');
     res.send({ token });
   } catch (err) {
-    return res.status(422).send(err.message);
+    return res.status(422).send({error: 'Email has already been registered'});
   }
 });
 
