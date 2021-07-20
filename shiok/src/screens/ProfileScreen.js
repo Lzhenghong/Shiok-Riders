@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, ActivityIndicator, Dimensions, ScrollView} from 'react-native';
+import {View, StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
 import {Text, Icon, Rating} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as AuthContext} from '../context/AuthContext';

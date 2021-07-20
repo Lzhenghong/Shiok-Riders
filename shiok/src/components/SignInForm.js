@@ -1,25 +1,26 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Text, Input, Header} from 'react-native-elements';
+import {StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
+import {Text, Input} from 'react-native-elements';
 import Spacer from './Spacer';
 import Logo from './Logo';
 import TwinButtons from './TwinButtons';
 
+const window = Dimensions.get('window');
+
 const SignInForm = ({title, errorMessage, onSubmit}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    toggleLoading = () => {
+        setLoading(!loading);
+    };
+
     return (
         <>
-            <Header 
-                backgroundColor = '#3EB489'
-                containerStyle = {styles.header}
-            />
-            <Spacer>
-                <Logo />
-            </Spacer>
-            <Spacer>
-                <Text h3 style = {styles.title}>{title}</Text>
-            </Spacer>
+            <Logo />
+            <Text style = {styles.title}>{title}</Text>
+            <Spacer />
             <Input 
                 label = 'Email'
                 labelStyle = {{color:'#555353'}}
@@ -40,12 +41,21 @@ const SignInForm = ({title, errorMessage, onSubmit}) => {
             {errorMessage ? (
             <Text style={styles.errorMessage}>{errorMessage}</Text>
             ) : null}
+            {loading ? <ActivityIndicator /> : null}
             <Spacer>
                 <TwinButtons 
                     buttonTitleLeft = 'Sign In As Hitcher'
                     buttonTitleRight = 'Sign In As Driver'
-                    callbackLeft = {() => onSubmit({email, password, type: 'Hitcher'})}
-                    callbackRight = {() => onSubmit({email, password, type: 'Driver'})}
+                    callbackLeft = {async () => {
+                        await toggleLoading();
+                        onSubmit({email, password, type: 'Hitcher'})
+                            .then(res => toggleLoading());
+                    }}
+                    callbackRight = {async () => {
+                        await toggleLoading();
+                        onSubmit({email, password, type: 'Driver'})
+                            .then(res => toggleLoading());
+                    }}
                 />
             </Spacer>
         </>
@@ -53,18 +63,16 @@ const SignInForm = ({title, errorMessage, onSubmit}) => {
 };
 
 const styles = StyleSheet.create({
-    header: {
-        marginBottom: 40
-    },  
     title: {
-        marginTop: 25,
-        marginBottom: 20,
+        marginTop: window.height * 0.0225,
+        marginBottom: window.height * 0.0225,
         color: '#555353',
         alignSelf: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: window.height * 0.025
     },
     errorMessage: {
-        fontSize: 16,
+        fontSize: window.height * 0.0175,
         color: 'red',
         marginLeft: 15,
         marginTop: -5
