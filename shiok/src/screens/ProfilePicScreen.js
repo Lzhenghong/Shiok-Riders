@@ -19,7 +19,7 @@ const ProfilePicScreen = ({navigation}) => {
         setVisible(!visible);
     };
 
-    const toggleLoading = () => {
+    toggleLoading = () => {
         setLoading(!loading);
     ;}
 
@@ -68,9 +68,9 @@ const ProfilePicScreen = ({navigation}) => {
                 <Button 
                     title = 'Save Image'
                     callback = {async () => {
-                        toggleLoading();
-                        editPic({pic}).then(res => {
-                            toggleLoading();
+                        await toggleLoading();
+                        editPic({pic}).then(async res => {
+                            await toggleLoading();
                             toggleOverlay();
                         });
                     }}
@@ -103,11 +103,6 @@ ProfilePicScreen.navigationOptions = () => {
     };
   };
 
-const styles = StyleSheet.create({
-    icon: {
-        alignSelf: 'center',
-        marginBottom: 30
-    }
-});
+const styles = StyleSheet.create({});
 
 export default ProfilePicScreen;

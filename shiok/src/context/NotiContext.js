@@ -87,7 +87,7 @@ const clearErrorMessage = (dispatch) => () => {
 export const {Context, Provider} = createDataContext(
     notiReducer,
     {sendOffer, fetchNoti, sendResult, deleteNoti, readNoti, clearErrorMessage},
-    {errorMessage: '', noti: []}
+    {errorMessage: '', noti: null}
 );
 
 export default notiReducer;

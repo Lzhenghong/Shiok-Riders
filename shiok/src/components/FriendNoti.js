@@ -9,10 +9,13 @@ import Spacer from '../components/Spacer';
 const window = Dimensions.get('window');
 
 const FriendNoti = () => {
+    var friendNoti;
     const {state} = useContext(NotiContext);
-    const friendNoti = state.noti.filter(item => {
-        return (item.type == 'Friend');
-    });
+    if (state.noti) {
+        friendNoti = state.noti.filter(item => {
+            return (item.type == 'Friend');
+        });
+    }
 
     const render = () => {
         if (!state.noti) {

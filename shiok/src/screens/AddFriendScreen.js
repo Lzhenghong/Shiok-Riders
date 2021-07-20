@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import {Text, Rating } from 'react-native-elements';
 import Header from '../components/Header';
 import Spacer from '../components/Spacer';
@@ -15,10 +15,15 @@ const window = Dimensions.get('window');
 const AddFriendScreen = ({navigation}) => {
     const item = navigation.getParam('item');
     const [friendVisible, setFriendVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
     const {state, addFriend, clearErrorMessage} = useContext(BookingContext);
 
     const toggleFriend = () => {
         setFriendVisible(!friendVisible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     const errSubtitle = () => {
@@ -65,7 +70,9 @@ const AddFriendScreen = ({navigation}) => {
             <Button 
                 title = 'Add Friend'
                 callback = {async () => {
-                    addFriend({client: item.sender}).then(res => {
+                    await toggleLoading();
+                    addFriend({client: item.sender}).then(async res => {
+                        await toggleLoading();
                         toggleFriend();
                     });
                 }}
@@ -87,6 +94,7 @@ const AddFriendScreen = ({navigation}) => {
                 errorSubtitle = {errSubtitle()}
                 body = 'You have added this user'
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };

@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {Input} from 'react-native-elements';
 import Spacer from '../components/Spacer';
 import {Context as ProfContext} from '../context/ProfileContext';
@@ -14,10 +14,15 @@ const EditProfileScreen = ({navigation}) => {
     const [tele, setTele] = useState('');
     const [lic, setLic] = useState('');
     const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
     const {state, editProfile, clearErrorMessage} = useContext(ProfContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     return (
@@ -71,11 +76,13 @@ const EditProfileScreen = ({navigation}) => {
                 <Button
                     title = 'Save Changes'
                     callback = {async () => {
+                        await toggleLoading();
                         const newUsername = (username == '' ? state.user.username : username);
                         const newHp = (hp == '' ? state.user.phoneNumber : hp);
                         const newTele = (tele == '' ? state.user.teleHandle : tele);
                         const newLic = (lic == '' ? state.user.licenseNumber : lic);
-                        editProfile({username: newUsername, phoneNumber: newHp, teleHandle: newTele, licenseNumber: newLic}).then(res => {
+                        editProfile({username: newUsername, phoneNumber: newHp, teleHandle: newTele, licenseNumber: newLic}).then(async res => {
+                            await toggleLoading();
                             toggleOverlay();
                         });
                     }}
@@ -103,6 +110,7 @@ const EditProfileScreen = ({navigation}) => {
                 errorSubtitle = 'Please check your connection'
                 body = 'Profile Updated'
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };

@@ -25,6 +25,7 @@ const HistoryDetailScreen = ({navigation}) => {
     const [rateVisible, setRateVisible] = useState(false);
     const [errVisible, setErrVisible] = useState(false);
     const [friendVisible, setFriendVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {state, rateClient, addFriend, clearErrorMessage} = useContext(BookingContext);
 
@@ -40,7 +41,9 @@ const HistoryDetailScreen = ({navigation}) => {
         setFriendVisible(!friendVisible);
     };
 
-    const searchAPI = geoSearch();
+    toggleLoading = () => {
+        setLoading(!loading);
+    };
 
     const formatDate = (dateobj) => {
         const date = new Date(dateobj);
@@ -56,7 +59,7 @@ const HistoryDetailScreen = ({navigation}) => {
                     if (!item.rated) {
                         toggleRating();
                     }
-                    const promises = [await searchAPI(item.offer.origin, 1), await searchAPI(item.offer.dest, 1)];
+                    const promises = [await geoSearch(item.offer.origin, 1), await geoSearch(item.offer.dest, 1)];
                     Promise.all(promises).then(res => {
                         const [{error: originError, result: originResult}, {error: destError, result: destResult}] = res;
                         if (!originError && !destError) {
@@ -88,7 +91,9 @@ const HistoryDetailScreen = ({navigation}) => {
                 <Button 
                     title = 'Add Friend'
                     callback = {async () => {
-                        addFriend({client: item.client}).then(res => {
+                        await toggleLoading();
+                        addFriend({client: item.client}).then(async res => {
+                            await toggleLoading();
                             toggleFriend();
                         });
                     }}
@@ -139,7 +144,9 @@ const HistoryDetailScreen = ({navigation}) => {
                     <Button 
                         title = 'Done'
                         callback = {async () => {
-                            rateClient({item, rating}).then(res => {
+                            await toggleLoading();
+                            rateClient({item, rating}).then(async res => {
+                                await toggleLoading();
                                 toggleRating();
                                 toggleErr();
                             });
@@ -173,6 +180,7 @@ const HistoryDetailScreen = ({navigation}) => {
                 errorSubtitle = {errSubtitle(state)}
                 body = 'You have added this user'
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };
@@ -190,7 +198,7 @@ const styles = StyleSheet.create({
     },
     client: {
         marginLeft: 10,
-        fontSize: window.height * 0.025
+        fontSize: window.height * 0.02
     },
     overlay: {
         height: 200,

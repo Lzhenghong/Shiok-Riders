@@ -8,11 +8,14 @@ import NotiResults from './NotiResults';
 const window = Dimensions.get('window');
 
 const OfferNoti = () => {
+    var offerNoti;
     const {state} = useContext(NotiContext);
-    const offerNoti = state.noti.filter(item => {
-        return (item.type == 'Offer' || item.type == 'Accept' || item.type == 'Reject');
-    });
-
+    if (state.noti) {
+        offerNoti = state.noti.filter(item => {
+            return (item.type == 'Offer' || item.type == 'Accept' || item.type == 'Reject');
+        });
+    }
+    
     const render = () => {
         if (!state.noti) {
             return <ActivityIndicator size = 'large' style = {{marginTop: 200}} />;

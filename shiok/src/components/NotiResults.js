@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {ListItem, Badge} from 'react-native-elements';
 import { navigate } from "../navigationRef";
 import {Context as NotiContext} from '../context/NotiContext';
@@ -12,6 +12,7 @@ const NotiResults = ({results}) => {
     const [delVisible, setDelVisible] = useState(false);
     const [readVisible, setReadVisible] = useState(false);
     const [noti, setNoti] = useState('');
+    const [loading, setLoading] = useState(false);
     const {state, deleteNoti, readNoti, clearErrorMessage} = useContext(NotiContext);
 
     const toggleOverlay = () => {
@@ -24,6 +25,10 @@ const NotiResults = ({results}) => {
 
     const toggleRead = () => {
         setReadVisible(!readVisible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     const formatDate = (dateobj) => {
@@ -53,7 +58,9 @@ const NotiResults = ({results}) => {
                         bottomDivider 
                         topDivide
                         onPress = {async () => {
-                            readNoti({item}).then(res => {
+                            await toggleLoading();
+                            readNoti({item}).then(async res => {
+                                await toggleLoading();
                                 if (!state.errorMessage) {
                                     onPress(item);
                                 } else {
@@ -92,9 +99,11 @@ const NotiResults = ({results}) => {
                 onBackdrop = {() => toggleOverlay()}
                 text = 'Delete this notification?'
                 subbody = 'This action is irrevisible'
-                onYes = {() => {
+                onYes = {async () => {
+                    await toggleLoading();
                     deleteNoti({item: noti})
-                        .then(res => {
+                        .then(async res => {
+                            await toggleLoading();
                             toggleOverlay();
                             toggleDelete();
                     })
@@ -123,42 +132,11 @@ const NotiResults = ({results}) => {
                 errorSubtitle = 'Please check your connection'
                 body = ''
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    overlay: {
-        height: 200,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        width: '97.5%'
-    },
-    text: {
-        fontSize: 20,
-        alignSelf: 'center',
-        marginBottom: 10
-    },
-    subbody: {
-        fontSize: 16,
-        alignSelf: 'center',
-        marginBottom: 10,
-        color: '#babcbf'
-    },
-    leftbutton: {
-        backgroundColor: '#FF8400',
-        borderRadius: 20,
-        paddingHorizontal: 20,
-        width: '70%',
-        alignSelf: 'flex-start',
-    },
-    rightbutton: {
-        backgroundColor: '#FF8400',
-        borderRadius: 20,
-        paddingHorizontal: 20,
-        width: '70%',
-        alignSelf: 'flex-end',
-    }
-});
+const styles = StyleSheet.create({});
 
 export default NotiResults;

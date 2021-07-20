@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {Button, PricingCard } from 'react-native-elements';
 import Overlay from '../components/ResultOverlay';
 import Header from '../components/Header';
@@ -12,10 +12,15 @@ OfferDecisionScreen = ({navigation}) => {
     const item = navigation.getParam('item');
     const [visible, setVisible] = useState(false);
     const [outcome, setOutcome] = useState('');
+    const [loading, setLoading] = useState(false);
     const {state, sendResult, clearErrorMessage} = useContext(NotiContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     return (
@@ -44,15 +49,23 @@ OfferDecisionScreen = ({navigation}) => {
                 <TwinButtons 
                     buttonTitleLeft = 'Accept Offer'
                     buttonTitleRight = 'Reject Offer'
-                    callbackLeft = {() => {
-                        setOutcome('accepted')
+                    callbackLeft = {async () => {
+                        setOutcome('accepted');
+                        await toggleLoading();
                         sendResult({result: 'Accept', item: item})
-                            .then(res => toggleOverlay());
+                            .then(async res => {
+                                await toggleLoading();
+                                toggleOverlay()
+                            });
                     }}
-                    callbackRight = {() => {
+                    callbackRight = {async () => {
                         setOutcome('rejected');
+                        await toggleLoading();
                         sendResult({result: 'Reject', item: item})
-                            .then(res => toggleOverlay());
+                            .then(async res => {
+                                await toggleLoading();
+                                toggleOverlay();
+                            });
                     }}                
                 />
             </Spacer>
@@ -74,6 +87,7 @@ OfferDecisionScreen = ({navigation}) => {
                 errorSubtitle = 'Please check your connection'
                 body = 'You have sent a reply!'
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };

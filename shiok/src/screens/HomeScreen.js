@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import {Text, Button} from 'react-native-elements';
 import MapView from '../components/Map';
 import {Context as ProfContext} from '../context/ProfileContext';
@@ -28,6 +28,7 @@ const HomeScreen = ({navigation}) => {
     const [emptyVisible, setEmptyVisible] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [revErrorMsg, setRevErrorMsg] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const {state, setLocation} = useContext(LocationContext);
     const {state: profileState, fetchProfile} = useContext(ProfContext);
@@ -44,6 +45,10 @@ const HomeScreen = ({navigation}) => {
 
     const toggleEmpty = () => {
         setEmptyVisible(!emptyVisible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     return (
@@ -90,15 +95,18 @@ const HomeScreen = ({navigation}) => {
                         title = 'Search'
                         buttonStyle = {styles.button}
                         onPress = {async () => {
+                            toggleLoading();
                             const promises = [await geoSearch(origin, 1), await geoSearch(dest, 1)];
                             Promise.all(promises).then(res => {
                                 const [{error: originError, result: originResult}, {error: destError, result: destResult}] = res;
                                 if (originError || destError) {
+                                    toggleLoading();
                                     toggleErr();
                                     setErrorMsg(originError ? originResult : destResult);
                                 } else {
                                     fetchListing({originObj: originResult[0], destObj: destResult[0], priceString: price, type: profileState.user.type})
                                         .then(res => {
+                                            toggleLoading();
                                             toggleEmpty();
                                             toggleErr();
                                     });                                
@@ -106,6 +114,10 @@ const HomeScreen = ({navigation}) => {
                             })
                         }}
                     />
+                </View>) : null}
+                {loading ? 
+                (<View style = {{alignItems: 'center', width: window.width, height: 50, position: 'absolute', top: 10, left: window.width * 0.15}}>
+                    <ActivityIndicator />
                 </View>) : null}
                 {revErrorMsg == '' ? null :
                 (<Overlay 

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import { Text, Rating } from 'react-native-elements';
 import Header from '../components/Header';
 import Spacer from '../components/Spacer';
@@ -17,6 +17,7 @@ const FriendDetailScreen = ({navigation}) => {
     const item = navigation.getParam('item');
     const [deleteVisible, setDeleteVisible] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {state, deleteFriend, clearErrorMessage} = useContext(ProfileContext);
 
@@ -26,6 +27,10 @@ const FriendDetailScreen = ({navigation}) => {
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     return (
@@ -75,7 +80,9 @@ const FriendDetailScreen = ({navigation}) => {
                 text = 'Delete this friend?'
                 subbody = 'This action is irreversible'
                 onYes = {async () => {
-                    deleteFriend({friend: item}).then(res => {
+                    await toggleLoading();
+                    deleteFriend({friend: item}).then(async res => {
+                        await toggleLoading();
                         toggleDelete();
                         toggleOverlay();
                     });
@@ -98,6 +105,7 @@ const FriendDetailScreen = ({navigation}) => {
                 errorSubtitle = 'Please check your connection'
                 body = 'Friend deleted'
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {Header, Button, Input} from 'react-native-elements';
 import {AntDesign} from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
@@ -15,11 +15,16 @@ const SubmitOfferScreen = ({navigation}) => {
     const [dest, setDest] = useState('');
     const [price, setPrice] = useState('');
     const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {state, sendOffer, clearErrorMessage} = useContext(NotiContext);
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     const finalOrigin = origin ? origin : item.origin.name;
@@ -65,10 +70,14 @@ const SubmitOfferScreen = ({navigation}) => {
                 <Button 
                     title = 'Submit Offer'
                     buttonStyle = {styles.button}
-                    onPress = {() => {
+                    onPress = {async () => {
+                        await toggleLoading();
                         const offer = {origin: finalOrigin, dest: finalDest, price: finalPrice};
                         sendOffer({recipient: item.lister, type: 'Offer', listing: item, offer})
-                            .then(res => toggleOverlay());
+                            .then(async res => {
+                                await toggleLoading();
+                                toggleOverlay();
+                            });
                     }}
                 />
             </Spacer>
@@ -90,6 +99,7 @@ const SubmitOfferScreen = ({navigation}) => {
                 errorSubtitle = {errorSubtitle(state)}
                 body = 'Your offer is submitted!'
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };

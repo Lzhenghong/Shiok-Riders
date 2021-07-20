@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {Button, PricingCard } from 'react-native-elements';
 import {Context as ListingContext} from '../context/ListingContext';
 import Overlay from '../components/ResultOverlay';
@@ -8,9 +8,14 @@ import Header from '../components/Header';
 ConfirmListingScreen = ({navigation}) => {
     const {state, addListing, clearErrorMessage} = useContext(ListingContext);
     const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     return (
@@ -31,8 +36,12 @@ ConfirmListingScreen = ({navigation}) => {
                         title = 'Confirm' 
                         buttonStyle = {styles.button} 
                         onPress = {async () => {
+                            await toggleLoading();
                             addListing({originObj: state.origin, destObj: state.dest, priceString: state.price})
-                                .then(res => toggleOverlay());
+                                .then(async res => {
+                                    await toggleLoading();
+                                    toggleOverlay();
+                                });
                         }}
                     />}
             />
@@ -48,6 +57,7 @@ ConfirmListingScreen = ({navigation}) => {
                 errorSubtitle = 'Please try again'
                 body = 'Your listing is submitted!'
             />
+            {loading ? <ActivityIndicator /> : null}
         </View>
     );
 };
@@ -76,11 +86,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         marginBottom: 10
-    },
-    overlay: {
-        height: 200,
-        alignSelf: 'center',
-        justifyContent: 'center'
     }
 });
 

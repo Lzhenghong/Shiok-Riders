@@ -15,6 +15,7 @@ const HistoryScreen = ({navigation}) => {
     const [visible, setVisible] = useState(false);
     const [delVisible, setDelVisible] = useState(false);
     const [readVisible, setReadVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {state, fetchHistory, deleteRecord, readRecord, clearErrorMessage} = useContext(BookingContext);
 
@@ -26,8 +27,12 @@ const HistoryScreen = ({navigation}) => {
         setDelVisible(!delVisible);
     };
 
-    toggleRead = () => {
+    const toggleRead = () => {
         setReadVisible(!readVisible);
+    };
+
+    toggleLoading = () => {
+        setLoading(!loading);
     };
 
     const formatDate = (dateobj) => {
@@ -51,7 +56,9 @@ const HistoryScreen = ({navigation}) => {
                                     bottomDivider 
                                     topDivide
                                     onPress = {async () => {
-                                        readRecord({item}).then(res => {
+                                        await toggleLoading();
+                                        readRecord({item}).then(async res => {
+                                            await toggleLoading();
                                             if (!state.errorMessage) {
                                                 navigation.navigate('HistoryDetail', {item});
                                             } else {
@@ -85,6 +92,7 @@ const HistoryScreen = ({navigation}) => {
                                 </ListItem>
                             ))
                         }
+                        {loading ? <ActivityIndicator /> : null}
                     </ScrollView>
                 </View>
             );
@@ -105,9 +113,11 @@ const HistoryScreen = ({navigation}) => {
                 onBackdrop = {() => toggleOverlay()}
                 text = 'Delete this record?'
                 subbody = 'This action is irrevisible'
-                onYes = {() => {
+                onYes = {async () => {
+                    await toggleLoading();
                     deleteRecord({item: booking})
-                        .then(res => {
+                        .then(async res => {
+                            await toggleLoading();
                             toggleOverlay();
                             toggleDelete();
                     })
