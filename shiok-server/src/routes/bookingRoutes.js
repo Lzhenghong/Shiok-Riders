@@ -61,11 +61,12 @@ router.post('/rate', async (req, res) => {
             await HitcherBooking.findByIdAndUpdate({_id: item._id}, {rated: true}) : 
             await DriverBooking.findByIdAndUpdate({_id: item._id}, {rated: true});
         const client = item.client.type == 'Hitcher' ? await Hitcher.findById({_id: item.client._id}) : await Driver.findById({_id: item.client._id});
-        const newLen = client.rating.get('len') + 1;
-        const newAverage = ((client.rating.get('average') * (newLen - 1) + rating) / newLen).toFixed(1);
+        const len = client.rating.get('len');
+        const avg = client.rating.get('average');
+        var newAvg = (avg * len + rating) / (len + 1);
         item.client.type == 'Hitcher' ?
-            await Hitcher.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAverage, 'len': newLen}}) :
-            await Driver.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAverage, 'len': newLen}});
+            await Hitcher.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAvg.toFixed(1), 'len': len + 1}}) :
+            await Driver.findByIdAndUpdate({_id: item.client._id}, {rating: {'average': newAvg.toFixed(1), 'len': len + 1}});
         res.send('success');
     } catch (err) {
         return res.status(422).send({error: 'Could not update rating'});

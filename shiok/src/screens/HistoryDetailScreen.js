@@ -136,7 +136,7 @@ const HistoryDetailScreen = ({navigation}) => {
                 <View style = {{alignItems: 'center'}}>
                     <AirbnbRating 
                         count = {5}
-                        defaultRating = {5}
+                        defaultRating = {0}
                         size = {50}
                         onFinishRating = {(rating) => setRating(rating)}
                     />
