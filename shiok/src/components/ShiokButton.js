@@ -1,6 +1,8 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import { Button } from 'react-native-elements';
+
+window = Dimensions.get('window');
 
 const ShiokButton = ({title, callback}) => {
     return (
@@ -18,8 +20,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF8400',
         borderRadius: 20,
         alignSelf: 'center',
-        width: '97.5%',
-        height: 39,
+        width: window.width * 0.95,
+        height: window.height * 0.043,
     }
 });
 
