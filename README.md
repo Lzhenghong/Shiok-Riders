@@ -42,6 +42,8 @@ Scan the QR code on the browser, this should navigate to the Expo app
 
 -----------------------------------------------------------
 
+When using the Expo app, shake the phone to perform hot reload of the app when it is not responding or lagging
+
 Documentation: https://docs.google.com/document/d/1t8CVSue6BJ29s0DnYRoyFXGHvCuuQDDLWj4a-czXFeU/edit?usp=sharing
 
 
