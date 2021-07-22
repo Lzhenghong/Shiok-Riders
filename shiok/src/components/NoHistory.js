@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     icon: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: '85%',
+        height: window.height * 0.8
         
     },
     text: {

@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     icon: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80%',
-        marginTop: window.height * 0.15
+        height: '100%',
+        marginTop: window.height * 0.1
     },
     text: {
         color: '#b5b3b3',
