@@ -19,7 +19,7 @@ const SignupScreen = ({navigation}) => {
             />
             <Spacer />
             <View style = {styles.container}>
-                <ScrollView>
+                <ScrollView nestedScrollEnabled = {true} >
                     <SignUpForm
                         title = 'Create Account'
                         errorMessage = {state.errorMessage}

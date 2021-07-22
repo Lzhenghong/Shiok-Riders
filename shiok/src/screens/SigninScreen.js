@@ -18,7 +18,7 @@ const SigninScreen = ({navigation}) => {
             />
             <Spacer />
             <View style = {styles.container}> 
-                <ScrollView>
+                <ScrollView nestedScrollEnabled = {true}>
                     <SignInForm
                         title = 'Sign In'
                         errorMessage = {state.errorMessage}
