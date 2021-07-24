@@ -22,7 +22,7 @@ Download the Expo app on your mobile phone
 
 Create an Expo account and login into it on your Expo app
 
-Open this link "exp://exp.host/@zhenghong/shiok" in your phone's browser
+Open this link "exp://exp.host/@zhenghong/shiok" (IOS) or "http://exp.host/@zhenghong/shiok" (android) in your phone's browser
 
 This should navigate to the Expo app on your phone 
 
