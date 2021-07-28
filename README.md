@@ -46,6 +46,8 @@ When using the Expo app, shake the phone to perform hot reload of the app when i
 
 Documentation: https://docs.google.com/document/d/1t8CVSue6BJ29s0DnYRoyFXGHvCuuQDDLWj4a-czXFeU/edit?usp=sharing
 
+Poster: https://drive.google.com/file/d/1yuo_Dt735EtFh2-zhRjs6vtAppFdcVRB/view?usp=sharing
+
 Video demo: https://drive.google.com/file/d/1FgDVl6kgJ1R1aHH5D3jh45yZUik7JQVs/view?usp=sharing
 
 
