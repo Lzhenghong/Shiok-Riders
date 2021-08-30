@@ -39,8 +39,6 @@ const HistoryDetailScreen = ({navigation}) => {
         setFriendVisible(!friendVisible);
     };
 
-    const searchAPI = geoSearch();
-
     const formatDate = (dateobj) => {
         const date = new Date(dateobj);
         return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
@@ -62,7 +60,7 @@ const HistoryDetailScreen = ({navigation}) => {
                     if (!item.rated) {
                         toggleRating();
                     }
-                    const promises = [await searchAPI(item.offer.origin, 1), await searchAPI(item.offer.dest, 1)];
+                    const promises = [await geoSearch(item.offer.origin, 1), await geoSearch(item.offer.dest, 1)];
                     Promise.all(promises).then(res => {
                         const [{error: originError, result: originResult}, {error: destError, result: destResult}] = res;
                         if (!originError && !destError) {

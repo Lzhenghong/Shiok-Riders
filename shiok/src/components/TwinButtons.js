@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF8400',
         borderRadius: 20,
         paddingHorizontal: 20,
-        width: window.width * 0.466
+        width: window.width * 0.495
     }
 });
 
